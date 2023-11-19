@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 @Entity
 @Table(name = "roles")
-public class rolesEntity {
+public class RolesEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int role_id;
@@ -19,10 +19,10 @@ public class rolesEntity {
     private String role_description;
 
 
-    public rolesEntity(){
+    public RolesEntity(){
         super();
     }
-    public rolesEntity(String role_name, String role_description){
+    public RolesEntity(String role_name, String role_description){
         super();
         this.role_name = role_name;
         this.role_description = role_description;

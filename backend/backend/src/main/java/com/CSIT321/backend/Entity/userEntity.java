@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 @Entity
 @Table(name ="User")
-public class userEntity {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int user_id;
@@ -17,10 +17,10 @@ public class userEntity {
     @Column(name = "password")
     private String password;
 
-    public userEntity(){
+    public UserEntity(){
         super();
     }
-    public userEntity(String username, String password){
+    public UserEntity(String username, String password){
         super();
         this.username = username;
         this.password = password;
