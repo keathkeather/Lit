@@ -1,6 +1,6 @@
 package com.CSIT321.backend.Service;
-import com.CSIT321.backend.Entity.userEntity;
-import com.CSIT321.backend.Repository.userRepository;
+import com.CSIT321.backend.Entity.UserEntity;
+import com.CSIT321.backend.Repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,19 +8,19 @@ import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException; 
 @Service
-public class userService {
+public class UserService {
     @Autowired
-    userRepository userRepository;
+    UserRepository userRepository;
 
-    public userEntity insertUser(userEntity user){
+    public UserEntity insertUser(UserEntity user){
         return userRepository.save(user);
     }
-    public List<userEntity> getAllUserEntities(){
+    public List<UserEntity> getAllUserEntities(){
         return userRepository.findAll();
     }
     @SuppressWarnings("finally")
-    public userEntity updateUser(int uid, userEntity newUserEntity){
-        userEntity user = new userEntity();
+    public UserEntity updateUser(int uid, UserEntity newUserEntity){
+        UserEntity user = new UserEntity();
         try{
             user  = userRepository.findById(uid).get();
             user.setUsername(newUserEntity.getUsername());
@@ -34,7 +34,7 @@ public class userService {
     }
     public String deleteUser(int uid){
         String msg="";
-        Optional<userEntity> optionalUser = userRepository.findById(uid);
+        Optional<UserEntity> optionalUser = userRepository.findById(uid);
         if(optionalUser.isPresent()){
             userRepository.deleteById(uid);
             msg = "User " + uid + " deleted";
