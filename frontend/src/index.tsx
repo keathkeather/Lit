@@ -8,6 +8,7 @@ import LoginScreen from './Landing/LoginScreen';
 import SignupScreen from './Landing/SignupScreen';
 import FeaturesScreen from './Landing/FeaturesScreen';
 import PricingScreen from './Landing/PricingScreen';
+import CheckpointScreen from './Landing/CheckpointScreen';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
@@ -20,6 +21,7 @@ ReactDOM.render(
         <Route path="/signup" element={<SignupScreen />} />
         <Route path="/features" element={<FeaturesScreen />} />
         <Route path="/pricing" element={<PricingScreen />} />
+        <Route path="/checkpoint" element={<CheckpointScreen />} />
       </Routes>
     </Router>
   </React.StrictMode>,

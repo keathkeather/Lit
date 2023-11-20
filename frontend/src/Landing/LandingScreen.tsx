@@ -18,11 +18,19 @@ const LandingScreen: React.FC<LandingScreenProps> = () => {
         navigate('/signup');
     };
 
+    const handleLogoClick = () => {
+        navigate('/');
+      };
+
     return (
-        <div className="max-h-screen-vh max-w-screen-xl overflow-y-auto">
+        <div className="overflow-y-auto">
             <header className="bg-white fixed top-0 left-0 right-0 z-10 p-2 md:p-4 flex flex-row lg:flex-row items-center justify-between">
                 <div className="flex items-center mb-0">
-                    <img src="litimg/litlogo2.png" alt="Lit Logo 2" className="w-20 lg:w-28 mr-3 lg:mr-5" />
+                    <button
+                        onClick={handleLogoClick}
+                    >
+                        <img src="litimg/litlogo2.png" alt="Lit Logo 2" className="w-20 lg:w-28 mr-3 lg:mr-5" />
+                    </button>
                     <Link to="/features" className="text-lg lg:text-xl font-bold text-gray mr-5 md:mr-7">
                         Features
                     </Link>
@@ -48,14 +56,13 @@ const LandingScreen: React.FC<LandingScreenProps> = () => {
                 </div>
             </header>
 
-
             <div className="flex flex-col items-center justify-center mt-10">
                 
-                <div className="bg-bgc1 p-10 mb-1 flex items-center h-screen">
+                <div className="bg-bgc1 p-10 flex items-center justify-center w-full h-screen">
                     <img src="litimg/litsy.png" alt="Litsy" className="w-30 mb-8" />
                     <div className="flex flex-col items-center ml-8">
-                        <div className="text-5xl font-semibold text-white mb-8">Your launchpad into the world of literature</div>
-                        <div className="text-xl font-light text-white mb-8">Lits learn Literature</div>
+                        <div className="text-6xl font-semibold text-white mb-12">Your launchpad into the world of literature</div>
+                        <div className="text-2xl font-light text-white mb-12">Lits learn Literature</div>
                         <button
                             type="button"
                             onClick={handleGetstarted}
@@ -66,12 +73,12 @@ const LandingScreen: React.FC<LandingScreenProps> = () => {
                     </div>
                 </div>
 
-                <div className="bg-white relative">
-                    <img src="litimg/land1.png" alt="Land 1" className="h-full object-cover" />
+                <div className="bg-white w-full">
+                    <img src="litimg/land1.png" alt="Land 1" className="h-full" />
                 </div>
 
-                <div className="relative">
-                    <img src="litimg/land2.png" alt="Land 2" className="h-full object-cover" />
+                <div className="bg-bgc1 w-full relative">
+                    <img src="litimg/land2.png" alt="Land 2" className="w-full h-full" />
                     <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-bgc1 p-10 flex flex-col items-center">
                         <button
                             type="button"
