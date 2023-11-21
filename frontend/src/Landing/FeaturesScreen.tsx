@@ -37,6 +37,9 @@ const FeaturesScreen: React.FC<FeaturesScreenProps> = () => {
                 <Link to="/landing" className="text-lg lg:text-xl font-bold text-gray mr-5 md:mr-7">
                     Home
                 </Link>
+                <Link to="/features" className="text-lg lg:text-xl font-bold text-gray mr-5 md:mr-7">
+                    Features
+                </Link>
                 <Link to="/pricing" className="text-lg lg:text-xl font-bold text-gray mr-5 md:mr-7">
                     Pricing
                 </Link>

@@ -43,6 +43,9 @@ const PricingScreen: React.FC<PricingScreenProps> = () => {
           <Link to="/features" className="text-lg lg:text-xl font-bold text-gray mr-5 md:mr-7">
             Features
           </Link>
+          <Link to="/pricing" className="text-lg lg:text-xl font-bold text-gray mr-5 md:mr-7">
+            Pricing
+          </Link>
           <Link to="/aboutus" className="text-lg lg:text-xl font-bold text-gray mr-5 md:mr-7">
               About Us
           </Link>
