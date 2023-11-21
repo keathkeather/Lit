@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import com.CSIT321.backend.Entity.QuestionEntity;
-import com.CSIT321.backend.Service.QuestionServices;
+import com.CSIT321.backend.Service.QuestionService;
 
 @RestController
 @RequestMapping("/questions")
 public class QuestionController {
 
     @Autowired
-    private QuestionServices questionServices;
+    private QuestionService questionServices;
 
     @PostMapping("/create")
     public ResponseEntity<QuestionEntity> createQuestion(@RequestBody QuestionEntity question) {

@@ -1,9 +1,11 @@
 package com.CSIT321.backend.Entity;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 @Entity
 @Table(name ="User")
@@ -17,13 +19,19 @@ public class UserEntity {
     @Column(name = "password")
     private String password;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private AccountEntity account;
+
+
+    
     public UserEntity(){
         super();
     }
-    public UserEntity(String username, String password){
+    public UserEntity(String username, String password, AccountEntity account){
         super();
         this.username = username;
         this.password = password;
+        this.account = account;
     }
     public int getUser_id() {
         return user_id;
@@ -32,7 +40,12 @@ public class UserEntity {
     public void setUser_id(int user_id) {
         this.user_id = user_id;
     }
-
+    public AccountEntity getAccount(){
+        return this.account;
+    }
+    public void setAccount(AccountEntity account){
+        this.account = account;
+    }
     public String getUsername() {
         return username;
     }

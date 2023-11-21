@@ -9,7 +9,7 @@ import com.CSIT321.backend.Entity.QuestionEntity;
 import com.CSIT321.backend.Repository.QuestionRepository;
 
 @Service
-public class QuestionServices {
+public class QuestionService {
     @Autowired
     QuestionRepository questionRepository;
 
