@@ -55,7 +55,7 @@ const ContactusScreen: React.FC<ContactusScreenProps> = () => {
                 <button
                     type="button"
                     onClick={handleSignup}
-                    className="px-3 py-1 ml-2 lg:ml-5 lg:px-4 lg:py-2 rounded bg-bgc2 text-white font-semibold cursor-pointer mb-0 lg:text-lg"
+                    className="mx-10 px-3 py-1 ml-2 lg:ml-5 lg:px-4 lg:py-2 rounded bg-bgc2 text-white font-semibold cursor-pointer mb-0 lg:text-lg"
                 >
                     Sign up for Free
                 </button>
