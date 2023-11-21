@@ -77,7 +77,7 @@ const FeaturesScreen: React.FC<FeaturesScreenProps> = () => {
     <div className="text-center">
         {/* Image */}
     <div className="flex items-center justify-center -mb-3">
-        <img src="learn1.png" alt="learn" className="w-44 h-44" />
+        <img src="litimg/learn1.png" alt="learn" className="w-44 h-44" />
     </div>
 
       {/* Text */}
@@ -90,7 +90,7 @@ const FeaturesScreen: React.FC<FeaturesScreenProps> = () => {
     {/* Column 2 */}
     <div className="text-center">
     <div className="flex items-center justify-center -mb-8">
-        <img src="learn2.png" alt="learn" className="w-48 h-48" />
+        <img src="litimg/learn2.png" alt="learn" className="w-48 h-48" />
     </div>
     
         <div>
@@ -102,7 +102,7 @@ const FeaturesScreen: React.FC<FeaturesScreenProps> = () => {
     {/* Column 3 */}
     <div className="text-center">
         <div className="flex items-center justify-center mb-4">
-            <img src="learn3.png" alt="learn" className="w-36 h-36" />
+            <img src="litimg/learn3.png" alt="learn" className="w-36 h-36" />
             </div>
     
                 <div>
@@ -114,7 +114,7 @@ const FeaturesScreen: React.FC<FeaturesScreenProps> = () => {
     </div>
 
     {/* Fixed bottom image */}
-      <img id="bottomImage" src="bgfeatures.png" alt="Image Description" className="w-screen h-[350px] object-cover" />
+      <img id="bottomImage" src="litimg/bgfeatures.png" alt="Image Description" className="w-screen h-[350px] object-cover" />
 
 </div>
 );
