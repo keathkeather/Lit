@@ -31,7 +31,7 @@ const LandingScreen: React.FC<LandingScreenProps> = () => {
                     >
                         <img src="litimg/litlogo2.png" alt="Lit Logo 2" className="w-20 lg:w-28 mr-3 lg:mr-5" />
                     </button>
-                    <Link to="/home" className="text-lg lg:text-xl font-bold text-gray mr-5 md:mr-7">
+                    <Link to="/landing" className="text-lg lg:text-xl font-bold text-gray mr-5 md:mr-7">
                         Home
                     </Link>
                     <Link to="/features" className="text-lg lg:text-xl font-bold text-gray mr-5 md:mr-7">
