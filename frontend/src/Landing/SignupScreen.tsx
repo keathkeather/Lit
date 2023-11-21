@@ -13,7 +13,7 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
 
   const handleSignup = () => {
     // Add logic to handle user registration
-    console.log('Signup button clicked');
+    console.log('Signup succesful');
     navigate('/checkpoint');
   };
 

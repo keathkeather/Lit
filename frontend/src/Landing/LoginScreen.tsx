@@ -10,7 +10,6 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    // Add logic to handle user registration
     console.log('Login button clicked');
   };
 
