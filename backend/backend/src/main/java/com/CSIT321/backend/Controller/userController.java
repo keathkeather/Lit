@@ -1,5 +1,6 @@
 package com.CSIT321.backend.Controller;
 import com.CSIT321.backend.Entity.UserEntity;
+import com.CSIT321.backend.Entity.DTO.UserDTO;
 import com.CSIT321.backend.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,18 +25,17 @@ public class UserController{
         return "Hello, Keath Lavador!";
     }
     @PostMapping("/createUser")
-    public ResponseEntity<UserEntity> createUser(@RequestBody UserEntity user){
-        UserEntity createdUser = userService.insertUser(user);
+    public ResponseEntity<UserEntity> createUser(@RequestBody UserDTO userDTO) {
+        UserEntity createdUser = userService.insertUser(userDTO);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
-
     }
     @GetMapping("/getAllUsers")
     public List<UserEntity> getAllUsers(){
         return userService.getAllUserEntities();
     }
     @PutMapping("/updateUser/{user_id}")
-    public UserEntity updateUser(@PathVariable int user_id,@RequestBody UserEntity newUserEntity){
-        return userService.updateUser(user_id, newUserEntity);
+    public UserEntity updateUser(@PathVariable int user_id,@RequestBody UserDTO newUserDTO){
+        return userService.updateUser(user_id, newUserDTO);
     }
     @DeleteMapping("/deleteUser/{user_id}")
     public String deleteUser(@PathVariable int user_id){

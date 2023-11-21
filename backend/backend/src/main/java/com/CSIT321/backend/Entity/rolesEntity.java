@@ -39,6 +39,9 @@ public class RolesEntity{
     public void setRole_name(String role_name){
         this.role_name = role_name;
     }
+    public void setRole_id(int role_id){
+        this.role_id = role_id;
+    }
     public void setRole_description(String role_description){
         this.role_description = role_description;
     }
