@@ -34,11 +34,14 @@ const FeaturesScreen: React.FC<FeaturesScreenProps> = () => {
                 >
                     <img src="litimg/litlogo2.png" alt="Lit Logo 2" className="w-20 lg:w-28 mr-3 lg:mr-5" />
                 </button>
-                <Link to="/features" className="text-lg lg:text-xl font-bold text-gray mr-5 md:mr-7">
-                    Features
+                <Link to="/landing" className="text-lg lg:text-xl font-bold text-gray mr-5 md:mr-7">
+                    Home
                 </Link>
-                <Link to="/pricing" className="text-lg lg:text-xl font-bold text-gray">
+                <Link to="/pricing" className="text-lg lg:text-xl font-bold text-gray mr-5 md:mr-7">
                     Pricing
+                </Link>
+                <Link to="/aboutus" className="text-lg lg:text-xl font-bold text-gray mr-5 md:mr-7">
+                    About Us
                 </Link>
             </div>
             <div className="flex items-center mr-20">
@@ -108,7 +111,7 @@ const FeaturesScreen: React.FC<FeaturesScreenProps> = () => {
     </div>
 
     {/* Fixed bottom image */}
-      <img id="bottomImage" src="bgfeatures.png" alt="Image Description" className="w-[1550px] h-[350px] object-cover" />
+      <img id="bottomImage" src="bgfeatures.png" alt="Image Description" className="w-screen h-[350px] object-cover" />
 
 </div>
 );

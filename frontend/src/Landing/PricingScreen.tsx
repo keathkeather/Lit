@@ -37,11 +37,14 @@ const PricingScreen: React.FC<PricingScreenProps> = () => {
           <button onClick={handleLogoClick}>
             <img src="litimg/litlogo2.png" alt="Lit Logo 2" className="w-20 lg:w-28 mr-3 lg:mr-5" />
           </button>
+          <Link to="/landing" className="text-lg lg:text-xl font-bold text-gray mr-5 md:mr-7">
+            Home
+          </Link>
           <Link to="/features" className="text-lg lg:text-xl font-bold text-gray mr-5 md:mr-7">
             Features
           </Link>
-          <Link to="/pricing" className="text-lg lg:text-xl font-bold text-gray">
-            Pricing
+          <Link to="/aboutus" className="text-lg lg:text-xl font-bold text-gray mr-5 md:mr-7">
+              About Us
           </Link>
         </div>
         <div className="flex items-center mr-20">

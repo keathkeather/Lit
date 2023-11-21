@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
 interface CheckpointScreenProps {}
@@ -7,7 +6,7 @@ const CheckpointScreen: React.FC<CheckpointScreenProps> = () => {
   const navigate = useNavigate();
 
   const handleStartClick = () => {
-    //Logic here
+    //navigate logic here
   };
 
   return (
