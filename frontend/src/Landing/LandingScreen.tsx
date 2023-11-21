@@ -25,7 +25,7 @@ const LandingScreen: React.FC<LandingScreenProps> = () => {
     return (
         <div className="overflow-y-auto">
             <header className="bg-white fixed top-0 left-0 right-0 z-10 p-2 md:p-4 flex flex-row lg:flex-row items-center justify-between">
-                <div className="flex items-center mb-0">
+                <div className="flex items-center mb-0 ml-20">
                     <button
                         onClick={handleLogoClick}
                     >
@@ -38,7 +38,7 @@ const LandingScreen: React.FC<LandingScreenProps> = () => {
                         Pricing
                     </Link>
                 </div>
-                <div className="flex items-center">
+                <div className="flex items-center mr-20">
                     <button
                         type="button"
                         onClick={handleLogin}
