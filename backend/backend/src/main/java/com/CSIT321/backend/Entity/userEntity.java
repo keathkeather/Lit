@@ -25,7 +25,8 @@ public class UserEntity {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonManagedReference
     private AccountEntity account;
-
+    @Column(name ="isDeleted")
+    private boolean isDeleted;
     
     
     public UserEntity(){
@@ -36,7 +37,7 @@ public class UserEntity {
         this.username = username;
         this.password = password;
         this.account = account;
-
+        this.isDeleted = false;
         
     }
     public int getUser_id() {
@@ -66,6 +67,12 @@ public class UserEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+    public void setDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
 

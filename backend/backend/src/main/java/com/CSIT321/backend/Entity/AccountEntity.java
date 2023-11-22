@@ -16,6 +16,9 @@ public class AccountEntity {
     @JsonBackReference
     private UserEntity user;
 
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private RolesEntity role;
 
     @Column(name = "email")
     private String email;
@@ -23,10 +26,17 @@ public class AccountEntity {
     public AccountEntity(){
         super();
     }
-    public AccountEntity(UserEntity user, String email){
+    public AccountEntity(UserEntity user, String email,RolesEntity role){
         this.user = user;
         this.email = email;
+        this.role = role;
       
+    }
+    public RolesEntity getRole(){
+        return this.role;
+    }
+    public void setRole(RolesEntity role){
+        this.role = role;
     }
 
     public int getAccountId() {

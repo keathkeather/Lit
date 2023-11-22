@@ -6,6 +6,6 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RolesRepository extends JpaRepository<RolesEntity, Integer> {
-        Optional<RolesEntity> findById(int userId);
+        Optional<RolesEntity> findById(int role_id);
 
 }

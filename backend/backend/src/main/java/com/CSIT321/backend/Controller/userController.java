@@ -37,8 +37,21 @@ public class UserController{
     public UserEntity updateUser(@PathVariable int user_id,@RequestBody UserDTO newUserDTO){
         return userService.updateUser(user_id, newUserDTO);
     }
-    @DeleteMapping("/deleteUser/{user_id}")
-    public String deleteUser(@PathVariable int user_id){
+    @PutMapping("/updateUserRoleToAuthor/{user_id}")
+    public UserEntity updateUserRoleToAuthor(@PathVariable int user_id){
+        return userService.updateUserRoleToAuthor(user_id);
+    }
+    @PutMapping("/deleteUser/{user_id}")
+    public UserEntity deleteUser(@PathVariable int user_id){
         return userService.deleteUser(user_id);
+    }
+    @PutMapping("/restoreUser/{user_id}")
+    public UserEntity restoreUser(@PathVariable int user_id){
+        return userService.restoreUser(user_id);
+    }
+
+    @DeleteMapping("/deleteUserPermanently/{user_id}")
+    public String deleteUserPermanently(@PathVariable int user_id){
+        return userService.deleteUserPermanently(user_id);
     }
 }
