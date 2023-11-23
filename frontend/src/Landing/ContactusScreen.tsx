@@ -27,7 +27,7 @@ const ContactusScreen: React.FC<ContactusScreenProps> = () => {
         e.preventDefault();
         // to be followed lang API huhuhuhu
         console.log(formData);
-        
+
         // Reset form fields after submission
         setFormData({
           name: '',
@@ -36,7 +36,7 @@ const ContactusScreen: React.FC<ContactusScreenProps> = () => {
         });
       };
   return (
-    <div className="bg-bgc1 w-full relative">
+    <div className="bg-bgc1 min-h-screen flex flex-col">
         <style>
         {`
           body {
@@ -45,14 +45,14 @@ const ContactusScreen: React.FC<ContactusScreenProps> = () => {
         `}
         </style>
 
-        <div className="grid grid-cols-2 gap-5 md:p-10 relative z-10">
+        <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-5 md:p-10 relative z-20">
             {/* Info Column */}
-            <div className="p-4 ml-20">
+            <div className="p-4 md:ml-20">
                 <button onClick={handleLogoClick}>
                     <img src="litimg/LitLogoHome.svg" alt="LitLogo3" className="w-21 h-14"/>
                 </button>
                 <div className="ml-2">
-                    <h2 className="text-6xl font-black text-white mb-4 mt-3 pt-5 font-inter ">Let's Talk</h2>
+                <h2 className="text-4xl md:text-6xl font-black text-white mb-4 mt-3 pt-5 font-inter ">Let's Talk</h2>
                     <p className="text-white">To request a quote or want to meet up for coffee, contact us <br/>
                     directly or fill out the form and we will get back to you promptly.</p>
                     {/* Location */}
@@ -79,7 +79,7 @@ const ContactusScreen: React.FC<ContactusScreenProps> = () => {
             </div>
 
             {/* Form Column */}
-            <div className="pr-10 pt-20 mr-20">
+            <div className="pr-4 md:pt-20 md:p-20" >
                 <form onSubmit={handleSubmit}>
                 <div className="mb-4">
                     <label htmlFor="name" className="block font-bold mb-2">
@@ -123,8 +123,8 @@ const ContactusScreen: React.FC<ContactusScreenProps> = () => {
                     ></textarea>
                 </div>
                 <div className="text-center">
-                    <button type="submit">
-                        <img src="litimg/submitbtn.svg" alt="LitLogo3" className="w-21 h-14"/>
+                <button type="submit">
+                        <img src="litimg/submitbtn.svg" alt="LitLogo3" className="w-21 h-14 mb-20"/>
                     </button>
                     </div>
                 </form>
