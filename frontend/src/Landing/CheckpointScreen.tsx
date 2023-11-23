@@ -6,7 +6,7 @@ const CheckpointScreen: React.FC<CheckpointScreenProps> = () => {
   const navigate = useNavigate();
 
   const handleStartClick = () => {
-    //navigate logic here
+    navigate('/home');
   };
 
   return (
@@ -14,24 +14,24 @@ const CheckpointScreen: React.FC<CheckpointScreenProps> = () => {
         <img src="litimg/checkpointbg.png" alt="Checkpoint Background" className="w-full h-screen" />
         <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-bgc1 p-10 flex flex-col items-center">
             <div>
-                <img src="litimg/litlogo4.png" alt="Lit Logo" className="w-sm" />
+                <img src="litimg/litlogo4.png" alt="Lit Logo" className="w-40 mt-10" />
             </div>
-            <div className="text-8xl font-bold mb-10 text-white flex flex-col items-center">
+            <div className="text-6xl font-bold mb-5 text-white flex flex-col items-center">
                 NOICE!
             </div>
-            <div className="text-2xl font-light text-white mb-12">
+            <div className="text-2xl font-light text-white mb-8">
                 Your account was successfully created.
             </div>
             <button
                 type="button"
                 onClick={handleStartClick}
-                className="px-6 md:px-12 lg:px-20 py-2 md:py-3 lg:py-4 rounded bg-bgc2 text-white font-semibold cursor-pointer text-sm md:text-xl lg:text-3xl"
+                className="px-10 py-3 rounded bg-bgc2 text-white font-semibold cursor-pointer text-xl"
             >
                 Start Reading
             </button>
-            <div className="block text-white text-2xl font-light mt-10">
+            <div className="block text-white text-xl font-light mt-5">
               Back to&nbsp;
-                <Link to="/login" className="text-2xl font-normal text-white">
+                <Link to="/login" className="text-xl font-normal text-white">
                   Login
                 </Link>
             </div>
