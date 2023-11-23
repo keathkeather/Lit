@@ -22,7 +22,7 @@ const Header: React.FC<HeaderProps> = () => {
     <header className="bg-white fixed top-0 left-0 right-0 z-10 p-2 md:p-4 flex flex-row lg:flex-row items-center justify-between">
       <div className="flex items-center mb-0 ml-20">
         <button onClick={handleLogoClick}>
-          <img src="litimg/litlogo2.png" alt="Lit Logo 2" className="w-20 lg:w-28 mr-3 lg:mr-5" />
+          <img src="litimg/litlogo2.svg" alt="Lit Logo 2" className="w-20 lg:w-28 mr-3 lg:mr-5" />
         </button>
         <Link to="/landing" className="text-lg lg:text-xl font-bold text-gray mr-5 md:mr-7">
                     Home
