@@ -10,7 +10,10 @@ module.exports = {
       },
       maxWidth: {
         'screen-xl': '100%',
-      }
+      },
+      fontFamily: {
+        inter: ['Inter', 'sans-serif'],
+      },
     },
     colors: {
       'bgc1': '#0C2647',
@@ -18,6 +21,7 @@ module.exports = {
       'bgc2': '#F88125',
       'gray': '#3C3934',
       'dblue': '#120338',
+      'txt1': '#C4C0C0',
     }
   },
   plugins: [],
