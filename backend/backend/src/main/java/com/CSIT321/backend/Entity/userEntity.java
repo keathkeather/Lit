@@ -28,9 +28,9 @@ public class UserEntity {
     @Column(name ="isDeleted")
     private boolean isDeleted;
     
-    
     public UserEntity(){
         super();
+        this.isDeleted = false;
     }
     public UserEntity(String username, String password, AccountEntity account){
         super();

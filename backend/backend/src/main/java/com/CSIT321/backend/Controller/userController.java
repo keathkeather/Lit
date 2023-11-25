@@ -14,16 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/user")
 public class UserController{
     @Autowired
     UserService userService;
-    @GetMapping("/print")
-    public String printHello() {
-        return "Hello, Keath Lavador!";
-    }
+    
     @PostMapping("/createUser")
     public ResponseEntity<UserEntity> createUser(@RequestBody UserDTO userDTO) {
         UserEntity createdUser = userService.insertUser(userDTO);
@@ -34,8 +32,21 @@ public class UserController{
         return userService.getAllUserEntities();
     }
     @PutMapping("/updateUser/{user_id}")
-    public UserEntity updateUser(@PathVariable int user_id,@RequestBody UserDTO newUserDTO){
-        return userService.updateUser(user_id, newUserDTO);
+    public ResponseEntity<Object> updateUser(@PathVariable int user_id,@RequestBody UserDTO newUserDTO){
+        UserEntity updateUser  = userService.updateUser(user_id, newUserDTO);
+        try{
+            if(updateUser != null){
+                return new ResponseEntity<>("user updated", HttpStatus.OK);
+            }
+            else{
+                return new ResponseEntity<>("user not found",HttpStatus.NOT_FOUND);
+            }
+        }
+        catch(Exception e){
+            return new ResponseEntity<>("An error has occured", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+         
     }
     @PutMapping("/updateUserRoleToAuthor/{user_id}")
     public UserEntity updateUserRoleToAuthor(@PathVariable int user_id){
@@ -51,7 +62,14 @@ public class UserController{
     }
 
     @DeleteMapping("/deleteUserPermanently/{user_id}")
-    public String deleteUserPermanently(@PathVariable int user_id){
-        return userService.deleteUserPermanently(user_id);
+    public ResponseEntity<String> deleteUserPermanently(@PathVariable int user_id){
+        try{
+            userService.deleteUserPermanently(user_id);
+            return new ResponseEntity<>("User deleted permanently",HttpStatus.OK);
+        }catch(NoSuchElementException e){
+            return new ResponseEntity<>("User not found",HttpStatus.NOT_FOUND);
+        }catch(NullPointerException e){
+            return new ResponseEntity<>("An error has occured", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

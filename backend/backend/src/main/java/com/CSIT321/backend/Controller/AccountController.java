@@ -31,7 +31,7 @@ public class AccountController {
     }
 
     @GetMapping("/{accountId}")
-    public ResponseEntity<AccountEntity> getQuestionById(@PathVariable int accountId) {
+    public ResponseEntity<AccountEntity> getAccountById(@PathVariable int accountId) {
         AccountEntity account = accountService.getAccountById(accountId);
         if (account != null) {
             return new ResponseEntity<>(account, HttpStatus.OK);
@@ -39,9 +39,22 @@ public class AccountController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    @PostMapping("/purchaseSub/{accountId}")
+    public ResponseEntity<String> purchaseSubscription(
+        @PathVariable int accountId, @RequestParam int subscriptionId) {
+        AccountEntity account  = accountService.getAccountById(accountId);
+        if(account != null){
+            accountService.purchaseSubscription(account, subscriptionId);
+            return new ResponseEntity<>("Subscription Purchased",HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>("Account not found",HttpStatus.NOT_FOUND);
+        }
+
+    }
 
     @PutMapping("/update/{accountId}")
-    public ResponseEntity<AccountEntity> updateQuestion( @PathVariable int accountId, @RequestBody AccountEntity updatedAccount)
+    public ResponseEntity<AccountEntity> updateAccount( @PathVariable int accountId, @RequestBody AccountEntity updatedAccount)
      {
         AccountEntity updateAccount = accountService.updateAccount(accountId, updatedAccount);
         if (updateAccount != null) {
@@ -50,4 +63,5 @@ public class AccountController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    
 }

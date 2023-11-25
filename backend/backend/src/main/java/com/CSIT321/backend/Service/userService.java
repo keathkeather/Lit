@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.NoSuchElementException;
 
 @Service
@@ -92,15 +91,12 @@ public class UserService {
         }
     }
 
-    public String deleteUserPermanently(int uid) {
-        String msg = "";
-        Optional<UserEntity> optionalUser = userRepository.findById(uid);
-        if (optionalUser.isPresent()) {
+    public void deleteUserPermanently(int uid) {
+        try{
             userRepository.deleteById(uid);
-            msg = "User " + uid + " deleted";
-        } else {
-            msg = "User " + uid + " does not exist";
+
+        }catch(NoSuchElementException ex){
+            throw new NoSuchElementException("User " + uid + " does not exist");
         }
-        return msg;
     }
 }
