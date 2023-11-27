@@ -23,8 +23,8 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
 
   return (
     <div className="bg-bgc1 relative">
-      <button onClick={handleLogoClick} className="absolute top-5 left-4 md:top-10 md:left-8 lg:top-20 lg:left-40">
-        <img src="litimg/LitLogoHome.svg" alt="LitLogo3" className="w-30 h-15" />
+      <button onClick={handleLogoClick} className="absolute top-5 left-5 md:top-10 md:left-10 lg:top-15 lg:left-48">
+        <img src="litimg/litlogo3.png" alt="LitLogo3" className="w-30 h-15" />
       </button>
       <img src="litimg/signupbg.png" alt="Signup Background" className="w-full h-full object-cover"/>
 
