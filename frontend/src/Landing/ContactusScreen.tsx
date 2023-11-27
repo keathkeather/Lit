@@ -3,33 +3,6 @@ import { useNavigate} from 'react-router-dom';
 
 interface ContactusScreenProps {}
 
-<<<<<<< HEAD
-const ContactusScreen: React.FC<ContactusScreenProps> = () => {
-    const navigate = useNavigate();
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        message: '',
-      });
-
-    const handleLogoClick = () => {
-        navigate('/landing');
-      };
-    
-      const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setFormData({
-          ...formData,
-          [name]: value,
-        });
-      };
-    
-      const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        // to be followed lang API huhuhuhu
-        console.log(formData);
-=======
->>>>>>> dd1aaffcb1e69ed03516b0b437a251c4e2f85d0a
 
 const ContactusScreen: React.FC<ContactusScreenProps> = () => {
   const [formData, setFormData] = useState({
@@ -90,21 +63,11 @@ const ContactusScreen: React.FC<ContactusScreenProps> = () => {
         `}
       </style>
 
-<<<<<<< HEAD
-        <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-5 md:p-10 relative z-20">
-            {/* Info Column */}
-            <div className="p-4 md:ml-20">
-                <button onClick={handleLogoClick}>
-                    <img src="litimg/LitLogoHome.svg" alt="LitLogo3" className="w-21 h-14"/>
-                </button>
-                <div className="ml-2">
-=======
       <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-5 md:p-10 relative z-20">
         {/* Info Column */}
         <div className="p-4 md:ml-20">
-          <Header />
+       
           <div className="ml-2 mt-20">
->>>>>>> dd1aaffcb1e69ed03516b0b437a251c4e2f85d0a
                 <h2 className="text-4xl md:text-6xl font-black text-white mb-4 mt-3 pt-5 font-inter ">Let's Talk</h2>
                     <p className="text-white">To request a quote or want to meet up for coffee, contact us <br/>
                     directly or fill out the form and we will get back to you promptly.</p>
