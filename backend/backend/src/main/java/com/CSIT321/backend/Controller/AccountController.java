@@ -63,5 +63,13 @@ public class AccountController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    
+    @PutMapping("/unsubscribe/{accountId}")
+    public ResponseEntity<String>unsubscribe(@PathVariable int accountId){
+        try {
+            accountService.cancelSubscription(accountId);
+            return new ResponseEntity<>("Subscription Cancelled", HttpStatus.OK);
+        } catch (IllegalStateException e) {
+            return new ResponseEntity<>("account not found", HttpStatus.BAD_REQUEST);
+        }
+    }
 }

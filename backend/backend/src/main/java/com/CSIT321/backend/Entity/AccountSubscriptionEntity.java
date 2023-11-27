@@ -66,6 +66,13 @@ public class AccountSubscriptionEntity {
     public boolean isSubscribed(){
         return this.isSubscribed;
     }
+    public void subscribe(){
+        this.isSubscribed = true;
+    }
+    public void unsubscribe(){
+        this.isSubscribed = false;
+    }
+    
     public void setIsSubscribed(){
         this.isSubscribed = true;
     }
