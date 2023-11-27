@@ -19,14 +19,18 @@ public class QuizEntity {
     @Column(name = "perfectScore")
     private int perfectScore;
 
+    @ManyToOne
+    private BookEntity book;
+
     public QuizEntity() {
         super();
     }
 
-    public QuizEntity(String quizName, List<QuestionEntity> questions, int perfectScore) {
+    public QuizEntity(String quizName, List<QuestionEntity> questions, int perfectScore, BookEntity book) {
         this.quizName = quizName;
         this.questions = questions;
         this.perfectScore = perfectScore;
+        this.book = book;
     }
 
     public int getQuizId() {
@@ -58,5 +62,11 @@ public class QuizEntity {
         for (QuestionEntity question : questions) {
             question.setQuiz(this);
         }
+    }
+    public BookEntity getBook(){
+        return this.book;
+    }
+    public void setBook(BookEntity book) {
+        this.book = book;
     }
 }

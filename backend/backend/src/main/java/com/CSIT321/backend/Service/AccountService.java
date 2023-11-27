@@ -52,5 +52,22 @@ public class AccountService {
         AccountSubscriptionEntity accountSubscription = new AccountSubscriptionEntity(account , subscription);
         accountSubscriptionRepository.save(accountSubscription);
     }
-    
+    public void cancelSubscription(int accountId) {
+        AccountEntity account = getAccountById(accountId);
+
+        if (account != null) {
+            List<AccountSubscriptionEntity> subscriptions = accountSubscriptionRepository.findByAccount(account);
+
+            if (!subscriptions.isEmpty()) {
+                for (AccountSubscriptionEntity subscription : subscriptions) {
+                    subscription.setUnsubscribed();
+                    accountSubscriptionRepository.save(subscription);
+                }
+            } else {
+                throw new IllegalStateException("No subscriptions found for the account");
+            }
+        } else {
+            throw new IllegalStateException("Account not found");
+        }
+    }
 }
