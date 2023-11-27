@@ -1,19 +1,14 @@
 import React, { useState} from 'react';
-import { useNavigate} from 'react-router-dom';
+import Header from './Header'
 
 interface ContactusScreenProps {}
 
 const ContactusScreen: React.FC<ContactusScreenProps> = () => {
-    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         message: '',
       });
-
-    const handleLogoClick = () => {
-        navigate('/landing');
-      };
     
       const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -48,10 +43,8 @@ const ContactusScreen: React.FC<ContactusScreenProps> = () => {
         <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-5 md:p-10 relative z-20">
             {/* Info Column */}
             <div className="p-4 md:ml-20">
-                <button onClick={handleLogoClick}>
-                    <img src="litimg/LitLogoHome.svg" alt="LitLogo3" className="w-21 h-14"/>
-                </button>
-                <div className="ml-2">
+                <Header/>
+                <div className="ml-2 mt-20">
                 <h2 className="text-4xl md:text-6xl font-black text-white mb-4 mt-3 pt-5 font-inter ">Let's Talk</h2>
                     <p className="text-white">To request a quote or want to meet up for coffee, contact us <br/>
                     directly or fill out the form and we will get back to you promptly.</p>
@@ -79,7 +72,7 @@ const ContactusScreen: React.FC<ContactusScreenProps> = () => {
             </div>
 
             {/* Form Column */}
-            <div className="pr-4 md:pt-20 md:p-20" >
+            <div className="pr-10md:pt-20 md:p-20 mt-10" >
                 <form onSubmit={handleSubmit}>
                 <div className="mb-4">
                     <label htmlFor="name" className="block font-bold mb-2">
