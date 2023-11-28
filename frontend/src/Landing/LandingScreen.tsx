@@ -21,15 +21,14 @@ const LandingScreen: React.FC<LandingScreenProps> = () => {
                 <div className="bg-bgc1 p-10 flex items-center justify-center w-full lg:h-screen md:h-100 ">
                     <img src="litimg/litsy.png" alt="Litsy" className="w-30 mb-8 mt-15" />
                     <div className="flex flex-col items-center ml-8">
-                    <div className="lg:text-5xl md:text-3xl sm:text-xl font-semibold text-white lg:mb-6 md:mb-4 sm:mb-4 text-center">
-                        Your launchpad into the world of
-                    </div>
-                    <div className="lg:text-5xl md:text-3xl sm:text-xl font-semibold text-white lg:mb-6 md:mb-4 sm:mb-4 text-center">
-                        literature
-                    </div>
-                        <div className="lg:text-2xl md:text-xl sm:text-md font-light text-white lg:mb-8 md:mb-4 sm:mb-4">Lits learn Literature</div>
-                        <button onClick={handleGetstarted}>
-                            <img src="litimg/getstarted.svg" alt="Lit Logo 2" className="w-20 lg:w-80 mr-2 lg:mr-3" />
+                        <div className="lg:text-5xl md:text-3xl sm:text-xl font-semibold text-white lg:mb-12 md:mb-8 sm:mb-4">Your launchpad into the world of literature</div>
+                        <div className="lg:text-2xl md:text-xl sm:text-md font-light text-white lg:mb-12 md:mb-8 sm:mb-4">Lits learn Literature</div>
+                        <button
+                            type="button"
+                            onClick={handleGetstarted}
+                            className="lg:px-12 lg:py-3 md:px-8 md:py-2 sm:px-6 sm:py-1 rounded bg-bgc2 text-white font-semibold cursor-pointer lg:text-3xl md:text-2xl sm:text-xl"
+                        >
+                            Get Started
                         </button>
                     </div>
                 </div>
@@ -96,8 +95,12 @@ const LandingScreen: React.FC<LandingScreenProps> = () => {
                             style={{ width: '650px' }}>
                             Have a wondrous adventure to the World of Filipino Literature with Lit
                         </div>
-                        <button onClick={handleGetstarted}>
-                            <img src="litimg/getstarted.svg" alt="Lit Logo 2" className="w-20 lg:w-80 mr-2 lg:mr-3" />
+                        <button
+                            type="button"
+                            onClick={handleGetstarted}
+                            className="px-4 md:px-8 lg:px-10 py-1 md:py-2 lg:py-3 rounded bg-bgc2 text-white font-semibold cursor-pointer text-sm md:text-xl lg:text-3xl"
+                        >
+                            Get Started
                         </button>
                     </div>
                 </div>
