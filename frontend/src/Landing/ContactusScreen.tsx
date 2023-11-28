@@ -1,5 +1,5 @@
 import React, { useState} from 'react';
-import { useNavigate} from 'react-router-dom';
+import Header from './Header'
 
 interface ContactusScreenProps {}
 
@@ -10,9 +10,7 @@ const ContactusScreen: React.FC<ContactusScreenProps> = () => {
     email: '',
     message: '',
   });
-
-  const [status, setStatus] = useState('Submit');
-
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData({
@@ -23,7 +21,6 @@ const ContactusScreen: React.FC<ContactusScreenProps> = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setStatus('Sending...');
 
     const { name, email, message } = formData;
 
@@ -41,7 +38,6 @@ const ContactusScreen: React.FC<ContactusScreenProps> = () => {
       body: JSON.stringify(details),
     });
 
-    setStatus('Submit');
     let result = await response.json();
     alert(result.status);
 
@@ -65,7 +61,7 @@ const ContactusScreen: React.FC<ContactusScreenProps> = () => {
       <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-5 md:p-10 relative z-20">
         {/* Info Column */}
         <div className="p-4 md:ml-20">
-       
+          <Header/>
           <div className="ml-2 mt-20">
                 <h2 className="text-4xl md:text-6xl font-black text-white mb-4 mt-3 pt-5 font-inter ">Let's Talk</h2>
                     <p className="text-white">To request a quote or want to meet up for coffee, contact us <br/>
@@ -85,7 +81,7 @@ const ContactusScreen: React.FC<ContactusScreenProps> = () => {
                     {/* Email */}
                     <p className="text-white pt-5 flex items-center">
                         <img src="litimg/Email.svg" alt="Mail Icon" className="w-6 h-6 inline-block mr-2" />
-                        <span>lit.co@gmail.com</span>
+                        <span>lit.filico@gmail.com</span>
                     </p>
                     <svg width="200" height="100" className="pt-10">
                         <line x1="0" y1="0" x2="1500" y2="0" style={{ stroke: 'white', strokeWidth: 2 }} />
@@ -94,7 +90,7 @@ const ContactusScreen: React.FC<ContactusScreenProps> = () => {
             </div>
 
             {/* Form Column */}
-            <div className="pr-4 md:pt-20 md:p-20" >
+            <div className="pr-4 md:pt-20 md:p-20 mt-10" >
                 <form onSubmit={handleSubmit}>
                 <div className="mb-4">
                     <label htmlFor="name" className="block font-bold mb-2">
