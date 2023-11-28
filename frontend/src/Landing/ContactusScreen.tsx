@@ -1,5 +1,5 @@
 import React, { useState} from 'react';
-import Header from './Header'
+import { useNavigate} from 'react-router-dom';
 
 interface ContactusScreenProps {}
 
@@ -45,7 +45,6 @@ const ContactusScreen: React.FC<ContactusScreenProps> = () => {
     let result = await response.json();
     alert(result.status);
 
-    // Reset form fields after submission
     setFormData({
       name: '',
       email: '',
@@ -66,7 +65,7 @@ const ContactusScreen: React.FC<ContactusScreenProps> = () => {
       <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-5 md:p-10 relative z-20">
         {/* Info Column */}
         <div className="p-4 md:ml-20">
-          <Header />
+       
           <div className="ml-2 mt-20">
                 <h2 className="text-4xl md:text-6xl font-black text-white mb-4 mt-3 pt-5 font-inter ">Let's Talk</h2>
                     <p className="text-white">To request a quote or want to meet up for coffee, contact us <br/>
@@ -95,7 +94,7 @@ const ContactusScreen: React.FC<ContactusScreenProps> = () => {
             </div>
 
             {/* Form Column */}
-            <div className="pr-10md:pt-20 md:p-20 mt-10" >
+            <div className="pr-4 md:pt-20 md:p-20" >
                 <form onSubmit={handleSubmit}>
                 <div className="mb-4">
                     <label htmlFor="name" className="block font-bold mb-2">
