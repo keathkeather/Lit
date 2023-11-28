@@ -83,6 +83,12 @@ const ContactusScreen: React.FC<ContactusScreenProps> = () => {
                         <img src="litimg/Email.svg" alt="Mail Icon" className="w-6 h-6 inline-block mr-2" />
                         <span>lit.filico@gmail.com</span>
                     </p>
+
+                    {/* Test */}
+                    <p className="text-white pt-5 flex items-center">
+                        <img src="litimg/Email.svg" alt="Mail Icon" className="w-6 h-6 inline-block mr-2" />
+                        <span>Test push</span>
+                    </p>
                     <svg width="200" height="100" className="pt-10">
                         <line x1="0" y1="0" x2="1500" y2="0" style={{ stroke: 'white', strokeWidth: 2 }} />
                     </svg>
