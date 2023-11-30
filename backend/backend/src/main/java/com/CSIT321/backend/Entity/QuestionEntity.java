@@ -1,5 +1,9 @@
 package com.CSIT321.backend.Entity;
 
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -8,6 +12,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "question")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "questionId")
 public class QuestionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +33,7 @@ public class QuestionEntity {
     private QuizEntity quiz;
 
     // other fields and methods
+
     public int getQuestionId() {
         return this.questionId;
     }
@@ -71,4 +77,5 @@ public class QuestionEntity {
             e.printStackTrace();
         }
     }
+    
 }

@@ -1,6 +1,8 @@
 package com.CSIT321.backend.Entity;
 
 import javax.persistence.*;
+
+
 import java.util.List;
 
 @Entity
@@ -18,7 +20,8 @@ public class QuizEntity {
 
     @Column(name = "perfectScore")
     private int perfectScore;
-
+    @Transient
+    private int bookId; 
     @ManyToOne
     private BookEntity book;
 
@@ -32,6 +35,7 @@ public class QuizEntity {
         this.perfectScore = perfectScore;
         this.book = book;
     }
+
 
     public int getQuizId() {
         return this.quizId;
@@ -68,5 +72,11 @@ public class QuizEntity {
     }
     public void setBook(BookEntity book) {
         this.book = book;
+    }
+    public void setBookId(int bookId) {
+        this.bookId = bookId;
+    }
+    public int getBookId(){
+        return this.bookId;
     }
 }
