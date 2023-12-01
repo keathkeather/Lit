@@ -46,6 +46,9 @@ public class UserService {
     public List<UserEntity> getAllUserEntities() {
         return userRepository.findAll();
     }
+    public UserEntity getUserById(int uid){
+        return userRepository.findById(uid).orElseThrow(() -> new NoSuchElementException("User " + uid + " does not exist"));
+    }
 
     public UserEntity updateUserRoleToAuthor(int uid){
         try{

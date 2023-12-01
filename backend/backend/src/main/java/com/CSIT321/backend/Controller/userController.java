@@ -31,8 +31,24 @@ public class UserController{
     }
     @CrossOrigin
     @GetMapping("/getAllUsers")
-    public List<UserEntity> getAllUsers(){
-        return userService.getAllUserEntities();
+    public ResponseEntity<List<UserEntity>> getAllUsers(){
+        try{
+            List<UserEntity> users = userService.getAllUserEntities();
+            return new ResponseEntity<>(users,HttpStatus.OK);
+        }catch(Exception e){
+            throw e;
+        }
+    }
+    
+    @CrossOrigin
+    @GetMapping("/getUser/{uid}")
+    public ResponseEntity<UserEntity> getUserById(@PathVariable int uid){
+        try{
+            UserEntity user = userService.getUserById(uid);
+            return new ResponseEntity<>(user,HttpStatus.OK);
+        }catch(Exception e){
+            throw e;
+        }
     }
     @CrossOrigin
     @PutMapping("/updateUser/{user_id}")
@@ -54,18 +70,33 @@ public class UserController{
     }
     @CrossOrigin
     @PutMapping("/updateUserRoleToAuthor/{user_id}")
-    public UserEntity updateUserRoleToAuthor(@PathVariable int user_id){
-        return userService.updateUserRoleToAuthor(user_id);
+    public ResponseEntity<UserEntity> updateUserRoleToAuthor(@PathVariable int user_id){
+        try{
+            UserEntity updatedUser = userService.updateUserRoleToAuthor(user_id);
+            return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+        }catch(Exception e){
+            throw e;
+        }
     }
     @CrossOrigin
     @PutMapping("/deleteUser/{user_id}")
-    public UserEntity deleteUser(@PathVariable int user_id){
-        return userService.deleteUser(user_id);
+    public ResponseEntity<UserEntity> deleteUser(@PathVariable int user_id){
+        try{
+            UserEntity deletedUser =  userService.deleteUser(user_id);
+            return new ResponseEntity<>(deletedUser, HttpStatus.OK);
+        }catch(Exception e){
+            throw e;
+        }
     }
     @CrossOrigin
     @PutMapping("/restoreUser/{user_id}")
-    public UserEntity restoreUser(@PathVariable int user_id){
-        return userService.restoreUser(user_id);
+    public ResponseEntity<UserEntity> restoreUser(@PathVariable int user_id){
+        try{
+            UserEntity restoreUser = userService.restoreUser(user_id);
+            return new ResponseEntity<>(restoreUser, HttpStatus.OK);
+        }catch(Exception e){
+            throw e;
+        }
     }
     @CrossOrigin
     @DeleteMapping("/deleteUserPermanently/{user_id}")
