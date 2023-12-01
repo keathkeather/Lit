@@ -1,4 +1,4 @@
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 interface CheckpointScreenProps {}
 
@@ -6,7 +6,7 @@ const CheckpointScreen: React.FC<CheckpointScreenProps> = () => {
   const navigate = useNavigate();
 
   const handleStartClick = () => {
-    navigate('/userhome');
+    navigate('/login');
   };
 
   return (
@@ -27,14 +27,8 @@ const CheckpointScreen: React.FC<CheckpointScreenProps> = () => {
                 onClick={handleStartClick}
                 className="px-10 py-3 rounded bg-bgc2 text-white font-semibold cursor-pointer text-xl"
             >
-                Start Reading
+                Back to Login
             </button>
-            <div className="block text-white text-xl font-light mt-5">
-              Back to&nbsp;
-                <Link to="/login" className="text-xl font-normal text-white">
-                  Login
-                </Link>
-            </div>
         </div>
     </div>
   );
