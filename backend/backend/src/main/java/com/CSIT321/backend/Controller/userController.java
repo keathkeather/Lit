@@ -4,6 +4,7 @@ import com.CSIT321.backend.Entity.DTO.UserDTO;
 import com.CSIT321.backend.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,15 +23,18 @@ public class UserController{
     @Autowired
     UserService userService;
     
+    @CrossOrigin
     @PostMapping("/createUser")
     public ResponseEntity<UserEntity> createUser(@RequestBody UserDTO userDTO) {
         UserEntity createdUser = userService.insertUser(userDTO);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
+    @CrossOrigin
     @GetMapping("/getAllUsers")
     public List<UserEntity> getAllUsers(){
         return userService.getAllUserEntities();
     }
+    @CrossOrigin
     @PutMapping("/updateUser/{user_id}")
     public ResponseEntity<Object> updateUser(@PathVariable int user_id,@RequestBody UserDTO newUserDTO){
         UserEntity updateUser  = userService.updateUser(user_id, newUserDTO);
@@ -48,19 +52,22 @@ public class UserController{
 
          
     }
+    @CrossOrigin
     @PutMapping("/updateUserRoleToAuthor/{user_id}")
     public UserEntity updateUserRoleToAuthor(@PathVariable int user_id){
         return userService.updateUserRoleToAuthor(user_id);
     }
+    @CrossOrigin
     @PutMapping("/deleteUser/{user_id}")
     public UserEntity deleteUser(@PathVariable int user_id){
         return userService.deleteUser(user_id);
     }
+    @CrossOrigin
     @PutMapping("/restoreUser/{user_id}")
     public UserEntity restoreUser(@PathVariable int user_id){
         return userService.restoreUser(user_id);
     }
-
+    @CrossOrigin
     @DeleteMapping("/deleteUserPermanently/{user_id}")
     public ResponseEntity<String> deleteUserPermanently(@PathVariable int user_id){
         try{

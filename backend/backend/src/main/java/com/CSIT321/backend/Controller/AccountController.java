@@ -17,19 +17,20 @@ public class AccountController {
 
     @Autowired
     private AccountService accountService;
-
+    
+    @CrossOrigin
     @PostMapping("/create")
     public ResponseEntity<AccountEntity> createAccount(@RequestBody AccountEntity question) {
         AccountEntity createdAccount = accountService.createAccount(question);
         return new ResponseEntity<>(createdAccount, HttpStatus.CREATED);
     }
-
+    @CrossOrigin
     @GetMapping("/all")
     public ResponseEntity<List<AccountEntity>> getAllAccounts() {
         List<AccountEntity> accounts = accountService.getAllAccounts();
         return new ResponseEntity<>(accounts, HttpStatus.OK);
     }
-
+    @CrossOrigin
     @GetMapping("/{accountId}")
     public ResponseEntity<AccountEntity> getAccountById(@PathVariable int accountId) {
         AccountEntity account = accountService.getAccountById(accountId);
@@ -39,6 +40,7 @@ public class AccountController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    @CrossOrigin
     @PostMapping("/purchaseSub/{accountId}")
     public ResponseEntity<String> purchaseSubscription(
         @PathVariable int accountId, @RequestParam int subscriptionId) {
@@ -52,7 +54,7 @@ public class AccountController {
         }
 
     }
-
+    @CrossOrigin
     @PutMapping("/update/{accountId}")
     public ResponseEntity<AccountEntity> updateAccount( @PathVariable int accountId, @RequestBody AccountEntity updatedAccount)
      {
@@ -63,6 +65,7 @@ public class AccountController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    @CrossOrigin
     @PutMapping("/unsubscribe/{accountId}")
     public ResponseEntity<String>unsubscribe(@PathVariable int accountId){
         try {
