@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import FetchUser from './FetchUser';
 
 interface HeaderProps {}
@@ -13,15 +13,28 @@ const Header: React.FC<HeaderProps> = () => {
   const navigate = useNavigate();
   const fetchUser = FetchUser();
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const location = useLocation();
+  const accountId: number | undefined = location.state?.accountId;
 
   useEffect(() => {
     const getUserData = async () => {
-      const userData = await fetchUser(2);
-      setUser(userData);
+      try {
+        if (accountId !== undefined) {
+          const userData = await fetchUser(accountId);
+          setUser(userData);
+        } else {
+          console.error('accountId is undefined');
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     getUserData();
-  }, [fetchUser]);
+  }, [fetchUser, accountId]);
 
   const handleLogoClick = () => {
     navigate('/');
@@ -81,8 +94,10 @@ const Header: React.FC<HeaderProps> = () => {
           </ul>
       </div>
       <div className="flex items-center">
-        {user && (
-        <div className="text-white text-lg font-bold mr-2">{user.username}</div>
+        {loading ? (
+          <div className="text-white text-lg font-bold mr-2">Loading...</div>
+        ) : (
+          user && <div className="text-white text-lg font-bold mr-2">{user.username}</div>
         )}
         <button onClick={handleUserClick}>
           <img src="litimg/userlogo.svg" alt="User Logo" className="w-10 mr-32" />

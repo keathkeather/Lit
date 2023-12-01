@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Header from './Header'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation  } from 'react-router-dom';
 import FetchUser from './FetchUser';
 
 interface User {
@@ -13,15 +13,21 @@ const UserHomeScreen: React.FC = () => {
   const navigate = useNavigate();
   const fetchUser = FetchUser();
   const [user, setUser] = useState<User | null>(null);
+  const location = useLocation();
+  const accountId: number | undefined = location.state?.accountId;
 
   useEffect(() => {
     const getUserData = async () => {
-      const userData = await fetchUser(2);
-      setUser(userData);
+      if (accountId !== undefined) {
+        const userData = await fetchUser(accountId);
+        setUser(userData);
+      } else {
+        console.error('accountId is undefined');
+      }
     };
 
     getUserData();
-  }, [fetchUser]);
+  }, [fetchUser, accountId]);
 
   const handlePlay = () => {
     navigate('/book');
