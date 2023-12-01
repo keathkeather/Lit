@@ -1,16 +1,50 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
+
+interface AccountEntity {
+  email: string;
+}
+// Define your UserEntity interface
+interface UserEntity {
+  username: string;
+  password: string;
+  account: AccountEntity;
+}
 
 interface LoginScreenProps {}
 
 const LoginScreen: React.FC<LoginScreenProps> = () => {
-  const [user, setUser] = useState('');
+  const [usernameOrEmail, setUsernameOrEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    console.log('Login button clicked');
+  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    try {
+      // Fetch users from your API
+      const response = await axios.get<UserEntity[]>('http://localhost:8080/user/getAllUsers');
+      const users = response.data;
+
+      // Check if the inputted username/email and password match any user's credentials
+      const isUserAuthenticated = users.some((userData: UserEntity) => {
+        return (
+          (userData.username === usernameOrEmail || userData.account.email === usernameOrEmail) &&
+          userData.password === password
+        );
+      });
+
+      if (isUserAuthenticated) {
+        console.log('Login Successful!');
+        navigate('/userhome');
+      } else {
+        alert('Login Failed. Please check your credentials.');
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      alert('An error occurred during login.');
+    }
   };
 
   const handleLogoClick = () => {
@@ -25,7 +59,7 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
       <img src="litimg/loginbg.png" alt="Login Background" className="w-full h-full object-cover"/>
 
       <div className="absolute top-0 mt-80 left-1/4 mr-40 transform translate-x-1/2 -translate-y-1/2 bg-white p-10 rounded-md max-w-2xl w-full">
-        <form>
+        <form onSubmit={handleLogin}>
           <div className="mb-4">
             <label htmlFor="user" className="block text-gray text-xl font-bold mb-4 mt-4">
               Email or Username
@@ -34,8 +68,9 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
               type="text"
               id="username"
               className="w-full border rounded-md py-2 px-2 mb-4 text-lg"
-              onChange={(e) => setUser(e.target.value)}
-              value={user}
+              onChange={(e) => setUsernameOrEmail(e.target.value)}
+              value={usernameOrEmail}
+              required
             />
           </div>
           <div className="mb-4">
@@ -48,13 +83,13 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
               className="w-full border rounded-md py-2 px-2 mb-4 text-lg"
               onChange={(e) => setPassword(e.target.value)}
               value={password}
+              required
             />
           </div>
           <div className="flex flex-col items-center">
             <button
-              type="button"
+              type="submit"
               className="bg-dblue text-white text-xl font-semibold py-4 px-40 rounded-md hover:bg-dblue mb-4"
-              onClick={handleLogin}
             >
               Log in
             </button>
