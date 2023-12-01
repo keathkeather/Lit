@@ -1,15 +1,15 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-interface HomeScreenProps {}
+interface GameScreenProps {}
 
-const HomeScreen: React.FC<HomeScreenProps> = () => {
+const GameScreen: React.FC<GameScreenProps> = () => {
   const localFilePath = process.env.PUBLIC_URL + '/Monogatari-v2.0.2/index.html';
 
   const navigate = useNavigate();
 
   const handleLogoClick = () => {
-    navigate('/landing');
+    navigate('/userhome');
   };
 
   return (
@@ -32,4 +32,4 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
   );
 };
 
-export default HomeScreen;
+export default GameScreen;

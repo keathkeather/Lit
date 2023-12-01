@@ -28,7 +28,7 @@ const Header: React.FC<HeaderProps> = () => {
             <li>
               <Link
                 to="/landing"
-                className="text-base lg:text-lg font-bold text-gray mr-3 md:mr-4 hover:text-gray-800"
+                className="text-base lg:text-lg font-bold text-dblue mr-3 md:mr-4 hover:text-bgc2"
               >
                 Home
               </Link>
@@ -36,7 +36,7 @@ const Header: React.FC<HeaderProps> = () => {
             <li>
               <Link
                 to="/features"
-                className="text-base lg:text-lg font-bold text-gray mr-3 md:mr-4 hover:text-gray-800"
+                className="text-base lg:text-lg font-bold text-dblue mr-3 md:mr-4 hover:text-bgc2"
               >
                 Features
               </Link>
@@ -44,7 +44,7 @@ const Header: React.FC<HeaderProps> = () => {
             <li>
               <Link
                 to="/pricing"
-                className="text-base lg:text-lg font-bold text-gray mr-3 md:mr-4 hover:text-gray-800"
+                className="text-base lg:text-lg font-bold text-dblue mr-3 md:mr-4 hover:text-bgc2"
               >
                 Pricing
               </Link>
@@ -52,7 +52,7 @@ const Header: React.FC<HeaderProps> = () => {
             <li>
               <Link
                 to="/aboutus"
-                className="text-base lg:text-lg font-bold text-gray mr-3 md:mr-4 hover:text-gray-800"
+                className="text-base lg:text-lg font-bold text-dblue mr-3 md:mr-4 hover:text-bgc2"
               >
                 About Us
               </Link>
@@ -60,7 +60,7 @@ const Header: React.FC<HeaderProps> = () => {
             <li>
               <Link
                 to="/contactus"
-                className="text-base lg:text-lg font-bold text-gray hover:text-gray-800"
+                className="text-base lg:text-lg font-bold text-dblue hover:text-bgc2"
               >
                 Contact Us
               </Link>
@@ -72,7 +72,7 @@ const Header: React.FC<HeaderProps> = () => {
           <img src="litimg/loginbtn.svg" alt="loginbtn" className="w-12 lg:w-40 mr-2 lg:mr-3" />
         </button>
         <button onClick={handleSignup}>
-          <img src="litimg/signup_forfreebtn.svg" alt="signupbtn" className="w-12 lg:w-40 mr-2 lg:mr-24" />
+          <img src="litimg/signup_forfreebtn.svg" alt="signupbtn" className="w-12 lg:w-40 mr-2 lg:mr-20" />
         </button>
       </div>
     </header>

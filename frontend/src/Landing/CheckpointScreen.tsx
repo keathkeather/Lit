@@ -6,7 +6,7 @@ const CheckpointScreen: React.FC<CheckpointScreenProps> = () => {
   const navigate = useNavigate();
 
   const handleStartClick = () => {
-    navigate('/home');
+    navigate('/userhome');
   };
 
   return (

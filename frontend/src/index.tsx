@@ -11,7 +11,8 @@ import PricingScreen from './Landing/PricingScreen';
 import CheckpointScreen from './Landing/CheckpointScreen';
 import AboutusScreen from './Landing/AboutusScreen';
 import ContactusScreen from './Landing/ContactusScreen';
-import HomeScreen from './Home/HomeScreen';
+import UserHomeScreen from './Home/UserHomeScreen';
+import GameScreen from './Home/GameScreen';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
@@ -27,7 +28,8 @@ ReactDOM.render(
         <Route path="/checkpoint" element={<CheckpointScreen />} />
         <Route path="/aboutus" element={<AboutusScreen />} />
         <Route path="/contactus" element={<ContactusScreen />} />
-        <Route path="/home" element={<HomeScreen />} />
+        <Route path="/userhome" element={<UserHomeScreen />} />
+        <Route path="/game" element={<GameScreen />} />
       </Routes>
     </Router>
   </React.StrictMode>,
