@@ -24,7 +24,7 @@ const UserHomeScreen: React.FC = () => {
   }, [fetchUser]);
 
   const handlePlay = () => {
-    navigate('/game');
+    navigate('/book');
   };
 
   const handlePlus1 = () => {

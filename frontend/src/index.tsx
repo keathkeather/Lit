@@ -13,6 +13,7 @@ import AboutusScreen from './Landing/AboutusScreen';
 import ContactusScreen from './Landing/ContactusScreen';
 import UserHomeScreen from './Home/UserHomeScreen';
 import GameScreen from './Home/GameScreen';
+import BookScreen from './Home/BookScreen';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
@@ -30,6 +31,7 @@ ReactDOM.render(
         <Route path="/contactus" element={<ContactusScreen />} />
         <Route path="/userhome" element={<UserHomeScreen />} />
         <Route path="/game" element={<GameScreen />} />
+        <Route path="/book" element={<BookScreen />} />
       </Routes>
     </Router>
   </React.StrictMode>,
