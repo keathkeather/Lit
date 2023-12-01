@@ -9,6 +9,9 @@ import com.CSIT321.backend.Repository.AccountSubscriptionRepository;
 import com.CSIT321.backend.Repository.SubscriptionRepository;
 
 import java.util.List;
+
+import javax.persistence.NoResultException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
@@ -35,12 +38,36 @@ public class AccountService {
         AccountEntity accountEntity = accountRepository.findById(accountId).orElse(null);
         if (accountEntity!= null) {
             accountEntity.setUser(newAccount.getUser());
+            accountEntity.setEmail(newAccount.getEmail());
+            accountEntity.setFirstName(newAccount.getFirstName());
+            accountEntity.setLastName(newAccount.getLastName());
+            accountEntity.setGender(newAccount.getGender());
+
             return accountRepository.save(accountEntity);
         }
         return null;
     }
-   
-    public void deleteAccount(int accountId) {
+    public AccountEntity deleteAccount(int accountId){
+        try{
+            AccountEntity deletedAccount  = accountRepository.findById(accountId).orElseThrow(() -> new NoResultException("Account " + accountId + " does not exist"));
+            deletedAccount.delete();
+            return accountRepository.save(deletedAccount);
+        }catch (Exception e){
+            throw e;
+        }
+    }
+    public AccountEntity recoverAccount(int accountId){
+        try{
+            AccountEntity recoveredAccount  = accountRepository.findById(accountId).orElseThrow(() -> new NoResultException("Account " + accountId + " does not exist"));
+            recoveredAccount.recover();
+            return accountRepository.save(recoveredAccount);
+        }catch (Exception e){
+            throw e;
+        }
+    }
+    
+
+    public void deleteAccountPermanently(int accountId) {
         accountRepository.deleteById(accountId);
     }
 

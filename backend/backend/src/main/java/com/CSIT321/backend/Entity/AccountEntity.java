@@ -23,14 +23,24 @@ public class AccountEntity {
     @Column(name = "email")
     private String email;
     
+    private String firstName;
+    private String lastName;
+    private String gender;
+    private boolean isDeleted;
+    
     public AccountEntity(){
         super();
+        this.isDeleted = false;
     }
-    public AccountEntity(UserEntity user, String email,RolesEntity role){
+    public AccountEntity(UserEntity user, String email,RolesEntity role,String firstName , String lastName , String gender){
         this.user = user;
         this.email = email;
         this.role = role;
-      
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.isDeleted = false;
+
     }
     public RolesEntity getRole(){
         return this.role;
@@ -54,7 +64,32 @@ public class AccountEntity {
     public void setUser(UserEntity user){
         this.user = user;
     }
-
-
+    public String  getFirstName(){
+        return this.firstName;
+    }
+    public String getLastName(){
+        return this.lastName;
+    }
+    public String getGender(){
+        return this.gender;
+    }
+    public void setFirstName(String firstName){
+        this.firstName = firstName;
+    }
+    public void setLastName(String lastName){
+        this.lastName = lastName;
+    }
+    public void setGender(String gender){
+        this.gender = gender;
+    }
+    public boolean getIsDeleted(){
+        return this.isDeleted;
+    }
+    public void delete(){
+        this.isDeleted = true;
+    }
+    public void recover(){
+        this.isDeleted = false;
+    }
 
 }
