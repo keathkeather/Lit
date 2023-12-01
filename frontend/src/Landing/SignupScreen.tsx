@@ -4,7 +4,10 @@ import { useNavigate, Link } from 'react-router-dom';
 interface SignupScreenProps {}
 
 const SignupScreen: React.FC<SignupScreenProps> = () => {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [username, setUsername] = useState('');
+  const [gender, setGender] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -28,9 +31,34 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
       </button>
       <img src="litimg/signupbg.png" alt="Signup Background" className="w-full h-full object-cover"/>
 
-      <div className="absolute top-52 mt-80 left-1/4 mr-40 transform translate-x-1/2 -translate-y-1/2 bg-white p-10 rounded-md max-w-2xl w-full">
-        <h2 className="text-5xl font-bold mb-8 text-bgc1 mt-2 flex flex-col items-center">Create Account</h2>
+      <div className="absolute top-64 mt-80 left-1/4 mr-40 transform translate-x-1/2 -translate-y-1/2 bg-white p-10 rounded-md max-w-2xl w-full">
         <form>
+          <div className="mb-4 flex">
+            <div className="mr-2 w-1/2">
+              <label htmlFor="firstName" className="block text-gray text-xl font-bold mb-2">
+                First Name
+              </label>
+              <input
+                type="text"
+                id="firstName"
+                className="w-full border rounded-md py-2 px-2 mb-2 text-lg"
+                onChange={(e) => setFirstName(e.target.value)}
+                value={firstName}
+              />
+            </div>
+            <div className="ml-2 w-1/2">
+              <label htmlFor="lastName" className="block text-gray text-xl font-bold mb-2">
+                Last Name
+              </label>
+              <input
+                type="text"
+                id="lastName"
+                className="w-full border rounded-md py-2 px-2 mb-2 text-lg"
+                onChange={(e) => setLastName(e.target.value)}
+                value={lastName}
+              />
+            </div>
+          </div>
           <div className="mb-4">
             <label htmlFor="username" className="block text-gray text-xl font-bold mb-4">
               Username
@@ -42,6 +70,55 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
               onChange={(e) => setUsername(e.target.value)}
               value={username}
             />
+          </div>
+          <div className="mb-4 flex">
+            <div className="mr-4">
+              <label className="block text-gray text-xl font-bold mb-2">Gender</label>
+              <div className="flex items-row mt-4 mb-4">
+                <div className="ml-8 mr-4 border border-gray rounded dark:border-gray py-2 px-12">
+                  <input
+                    type="radio"
+                    id="male"
+                    name="gender"
+                    value="male"
+                    checked={gender === 'male'}
+                    onChange={() => setGender('male')}
+                    className="mr-2"
+                  />
+                  <label htmlFor="male" className="text-gray text-xl">
+                    Male
+                  </label>
+                </div>
+                <div className="mr-4 border border-gray rounded dark:border-gray py-2 px-10">
+                  <input
+                    type="radio"
+                    id="female"
+                    name="gender"
+                    value="female"
+                    checked={gender === 'female'}
+                    onChange={() => setGender('female')}
+                    className="mr-2"
+                  />
+                  <label htmlFor="female" className="text-gray text-xl">
+                    Female
+                  </label>
+                </div>
+                <div className="border border-gray rounded dark:border-gray py-2 px-6">
+                  <input
+                    type="radio"
+                    id="nonBinary"
+                    name="gender"
+                    value="nonBinary"
+                    checked={gender === 'nonBinary'}
+                    onChange={() => setGender('nonBinary')}
+                    className="mr-2"
+                  />
+                  <label htmlFor="nonBinary" className="text-gray text-xl">
+                    Non-binary
+                  </label>
+                </div>
+              </div>
+            </div>
           </div>
           <div className="mb-4">
             <label htmlFor="email" className="block text-gray text-xl font-bold mb-4">
