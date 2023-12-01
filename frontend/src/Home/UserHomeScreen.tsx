@@ -1,11 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from './Header'
 import { useNavigate } from 'react-router-dom';
+import FetchUser from './FetchUser';
 
-interface UserHomeScreenProps {}
+interface User {
+  username: string;
+  firstname: string;
+  // Add other properties as needed
+}
 
-const UserHomeScreen: React.FC<UserHomeScreenProps> = () => {
+const UserHomeScreen: React.FC = () => {
   const navigate = useNavigate();
+  const fetchUser = FetchUser();
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const getUserData = async () => {
+      const userData = await fetchUser(2);
+      setUser(userData);
+    };
+
+    getUserData();
+  }, [fetchUser]);
 
   const handlePlay = () => {
     navigate('/game');
@@ -32,20 +48,22 @@ const UserHomeScreen: React.FC<UserHomeScreenProps> = () => {
 
         <Header/>
         
-        <div className="flex flex-col items-center justify-center mt-10">
+        <div className="flex flex-col items-center justify-center mt-16">
             
         <div className="relative">
-          <img src="litimg/home1.png" alt="Home 1" className="w-screen h-full" />
+          <img src="litimg/home.png" alt="Home" className="w-screen h-full" />
           <div className="absolute top-1/2 left-1/3 transform -translate-x-1/2 -translate-y-1/2">
             <div className="flex items-center"
-            style={{ width: '650px' }}>
-              <img src="litimg/litsy.png" alt="Litsy" className="w-44 mr-4" />
-              <div className="text-white text-3xl font-semibold mt-4">Welcome, ! May you have a wondrous adventure to the World of Filipino Literature</div>
-            </div>
+            style={{ width: '640px' }}>
+              <img src="litimg/litsy.png" alt="Litsy" className="w-40 mr-4" />
+              {user && (
+              <div className="text-white text-3xl font-semibold mt-2">Welcome, {user.username}! May you have a wondrous adventure to the World of Filipino Literature</div>
+              )}
+              </div>
           </div>
         </div>
 
-        <div className="mb-10">
+        <div className="mt-10 mb-10">
           <div className="text-black text-xl font-bold absolute left-36">Recommendations</div>
         </div>
 

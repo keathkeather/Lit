@@ -1,17 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import FetchUser from './FetchUser';
 
 interface HeaderProps {}
+interface User {
+  username: string;
+  firstname: string;
+  // Add other properties as needed
+}
 
 const Header: React.FC<HeaderProps> = () => {
   const navigate = useNavigate();
+  const fetchUser = FetchUser();
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const getUserData = async () => {
+      const userData = await fetchUser(2);
+      setUser(userData);
+    };
+
+    getUserData();
+  }, [fetchUser]);
 
   const handleLogoClick = () => {
     navigate('/');
   };
 
   const handleUserClick = () => {
-    //logic here..
+    navigate('/');
   };
 
   return (
@@ -23,7 +40,7 @@ const Header: React.FC<HeaderProps> = () => {
           <ul className="flex">
             <li>
               <Link
-                to="/landing"
+                to="/userhome"
                 className="text-base lg:text-lg font-bold text-white mr-3 md:mr-4 hover:text-bgc2"
               >
                 Home
@@ -64,6 +81,9 @@ const Header: React.FC<HeaderProps> = () => {
           </ul>
       </div>
       <div className="flex items-center">
+        {user && (
+        <div className="text-white text-lg font-bold mr-2">{user.username}</div>
+        )}
         <button onClick={handleUserClick}>
           <img src="litimg/userlogo.svg" alt="User Logo" className="w-10 mr-32" />
         </button>

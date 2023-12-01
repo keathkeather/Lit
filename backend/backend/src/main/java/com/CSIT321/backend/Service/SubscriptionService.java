@@ -14,51 +14,53 @@ public class SubscriptionService {
     @Autowired
     SubscriptionRepository subscriptionRepository;
 
-    public SubscriptionEntity createSubscription(SubscriptionEntity subscription){
+    public SubscriptionEntity createSubscription(SubscriptionEntity subscription) {
         return subscriptionRepository.save(subscription);
     }
-    public List<SubscriptionEntity> getAllSubsciptions(){
+
+    public List<SubscriptionEntity> getAllSubsciptions() {
         return subscriptionRepository.findAll();
     }
-    public SubscriptionEntity updateSubscription(int subscriptionId,SubscriptionEntity newSubscription){
-        try{
+
+    public SubscriptionEntity updateSubscription(int subscriptionId, SubscriptionEntity newSubscription) {
+        try {
             SubscriptionEntity subscription = subscriptionRepository.findById(subscriptionId).get();
             subscription.setSubscriptionName(newSubscription.getSubscriptionName());
             subscription.setSubscriptionDescription(newSubscription.getSubscriptionDescription());
             subscription.setCost(newSubscription.getCost());
             subscription.setIsDeleted(newSubscription.getIsDeleted());
             return subscriptionRepository.save(subscription);
-        }catch(NoResultException ex) {
-            throw new NoResultException("Subscription " + subscriptionId + " does not exist");  
-        }
-    }
-    public SubscriptionEntity restoreSubscription(int subscriptionId){
-        try{
-            SubscriptionEntity subscription  = subscriptionRepository.findById(subscriptionId).orElseThrow();
-            subscription.setIsDeleted(false);
-            return subscriptionRepository.save(subscription);
-        }catch(NoResultException e){
-            throw new NoResultException("Subscription " + subscriptionId + " does not exist");        
-        } 
-    }
-
-    public SubscriptionEntity deleteSubscription(int subscriptionId){
-        try{
-            SubscriptionEntity subscription  = subscriptionRepository.findById(subscriptionId).orElseThrow();
-            subscription.setIsDeleted(true);
-            return subscriptionRepository.save(subscription);
-        }catch(NoResultException e){
-            throw new NoResultException("Subscription " + subscriptionId + " does not exist");        
-        }       
-    }
-    
-
-    public void deleteSubscriptionPermanently(int subscriptionId){
-        try{
-            subscriptionRepository.deleteById(subscriptionId);
-        }catch(NoResultException e){
+        } catch (NoResultException ex) {
             throw new NoResultException("Subscription " + subscriptionId + " does not exist");
         }
     }
-    
+
+    public SubscriptionEntity restoreSubscription(int subscriptionId) {
+        try {
+            SubscriptionEntity subscription = subscriptionRepository.findById(subscriptionId).orElseThrow();
+            subscription.setIsDeleted(false);
+            return subscriptionRepository.save(subscription);
+        } catch (NoResultException e) {
+            throw new NoResultException("Subscription " + subscriptionId + " does not exist");
+        }
+    }
+
+    public SubscriptionEntity deleteSubscription(int subscriptionId) {
+        try {
+            SubscriptionEntity subscription = subscriptionRepository.findById(subscriptionId).orElseThrow();
+            subscription.setIsDeleted(true);
+            return subscriptionRepository.save(subscription);
+        } catch (NoResultException e) {
+            throw new NoResultException("Subscription " + subscriptionId + " does not exist");
+        }
+    }
+
+    public void deleteSubscriptionPermanently(int subscriptionId) {
+        try {
+            subscriptionRepository.deleteById(subscriptionId);
+        } catch (NoResultException e) {
+            throw new NoResultException("Subscription " + subscriptionId + " does not exist");
+        }
+    }
+
 }
