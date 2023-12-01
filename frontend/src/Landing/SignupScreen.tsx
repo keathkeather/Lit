@@ -15,13 +15,13 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [genderError, setGenderError] = useState('');
-  const [showPasswordChecklist, setShowPasswordChecklist] = useState(false); // New state to manage checklist visibility
+  const [showPasswordChecklist, setShowPasswordChecklist] = useState(false);
 
   const navigate = useNavigate();
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
-    setShowPasswordChecklist(e.target.value.length > 0); // Show checklist when the user starts typing in the password field
+    setShowPasswordChecklist(e.target.value.length > 0);
   };
 
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -57,6 +57,7 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
       alert(err);
     }
   };
+
 
   const handleLogoClick = () => {
     navigate('/landing');
@@ -237,7 +238,6 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
           </div>
         </form>
       </div>
-
     </div>
   );
 };
