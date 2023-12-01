@@ -14,6 +14,9 @@ module.exports = {
       fontFamily: {
         inter: ['Inter', 'sans-serif'],
       },
+      textColor: {
+        'f88125': '#f88125',
+      },
     },
     colors: {
       'bgc1': '#0C2647',

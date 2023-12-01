@@ -72,7 +72,7 @@ const Header: React.FC<HeaderProps> = () => {
           <img src="litimg/loginbtn.svg" alt="loginbtn" className="w-12 lg:w-40 mr-2 lg:mr-3" />
         </button>
         <button onClick={handleSignup}>
-          <img src="litimg/signup_forfreebtn.svg" alt="signupbtn" className="w-12 lg:w-40 mr-2 lg:mr-14`" />
+          <img src="litimg/signup_forfreebtn.svg" alt="signupbtn" className="w-12 lg:w-40 mr-2 lg:mr-24" />
         </button>
       </div>
     </header>
