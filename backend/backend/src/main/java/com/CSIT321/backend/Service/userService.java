@@ -31,6 +31,9 @@ public class UserService {
         AccountEntity account = new AccountEntity();
         account.setUser(user);
         account.setEmail(userDTO.getAccount().getEmail());
+        account.setFirstName(userDTO.getAccount().getFirstName());
+        account.setLastName(userDTO.getAccount().getLastName());
+        account.setGender(userDTO.getAccount().getGender());
         account.setRole(defaultRole);
         user.setAccount(account);
         
@@ -65,6 +68,9 @@ public class UserService {
             AccountEntity account = user.getAccount();
             if (account != null) {
                 account.setEmail(newUserDTO.getAccount().getEmail());
+                account.setFirstName(newUserDTO.getAccount().getFirstName());
+                account.setLastName(newUserDTO.getAccount().getLastName());
+                account.setGender(newUserDTO.getAccount().getGender());
             }
 
             return userRepository.save(user);
