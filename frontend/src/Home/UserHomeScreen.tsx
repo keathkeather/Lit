@@ -30,7 +30,7 @@ const UserHomeScreen: React.FC = () => {
   }, [fetchUser, accountId]);
 
   const handlePlay = () => {
-    navigate('/game');
+    navigate('/book');
   };
 
   const handlePlus1 = () => {
