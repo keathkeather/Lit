@@ -4,8 +4,9 @@ import axios from 'axios';
 
 interface AccountEntity {
   email: string;
+  accountId: number;
 }
-// Define your UserEntity interface
+
 interface UserEntity {
   username: string;
   password: string;
@@ -28,7 +29,7 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
       const users = response.data;
 
       // Check if the inputted username/email and password match any user's credentials
-      const isUserAuthenticated = users.some((userData: UserEntity) => {
+      const isUserAuthenticated = users.find((userData: UserEntity) => {
         return (
           (userData.username === usernameOrEmail || userData.account.email === usernameOrEmail) &&
           userData.password === password
@@ -37,7 +38,8 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
 
       if (isUserAuthenticated) {
         console.log('Login Successful!');
-        navigate('/userhome');
+
+        navigate('/userhome', { state: { accountId: isUserAuthenticated.account.accountId } });
       } else {
         alert('Login Failed. Please check your credentials.');
       }

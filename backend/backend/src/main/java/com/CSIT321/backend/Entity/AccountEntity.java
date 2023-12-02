@@ -3,6 +3,7 @@ package com.CSIT321.backend.Entity;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "account")
@@ -26,10 +27,18 @@ public class AccountEntity {
     private String firstName;
     private String lastName;
     private String gender;
+
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private BookListEntity bookList;
+    
     private boolean isDeleted;
     
     public AccountEntity(){
         super();
+        if(this.bookList == null){
+            this.bookList = new BookListEntity(this);
+        }
         this.isDeleted = false;
     }
     public AccountEntity(UserEntity user, String email,RolesEntity role,String firstName , String lastName , String gender){
@@ -39,6 +48,10 @@ public class AccountEntity {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
+        if(this.bookList == null){
+            this.bookList = new BookListEntity(this);
+        }
+        
         this.isDeleted = false;
 
     }
@@ -90,6 +103,12 @@ public class AccountEntity {
     }
     public void recover(){
         this.isDeleted = false;
+    }
+    public BookListEntity getBookList(){
+        return this.bookList;
+    }
+    public void setBookList(BookListEntity bookList){
+        this.bookList = bookList;
     }
 
 }
