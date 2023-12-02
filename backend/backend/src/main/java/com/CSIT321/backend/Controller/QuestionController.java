@@ -16,19 +16,19 @@ public class QuestionController {
 
     @Autowired
     private QuestionService questionServices;
-
+    @CrossOrigin
     @PostMapping("/create")
     public ResponseEntity<QuestionEntity> createQuestion(@RequestBody QuestionEntity question) {
         QuestionEntity createdQuestion = questionServices.createQuestion(question);
         return new ResponseEntity<>(createdQuestion, HttpStatus.CREATED);
     }
-
+    @CrossOrigin
     @GetMapping("/all")
     public ResponseEntity<List<QuestionEntity>> getAllQuestions() {
         List<QuestionEntity> questions = questionServices.getAllQuestions();
         return new ResponseEntity<>(questions, HttpStatus.OK);
     }
-
+    @CrossOrigin
     @GetMapping("/{questionId}")
     public ResponseEntity<QuestionEntity> getQuestionById(@PathVariable int questionId) {
         QuestionEntity question = questionServices.getQuestionById(questionId);
@@ -38,7 +38,7 @@ public class QuestionController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
+    @CrossOrigin
     @PutMapping("/update/{questionId}")
     public ResponseEntity<QuestionEntity> updateQuestion(
             @PathVariable int questionId, @RequestBody QuestionEntity newQuestion) {QuestionEntity updatedQuestion = questionServices.updateQuestion(questionId, newQuestion);

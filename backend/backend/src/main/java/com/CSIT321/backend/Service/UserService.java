@@ -50,13 +50,15 @@ public class UserService {
         return userRepository.findById(uid).orElseThrow(() -> new NoSuchElementException("User " + uid + " does not exist"));
     }
 
-    public UserEntity updateUserRoleToAuthor(int uid){
-        try{
+    public UserEntity updateUserRoleToAuthor(int uid) {
+        try {
             UserEntity user = userRepository.findById(uid).orElseThrow(() -> new NoSuchElementException("User " + uid + " does not exist"));
-            RolesEntity authorRole = rolesRepository.findById(2).orElseThrow();
+
+            RolesEntity authorRole = rolesRepository.findById(2).orElseThrow(() -> new RuntimeException("Author role not found"));
+
             user.getAccount().setRole(authorRole);
             return userRepository.save(user);
-        }catch(NoSuchElementException ex){
+        } catch (RuntimeException ex) {
             throw ex;
         }
     }
