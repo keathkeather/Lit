@@ -70,12 +70,12 @@ public class UserController{
     }
     @CrossOrigin
     @PutMapping("/updateUserRoleToAuthor/{user_id}")
-    public ResponseEntity<UserEntity> updateUserRoleToAuthor(@PathVariable int user_id){
-        try{
+    public ResponseEntity<UserEntity> updateUserRoleToAuthor(@PathVariable int user_id) {
+        try {
             UserEntity updatedUser = userService.updateUserRoleToAuthor(user_id);
             return new ResponseEntity<>(updatedUser, HttpStatus.OK);
-        }catch(Exception e){
-            throw e;
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     @CrossOrigin
