@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { UserProvider } from './Home/UserContext';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import './index.css';
 import LoadingScreen from './LoadingScreen';
 import LandingScreen from './Landing/LandingScreen';
@@ -14,11 +17,12 @@ import ContactusScreen from './Landing/ContactusScreen';
 import UserHomeScreen from './Home/UserHomeScreen';
 import GameScreen from './Home/GameScreen';
 import BookScreen from './Home/BookScreen';
-import QuestList from './Home/QuestList';
+import ExploreScreen from './Home/ExploreScreen';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
+    <UserProvider>
     <Router>
       <Routes>
         <Route path="/" element={<LoadingScreen />} />
@@ -33,9 +37,10 @@ ReactDOM.render(
         <Route path="/userhome" element={<UserHomeScreen />} />
         <Route path="/game" element={<GameScreen />} />
         <Route path="/book" element={<BookScreen />} />
-        <Route path="/questlist" element={<QuestList />} />
+        <Route path="/explore" element={<ExploreScreen />} />
       </Routes>
     </Router>
+    </UserProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

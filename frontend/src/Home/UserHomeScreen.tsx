@@ -1,18 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Header from './Header'
 import { useNavigate, useLocation  } from 'react-router-dom';
 import FetchUser from './FetchUser';
-
-interface User {
-  username: string;
-  firstname: string;
-  // Add other properties as needed
-}
+import { useUser } from './UserContext';
 
 const UserHomeScreen: React.FC = () => {
   const navigate = useNavigate();
   const fetchUser = FetchUser();
-  const [user, setUser] = useState<User | null>(null);
+  const { user, setUser } = useUser();
   const location = useLocation();
   const accountId: number | undefined = location.state?.accountId;
 
@@ -27,7 +22,7 @@ const UserHomeScreen: React.FC = () => {
     };
 
     getUserData();
-  }, [fetchUser, accountId]);
+  }, [fetchUser, setUser, accountId]);
 
   const handlePlay = () => {
     navigate('/book');
