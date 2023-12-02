@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import com.CSIT321.backend.Exceptions.UnauthorizedAccountException;
+import com.CSIT321.backend.Entity.AccountEntity;
 import com.CSIT321.backend.Entity.BookEntity;
 import com.CSIT321.backend.Service.BookService;
+import com.CSIT321.backend.Service.AccountService;
 
 @RestController
 @RequestMapping(value = "/book")
@@ -24,17 +26,29 @@ public class BookController {
     
     @Autowired
     BookService bookService;
+    
+    @Autowired
+    AccountService accountService;
 
     @CrossOrigin
-    @PostMapping(value = "/create",consumes = "application/json;charset=UTF-8")
-    public ResponseEntity<BookEntity> createBook(@RequestBody BookEntity book){
-        try{
-            BookEntity createdBook = bookService.createBook(book);
-            return new ResponseEntity<>(createdBook , HttpStatus.CREATED);
-        }catch(Exception e){
+    @PostMapping(value = "/create", consumes = "application/json;charset=UTF-8")
+    public ResponseEntity<BookEntity> createBook(@RequestBody BookEntity book) {
+        try {
+            AccountEntity account = accountService.getAccountById(book.getAuthor().getAccountId());
+            if (account.getRole().getRole_id() == 2) {
+                
+                BookEntity createdBook = bookService.createBook(book);
+                return new ResponseEntity<>(createdBook, HttpStatus.CREATED);
+            }else{
+                throw new UnauthorizedAccountException("User is not authorized for book creation");
+            }
+        } catch (UnauthorizedAccountException e) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN); 
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
+
     @CrossOrigin
     @GetMapping("/all")
     public ResponseEntity<List<BookEntity>> getAll(){
