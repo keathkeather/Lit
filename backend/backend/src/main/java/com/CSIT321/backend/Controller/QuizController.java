@@ -16,19 +16,19 @@ public class QuizController {
 
     @Autowired
     private QuizServices quizServices;
-
+    @CrossOrigin
     @PostMapping("/create")
     public ResponseEntity<QuizEntity> createQuiz(@RequestBody QuizEntity quiz) {
         QuizEntity createdQuiz = quizServices.createQuiz(quiz);
         return new ResponseEntity<>(createdQuiz, HttpStatus.CREATED);
     }
-
+    @CrossOrigin
     @GetMapping("/all")
     public ResponseEntity<List<QuizEntity>> getAllQuizzes() {
         List<QuizEntity> quizzes = quizServices.getAllQuizzes();
         return new ResponseEntity<>(quizzes, HttpStatus.OK);
     }
-
+    @CrossOrigin
     @GetMapping("/{quizId}")
     public ResponseEntity<QuizEntity> getQuizById(@PathVariable int quizId) {
         QuizEntity quiz = quizServices.getQuizById(quizId);
@@ -38,7 +38,7 @@ public class QuizController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
+    @CrossOrigin
     @PutMapping("/update/{quizId}")
     public ResponseEntity<QuizEntity> updateQuiz(@PathVariable int quizId, @RequestBody QuizEntity newQuiz) {
         QuizEntity updatedQuiz = quizServices.updateQuiz(quizId, newQuiz);
@@ -48,6 +48,7 @@ public class QuizController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    @CrossOrigin
     @DeleteMapping("/delete/{quizId}")
     public String deleteQuiz(@PathVariable int quizId) {
         return quizServices.deleteQuiz(quizId);

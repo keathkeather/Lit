@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +26,7 @@ public class BookListController {
     @Autowired
     BookListService bookListService;
 
+    @CrossOrigin
     @PostMapping("/create")
     public ResponseEntity<BookListEntity> createBookList(@RequestBody BookListEntity list) {
         try {
@@ -34,6 +36,7 @@ public class BookListController {
             throw e;
         }
     }
+    @CrossOrigin
     @PostMapping("/addBook/{accountId}")
     public ResponseEntity<BookListEntity> addBookToList(@PathVariable int accountId, @RequestParam int bookId){
         try{
@@ -43,6 +46,7 @@ public class BookListController {
             throw e;
         }
     }
+    @CrossOrigin
     @GetMapping("/getAllBookInList/{accountId}")
     public ResponseEntity<List<BookEntity>> getAllBooksInList(@PathVariable int accountId){
         try{
@@ -52,6 +56,7 @@ public class BookListController {
             throw e;
         }
     }
+    @CrossOrigin
     @PutMapping("/addBook/{accountId}")
     public ResponseEntity<BookListEntity> addBooktoList(@PathVariable int accountId, @RequestParam int bookId){
         try{
@@ -61,6 +66,7 @@ public class BookListController {
             throw e;
         }
     }
+    @CrossOrigin
     @PutMapping("/removeBook/{accountId}")
     public ResponseEntity<BookListEntity> removeBookfromList(@PathVariable int accountId, @RequestParam int bookId){
         try{

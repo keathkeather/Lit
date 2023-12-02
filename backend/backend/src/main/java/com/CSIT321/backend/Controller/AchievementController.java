@@ -3,6 +3,7 @@ package com.CSIT321.backend.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +22,7 @@ public class AchievementController {
     @Autowired
     AchievementService achievementService;
 
-
+    @CrossOrigin
     @PostMapping("/create")
     public ResponseEntity<AchievementEntity> createAchievement(@RequestBody AchievementEntity achievement){
         try{
@@ -31,6 +32,7 @@ public class AchievementController {
             throw e;
         }
     }   
+    @CrossOrigin
     @GetMapping("/all")
     public ResponseEntity<List<AchievementEntity>> getAllAchievments(){
         try{
@@ -40,6 +42,7 @@ public class AchievementController {
             throw e;
         }
     }
+    @CrossOrigin
     @PutMapping("/update/{achievementId}")
     public ResponseEntity<AchievementEntity> updateAchievement(@PathVariable int achievementId, @RequestBody AchievementEntity newAchievement){
         try{
@@ -49,6 +52,7 @@ public class AchievementController {
             throw e;
         }        
     }
+    @CrossOrigin
     @PutMapping("/delete/{achievementId}")
     public ResponseEntity<AchievementEntity> deleteAchievement(@PathVariable int achievementId){
         try{
@@ -58,6 +62,7 @@ public class AchievementController {
             throw e;
         }
     }
+    @CrossOrigin
     @PutMapping("/recover/{achievementId}")
     public ResponseEntity<AchievementEntity> recoverAchievement(@PathVariable int achievementId){
         try{
@@ -67,6 +72,7 @@ public class AchievementController {
             throw e;
         }
     }
+    @CrossOrigin
     @DeleteMapping("/deletePermanently/{achievementId}")
     public ResponseEntity<String> deleteAchievementPermanently(@PathVariable int achievementId){
         try{
