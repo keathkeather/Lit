@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import FetchUser from './FetchUser';
+import { useUser } from './UserContext';
 
 interface HeaderProps {}
-interface User {
-  username: string;
-  firstname: string;
-  // Add other properties as needed
-}
 
 const Header: React.FC<HeaderProps> = () => {
   const navigate = useNavigate();
   const fetchUser = FetchUser();
-  const [user, setUser] = useState<User | null>(null);
+  const { user, setUser } = useUser();
   const [loading, setLoading] = useState(true);
   const location = useLocation();
   const accountId: number | undefined = location.state?.accountId;
@@ -34,7 +30,7 @@ const Header: React.FC<HeaderProps> = () => {
     };
 
     getUserData();
-  }, [fetchUser, accountId]);
+  }, [fetchUser, setUser, accountId]);
 
   const handleLogoClick = () => {
     navigate('/');
@@ -95,7 +91,7 @@ const Header: React.FC<HeaderProps> = () => {
       </div>
       <div className="flex items-center">
         {loading ? (
-          <div className="text-white text-lg font-bold mr-2">Loading...</div>
+          <div className="text-white text-lg font-bold mr-2"></div>
         ) : (
           user && <div className="text-white text-lg font-bold mr-2">{user.username}</div>
         )}
