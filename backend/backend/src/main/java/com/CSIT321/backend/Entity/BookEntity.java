@@ -32,11 +32,15 @@ public class BookEntity {
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)   
     private List<AchievementEntity> achievement;
 
+    
+    private boolean isApproved;
+
     private boolean isDeleted;
 
     public BookEntity(){
         super();
         this.isDeleted = false;
+        this.isApproved = false;
     }
     public BookEntity(String bookName, String bookDescription,List<AchievementEntity> achievement, List<QuizEntity> quiz){
         this.bookName = bookName;
@@ -44,6 +48,7 @@ public class BookEntity {
         this.achievement = achievement;
         this.quiz = quiz;
         this.isDeleted = false;
+        this.isApproved=false;
     }
     public int getBookId(){
         return this.bookId;
