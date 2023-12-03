@@ -1,13 +1,14 @@
 import React from 'react';
 
 interface BookEntryProps {
+  bookId: number;
   title: string;
   genre: string;
   onPlusClick: () => void;
-  onPlayClick: () => void;
+  onPlayClick: (bookId: number) => void;
 }
 
-const BookEntry: React.FC<BookEntryProps> = ({ title, genre, onPlusClick, onPlayClick }) => {
+const BookEntry: React.FC<BookEntryProps> = ({ bookId, title, genre, onPlusClick, onPlayClick }) => {
   return (
     <div className="mb-5">
       <div className="ml-12 font-bold text-sm mb-3">{genre}</div>
@@ -22,7 +23,7 @@ const BookEntry: React.FC<BookEntryProps> = ({ title, genre, onPlusClick, onPlay
           <div className="ml-5 mb-3 text-lg font-semibold">{title}</div>
           {/* Render author as text directly */}
           {/* <div className="ml-5 mb-3 font-medium text-sm text-lblue">{author}</div> */}
-          <button onClick={onPlayClick} className="mx-auto mb-5">
+          <button onClick={() => onPlayClick(bookId)} className="mx-auto mb-5">
             <img src="litimg/playbtn.svg" alt="playbtn" className="w-60" />
           </button>
         </div>
