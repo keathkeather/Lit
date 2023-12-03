@@ -67,7 +67,7 @@ const QuestList: React.FC<QuestListProps> = () => {
           <div className="mt-8 space-y-4">
           {quizzes.map((quiz, index) => (
             <a href={`/quiz/${quiz.quizId}`} key={index}>
-              <div className="w-[1000px] bg-white border border-[#ABAAA8] p-6 rounded-md flex justify-between items-center mb-4">
+              <div onClick={() => handleAttemptQuiz(quiz.quizId)} className="w-[1000px] bg-white border border-[#ABAAA8] p-6 rounded-md flex justify-between items-center mb-4">
                 <div className="flex items-center">
                   <img src="litimg/Quest.svg" alt="Lit Logo 3" className="w-10 ml-10 mr-4" />
                   <div className="text-[#3C3934] font-bold ml-2">{quiz.quizName}</div>

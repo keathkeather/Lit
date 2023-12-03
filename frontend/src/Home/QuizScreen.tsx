@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom'; {/*will change this later*/}
+import { useNavigate } from 'react-router-dom';
 
 interface QuizQuestion {
   questionId: number;
