@@ -2,9 +2,14 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 
+interface RoleEntity{
+  role_id: number;
+}
+
 interface AccountEntity {
   email: string;
   accountId: number;
+  role : RoleEntity;
 }
 
 interface UserEntity {
@@ -27,16 +32,26 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
       // Fetch users from your API
       const response = await axios.get<UserEntity[]>('http://localhost:8080/user/getAllUsers');
       const users = response.data;
+      // Check if the inputted user has a role_id of 3 therefore its an administrator 
+      const isUserAutheticatedAsAdmin =  users.find((userData: UserEntity)=>{
+        return(
+          (userData.username === usernameOrEmail || userData.account.email === usernameOrEmail) &&
+          (userData.password === password)&&(userData.account.role.role_id === 3)
+        );
+      });
 
       // Check if the inputted username/email and password match any user's credentials
+     
       const isUserAuthenticated = users.find((userData: UserEntity) => {
         return (
           (userData.username === usernameOrEmail || userData.account.email === usernameOrEmail) &&
           userData.password === password
         );
       });
-
-      if (isUserAuthenticated) {
+      if(isUserAutheticatedAsAdmin){
+        navigate('/admin',{state : {accountId: isUserAutheticatedAsAdmin.account.accountId}});
+      }
+      else if (isUserAuthenticated) {
         console.log('Login Successful!');
 
         navigate('/userhome', { state: { accountId: isUserAuthenticated.account.accountId } });
