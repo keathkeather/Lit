@@ -11,8 +11,12 @@ const BookScreen: React.FC<BookScreenProps> = () => {
     navigate('/game');
   };
 
+  const handleQuests = () => {
+    navigate('/questlist');
+  };
+
   return (
-    <div className="overflow-y-auto">
+    <div className="overflow-y-full">
       <Header />
 
       <div className="ml-32 mt-[6rem]">
@@ -33,12 +37,21 @@ const BookScreen: React.FC<BookScreenProps> = () => {
               <div className="bg-dblue h-4 text-xs font-medium text-white text-center p-0.5 leading-none rounded-full dark:bg-dblue" style={{ width: '45%' }}>45%</div>
             </div>
 
+            <div className="">
+              <button onClick={handleQuests}>
+                VIEW ALL
+              </button>
+            </div>
+
             {/* Button */}
             <div className="ml-[30rem] mr-32 -mt-[17rem]">
               <button onClick={handleGame}>
                 <img src="litimg/playbtn.svg" alt="playbtn" className="w-12 lg:w-48 mr-2 lg:mr-3" />
               </button>
             </div>
+
+           
+
           </div>
         </div>
       </div>
