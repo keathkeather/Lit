@@ -3,8 +3,8 @@ package com.CSIT321.backend.Entity.DTO;
 public class AccountDTO {
 
     private int accountId;
-    private int userId; // Assuming you want to include the user ID in the DTO
-    private int roleId; // Assuming you want to include the role ID in the DTO
+    private int userId; 
+    private int roleId; 
     private String email;
     private String firstName;
     private String lastName;
@@ -12,7 +12,7 @@ public class AccountDTO {
     private boolean isDeleted;
 
     public AccountDTO() {
-        // Default constructor
+        
     }
 
     public AccountDTO(int accountId, int userId, int roleId, String email, String firstName, String lastName, String gender, boolean isDeleted) {
