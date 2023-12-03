@@ -1,10 +1,13 @@
-import React, { useEffect } from 'react';
-import Header from './Header'
-import { useNavigate, useLocation  } from 'react-router-dom';
+import React, { useState, useEffect } from 'react'; // Make sure to import useState
+import Header from './Header';
+import { useNavigate, useLocation } from 'react-router-dom';
 import FetchUser from './FetchUser';
 import { useUser } from './UserContext';
 
-const UserHomeScreen: React.FC = () => {
+
+
+const MyList: React.FC = () => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const fetchUser = FetchUser();
   const { user, setUser } = useUser();
@@ -44,8 +47,12 @@ const UserHomeScreen: React.FC = () => {
     //logic here...
   };
 
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
   return (
-    <div className="overflow-y-auto">
+    <div className="overflow-y-full">
 
         <Header/>
         
@@ -64,64 +71,34 @@ const UserHomeScreen: React.FC = () => {
           </div>
         </div>
 
-        <div className="mt-10 mb-10">
-          <div className="text-black text-xl font-bold absolute left-36">Recommendations</div>
-        </div>
+        <div className="mt-6 mb-10 flex items-center">
+          <div className="text-black text-2xl font-bold mr-[60rem]">My List</div>
+          <div className="relative inline-block text-left">
+            <div>
+              <button
+                type="button"
+                onClick={toggleDropdown}
+                className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                id="menu-button"
+                aria-expanded={isDropdownOpen}
+                aria-haspopup="true"
+              >
+                Genre
+                <svg className="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                </svg>
+              </button>
+            </div>
 
-        <div>
-          <div className="flex flex-row items-center">
-            <div className="flex flex-col mr-8 ml-8">
-              <div className="relative">
-                <img src="litimg/Ibong Adarna.svg" alt="Ibong Adarna" className="w-72" />
-                <button onClick={handlePlus1} className="absolute bottom-5 right-4">
-                  <img src="litimg/plusbtn.svg" alt="plusbtn" className="w-15" />
-                </button>
+            {isDropdownOpen && (
+              <div className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex={-1}>
+                <div className="py-1" role="none">
+                  <a href="#" className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex={-1} id="menu-item-0">Folklore</a>
+                  <a href="#" className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex={-1} id="menu-item-1">Fable</a>
+                  <a href="#" className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" tabIndex={-1} id="menu-item-2">Mystery</a>
+                </div>
               </div>
-              <div className="ml-5 text-lg font-semibold">Ibong Adarna</div>
-              <div className="ml-5 mb-3 font-medium text-sm text-lblue">Jose de la Cruz</div>
-              <button onClick={handlePlay} className="mx-auto">
-                <img src="litimg/playbtn.svg" alt="playbtn" className="w-60" />
-              </button>
-            </div>
-            <div className="flex flex-col mr-8">
-              <div className="relative">
-                <img src="litimg/Florante at Laura.svg" alt="Florante at Laura" className="w-72" />
-                <button onClick={handlePlus2} className="absolute bottom-5 right-4">
-                  <img src="litimg/plusbtn.svg" alt="plusbtn" className="w-15" />
-                </button>
-              </div>
-              <div className="ml-5 text-lg font-semibold">Florante at Laura</div>
-              <div className="ml-5 mb-3 font-medium text-sm text-lblue">Francisco Balagtas</div>
-              <button onClick={handlePlay} className="mx-auto">
-                <img src="litimg/playbtn.svg" alt="playbtn" className="w-60" />
-              </button>
-            </div>
-            <div className="flex flex-col mr-8">
-              <div className="relative">
-                <img src="litimg/Alamat ng Pinya.svg" alt="Alamat ng Pinya" className="w-72" />
-                <button onClick={handlePlus3} className="absolute bottom-5 right-4">
-                  <img src="litimg/plusbtn.svg" alt="plusbtn" className="w-15" />
-                </button>
-              </div>
-              <div className="ml-5 text-lg font-semibold">Alamat ng Pinya</div>
-              <div className="ml-5 mb-3 font-medium text-sm text-lblue">Boots S. Agbayani Pa...</div>
-              <button onClick={handlePlay} className="mx-auto">
-                <img src="litimg/playbtn.svg" alt="playbtn" className="w-60" />
-              </button>
-            </div>
-            <div className="flex flex-col mr-8">
-              <div className="relative">
-                <img src="litimg/El Filibusterismo.svg" alt="El Filibusterismo" className="w-72" />
-                <button onClick={handlePlus4} className="absolute bottom-5 right-4">
-                  <img src="litimg/plusbtn.svg" alt="plusbtn" className="w-15" />
-                </button>
-              </div>
-              <div className="ml-5 text-lg font-semibold">El Filibusterismo</div>
-              <div className="ml-5 mb-3 font-medium text-sm text-lblue">Leon Ma. Geurrero</div>
-              <button onClick={handlePlay} className="mx-auto">
-                <img src="litimg/playbtn.svg" alt="playbtn" className="w-60" />
-              </button>
-            </div>
+            )}
           </div>
         </div>
 
@@ -130,4 +107,4 @@ const UserHomeScreen: React.FC = () => {
   );
 };
 
-export default UserHomeScreen;
+export default MyList;
