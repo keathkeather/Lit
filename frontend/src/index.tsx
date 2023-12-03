@@ -22,9 +22,11 @@ import QuestList from './Home/QuestList';
 import HelpScreen from './Home/HelpScreen';
 import QuizScreen from './Home/QuizScreen';
 import MyList from './Home/MyList';
-import reportWebVitals from './reportWebVitals';
 import AdminHomeScreen from './Admin/AdminHomeScreen';
+import FeedbackAndReports from './Admin/FeedbackandReports';
 import SubscriptionScreen from './Subscription/SubscriptionScreen';
+import reportWebVitals from './reportWebVitals';
+
 ReactDOM.render(
   <React.StrictMode>
     <UserProvider>
@@ -49,6 +51,7 @@ ReactDOM.render(
         <Route path="/mylist" element={<MyList />} />
         <Route path="/admin" element={<AdminHomeScreen/>}/>
         <Route path="/subscription" element={<SubscriptionScreen/>}/>
+        <Route path="/feedback-reports" element={<FeedbackAndReports />} />
       </Routes>
     </Router>
     </UserProvider>
