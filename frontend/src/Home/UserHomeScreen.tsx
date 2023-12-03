@@ -10,6 +10,7 @@ const UserHomeScreen: React.FC = () => {
   const { user, setUser } = useUser();
   const location = useLocation();
   const accountId: number | undefined = location.state?.accountId;
+  console.log('Location State:', location.state);
 
   useEffect(() => {
     const getUserData = async () => {
@@ -21,6 +22,7 @@ const UserHomeScreen: React.FC = () => {
       }
     };
 
+    console.log('accountId in UserHomeScreen:', accountId);
     getUserData();
   }, [fetchUser, setUser, accountId]);
 
@@ -47,7 +49,7 @@ const UserHomeScreen: React.FC = () => {
   return (
     <div className="overflow-y-auto">
 
-        <Header/>
+        <Header accountId={accountId}/>
         
         <div className="flex flex-col items-center justify-center mt-16">
             

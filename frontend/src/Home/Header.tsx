@@ -3,15 +3,15 @@ import { useNavigate, Link, useLocation } from 'react-router-dom';
 import FetchUser from './FetchUser';
 import { useUser } from './UserContext';
 
-interface HeaderProps {}
+interface HeaderProps {
+  accountId?: number;
+}
 
-const Header: React.FC<HeaderProps> = () => {
+const Header: React.FC<HeaderProps> = ({ accountId }) => {
   const navigate = useNavigate();
   const fetchUser = FetchUser();
   const { user, setUser } = useUser();
   const [loading, setLoading] = useState(true);
-  const location = useLocation();
-  const accountId: number | undefined = location.state?.accountId;
 
   useEffect(() => {
     const getUserData = async () => {
@@ -46,40 +46,40 @@ const Header: React.FC<HeaderProps> = () => {
         <button onClick={handleLogoClick}>
           <img src="litimg/litlogo3.png" alt="Lit Logo 3" className="w-12 lg:w-20 md:w-40 mr-2 lg:ml-20" />
         </button>
-          <ul className="flex">
-            <li>
-              <Link
-                to="/userhome"
-                className="text-base lg:text-lg font-bold text-white mr-3 md:mr-4 hover:text-bgc2"
-              >
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/explore"
-                className="text-base lg:text-lg font-bold text-white mr-3 md:mr-4 hover:text-bgc2"
-              >
-                Explore
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/mylist"
-                className="text-base lg:text-lg font-bold text-white mr-3 md:mr-4 hover:text-bgc2"
-              >
-                My List
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/help"
-                className="text-base lg:text-lg font-bold text-white hover:text-bgc2"
-              >
-                Help
-              </Link>
-            </li>
-          </ul>
+        <ul className="flex">
+          <li>
+            <Link
+              to="/userhome"
+              className="text-base lg:text-lg font-bold text-white mr-3 md:mr-4 hover:text-bgc2"
+            >
+              Home
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/explore"
+              className="text-base lg:text-lg font-bold text-white mr-3 md:mr-4 hover:text-bgc2"
+            >
+              Explore
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/mylist"
+              className="text-base lg:text-lg font-bold text-white mr-3 md:mr-4 hover:text-bgc2"
+            >
+              My List
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/help"
+              className="text-base lg:text-lg font-bold text-white hover:text-bgc2"
+            >
+              Help
+            </Link>
+          </li>
+        </ul>
       </div>
       <div className="flex items-center">
         {loading ? (

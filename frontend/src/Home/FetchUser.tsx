@@ -10,7 +10,9 @@ interface User {
 const useFetchUser = () => {
   const fetchUser = async (userId: number): Promise<User | null> => {
     try {
+      console.log('Fetching user information for userId:', userId);
       const response = await axios.get(`http://localhost:8080/user/getUser/${userId}`);
+      console.log('User data received:', response.data);
       return response.data;
     } catch (error) {
       console.error('Error fetching user information:', error);
