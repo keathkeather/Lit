@@ -1,5 +1,6 @@
 package com.CSIT321.backend.Controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.CSIT321.backend.Exceptions.UnauthorizedAccountException;
 import com.CSIT321.backend.Entity.AccountEntity;
 import com.CSIT321.backend.Entity.BookEntity;
+import com.CSIT321.backend.Entity.QuizEntity;
+import com.CSIT321.backend.Entity.DTO.QuizDTO;
 import com.CSIT321.backend.Service.BookService;
 import com.CSIT321.backend.Service.AccountService;
 
@@ -115,4 +118,27 @@ public class BookController {
             throw e;
         }
     }
+    @CrossOrigin
+    @GetMapping("/getQuiz/{bookId}")
+    public ResponseEntity<List<QuizDTO>> getQuizPerBook(@PathVariable int bookId) {
+        try {
+            List<QuizEntity> quizzes = bookService.getQuiz(bookId);
+            List<QuizDTO> quizDTOs = new ArrayList<>();
+
+            for (QuizEntity quiz : quizzes) {
+                QuizDTO quizDTO = new QuizDTO(
+                    quiz.getQuizId(),
+                    quiz.getQuizName(),
+                    quiz.getQuestions(),  
+                    quiz.getPerfectScore()
+                );
+                quizDTOs.add(quizDTO);
+            }
+
+            return new ResponseEntity<>(quizDTOs, HttpStatus.OK);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
 }
