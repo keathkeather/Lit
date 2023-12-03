@@ -5,34 +5,41 @@ import Header from './Header';
 interface QuestListProps {}
 
 const QuestList: React.FC<QuestListProps> = () => {
-  const navigate = useNavigate();
-  const { bookId } = useParams<{ bookId: string }>();
-  const [quizzes, setQuizzes] = useState<any[]>([]);
-  console.log('Extracted bookId:', bookId);
+    const navigate = useNavigate();
+    const { bookId } = useParams<{ bookId: string }>();
+    const [quizzes, setQuizzes] = useState<any[]>([]);
+    console.log('Extracted bookId:', bookId);
 
-  const handleBackIcon = () => {
-    navigate('/book');
-  };
+    const handleBackIcon = () => {
+      navigate('/book');
+    };
 
-  useEffect(() => {
-    console.log('Fetching quizzes for bookId:', bookId);
-    fetch(`http://localhost:8080/book/getQuiz/1`)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('Fetched data:', data); // Log the fetched data
-        if (Array.isArray(data)) {
-          setQuizzes(data); // Update state with quizzes data
-        } else {
-          setQuizzes([]); // Set empty array if data format is unexpected
-        }
-      })
-      .catch((error) => {
-        console.error('Error fetching quizzes:', error);
-        setQuizzes([]); // Set empty array in case of error
-      });
-  }, [bookId]);
+    const handleAttemptQuiz = (quizId: number) => {
+      const confirmation = window.confirm('Attempt Quiz?');
+      if (confirmation) {
+        navigate(`/quiz/${quizId}`);
+      }
+    };
 
-  console.log('Quizzes:', quizzes); // Log the quizzes state for debugging
+    useEffect(() => {
+      console.log('Fetching quizzes for bookId:', bookId);
+      fetch(`http://localhost:8080/book/getQuiz/1`)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Fetched data:', data); // Log the fetched data
+          if (Array.isArray(data)) {
+            setQuizzes(data); // Update state with quizzes data
+          } else {
+            setQuizzes([]); // Set empty array if data format is unexpected
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching quizzes:', error);
+          setQuizzes([]); // Set empty array in case of error
+        });
+    }, [bookId]);
+
+    console.log('Quizzes:', quizzes);
 
     return (
       <div className="overflow-y-auto">
