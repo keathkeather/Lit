@@ -21,6 +21,7 @@ import ExploreScreen from './Home/ExploreScreen';
 import QuestList from './Home/QuestList';
 import HelpScreen from './Home/HelpScreen';
 import QuizScreen from './Home/QuizScreen';
+import MyList from './Home/MyList';
 import reportWebVitals from './reportWebVitals';
 import AdminHomeScreen from './Admin/AdminHomeScreen';
 ReactDOM.render(
@@ -44,6 +45,7 @@ ReactDOM.render(
         <Route path="/explore" element={<ExploreScreen />} />
         <Route path="/help" element={<HelpScreen />} />
         <Route path="/quiz/:quizId" element={<QuizScreen />} />
+        <Route path="/mylist" element={<QuizScreen />} />
         <Route path="/admin" element={<AdminHomeScreen/>}/>
       </Routes>
     </Router>
