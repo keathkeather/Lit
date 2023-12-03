@@ -98,6 +98,15 @@ public class BookEntity {
     public void recover(){
         this.isDeleted = false;
     }
+    public boolean getIsapproved(){
+        return this.isApproved;
+    }
+    public void approve(){
+        this.isApproved = true;
+    }
+    public void disapprove(){
+        this.isApproved = false;
+    }
 
 
 }
