@@ -24,6 +24,7 @@ import QuizScreen from './Home/QuizScreen';
 import MyList from './Home/MyList';
 import reportWebVitals from './reportWebVitals';
 import AdminHomeScreen from './Admin/AdminHomeScreen';
+import SubscriptionScreen from './Subscription/SubscriptionScreen';
 ReactDOM.render(
   <React.StrictMode>
     <UserProvider>
@@ -47,6 +48,7 @@ ReactDOM.render(
         <Route path="/quiz/:quizId" element={<QuizScreen />} />
         <Route path="/mylist" element={<MyList />} />
         <Route path="/admin" element={<AdminHomeScreen/>}/>
+        <Route path="/subscription" element={<SubscriptionScreen/>}/>
       </Routes>
     </Router>
     </UserProvider>
