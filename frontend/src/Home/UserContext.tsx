@@ -2,7 +2,7 @@ import React, { createContext, useContext, ReactNode } from 'react';
 
 interface User {
   username: string;
-  firstname: string;
+  firstName: string;
   // Add other properties as needed
 }
 

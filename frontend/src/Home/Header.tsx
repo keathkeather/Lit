@@ -73,14 +73,6 @@ const Header: React.FC<HeaderProps> = () => {
             </li>
             <li>
               <Link
-                to="/shop"
-                className="text-base lg:text-lg font-bold text-white mr-3 md:mr-4 hover:text-bgc2"
-              >
-                Shop
-              </Link>
-            </li>
-            <li>
-              <Link
                 to="/help"
                 className="text-base lg:text-lg font-bold text-white hover:text-bgc2"
               >

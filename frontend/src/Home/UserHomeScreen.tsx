@@ -72,7 +72,7 @@ const UserHomeScreen: React.FC = () => {
           <div className="flex flex-row items-center">
             <div className="flex flex-col mr-8 ml-8">
               <div className="relative">
-                <img src="litimg/adarna.svg" alt="Ibong Adarna" className="w-72" />
+                <img src="litimg/Ibong Adarna.svg" alt="Ibong Adarna" className="w-72" />
                 <button onClick={handlePlus1} className="absolute bottom-5 right-4">
                   <img src="litimg/plusbtn.svg" alt="plusbtn" className="w-15" />
                 </button>
@@ -85,7 +85,7 @@ const UserHomeScreen: React.FC = () => {
             </div>
             <div className="flex flex-col mr-8">
               <div className="relative">
-                <img src="litimg/flora.svg" alt="Florante at Laura" className="w-72" />
+                <img src="litimg/Florante at Laura.svg" alt="Florante at Laura" className="w-72" />
                 <button onClick={handlePlus2} className="absolute bottom-5 right-4">
                   <img src="litimg/plusbtn.svg" alt="plusbtn" className="w-15" />
                 </button>
@@ -98,7 +98,7 @@ const UserHomeScreen: React.FC = () => {
             </div>
             <div className="flex flex-col mr-8">
               <div className="relative">
-                <img src="litimg/pinya.svg" alt="Alamat nng Pinya" className="w-72" />
+                <img src="litimg/Alamat ng Pinya.svg" alt="Alamat ng Pinya" className="w-72" />
                 <button onClick={handlePlus3} className="absolute bottom-5 right-4">
                   <img src="litimg/plusbtn.svg" alt="plusbtn" className="w-15" />
                 </button>
@@ -111,7 +111,7 @@ const UserHomeScreen: React.FC = () => {
             </div>
             <div className="flex flex-col mr-8">
               <div className="relative">
-                <img src="litimg/fili.svg" alt="El Filibusterismo" className="w-72" />
+                <img src="litimg/El Filibusterismo.svg" alt="El Filibusterismo" className="w-72" />
                 <button onClick={handlePlus4} className="absolute bottom-5 right-4">
                   <img src="litimg/plusbtn.svg" alt="plusbtn" className="w-15" />
                 </button>

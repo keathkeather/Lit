@@ -11,7 +11,7 @@ const Carousel: React.FC = () => {
   };
 
   return (
-    <div style={{ maxWidth: '1055px', margin: '0 auto' }}>
+    <div style={{ maxWidth: '1070px', margin: '0 auto' }}>
       <Slider {...settings}>
         <div style={{ textAlign: 'center' }}>
           <img src="litimg/exadarna.svg" alt="Adarna" style={{ width: '100%', height: '300px', margin: '0 auto' }} />

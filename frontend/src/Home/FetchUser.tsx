@@ -3,7 +3,7 @@ import axios from 'axios';
 interface User {
   // Define the structure of the user object
   username: string;
-  firstname: string;
+  firstName: string;
   // Add other properties as needed
 }
 
