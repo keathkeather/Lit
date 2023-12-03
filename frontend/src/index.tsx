@@ -51,7 +51,7 @@ ReactDOM.render(
         <Route path="/mylist" element={<MyList />} />
         <Route path="/admin" element={<AdminHomeScreen/>}/>
         <Route path="/subscription" element={<SubscriptionScreen/>}/>
-        <Route path="/feedback-reports" element={<FeedbackAndReports />} />
+        <Route path="/reportsandfeedbacks" element={<FeedbackAndReports />} />
       </Routes>
     </Router>
     </UserProvider>
