@@ -45,7 +45,7 @@ ReactDOM.render(
         <Route path="/explore" element={<ExploreScreen />} />
         <Route path="/help" element={<HelpScreen />} />
         <Route path="/quiz/:quizId" element={<QuizScreen />} />
-        <Route path="/mylist" element={<QuizScreen />} />
+        <Route path="/mylist" element={<MyList />} />
         <Route path="/admin" element={<AdminHomeScreen/>}/>
       </Routes>
     </Router>
