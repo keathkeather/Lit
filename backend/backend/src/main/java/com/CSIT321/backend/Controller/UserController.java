@@ -79,6 +79,16 @@ public class UserController{
         }
     }
     @CrossOrigin
+    @PutMapping("/updateUserRoleToAdmin/{user_id}")
+    public ResponseEntity<UserEntity> updateUserRoleToAdmin(@PathVariable int user_id) {
+        try {
+            UserEntity updatedUser = userService.updateUserRoleToAdmin(user_id);
+            return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @CrossOrigin
     @PutMapping("/deleteUser/{user_id}")
     public ResponseEntity<UserEntity> deleteUser(@PathVariable int user_id){
         try{

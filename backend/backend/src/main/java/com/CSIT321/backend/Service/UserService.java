@@ -62,6 +62,18 @@ public class UserService {
             throw ex;
         }
     }
+    public UserEntity updateUserRoleToAdmin(int uid){
+        try{
+            UserEntity user = userRepository.findById(uid).orElseThrow(() -> new NoSuchElementException("User " + uid + " does not exist"));
+
+            RolesEntity adminRole = rolesRepository.findById(3).orElseThrow(() -> new RuntimeException("Author role not found"));
+
+            user.getAccount().setRole(adminRole);
+            return userRepository.save(user);
+        }catch (RuntimeException ex) {
+            throw ex;
+        }
+    }
 
     public UserEntity updateUser(int uid, UserDTO newUserDTO) {
         try {
