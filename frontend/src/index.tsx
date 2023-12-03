@@ -18,6 +18,7 @@ import UserHomeScreen from './Home/UserHomeScreen';
 import GameScreen from './Home/GameScreen';
 import BookScreen from './Home/BookScreen';
 import ExploreScreen from './Home/ExploreScreen';
+import QuestList from './Home/QuestList';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
@@ -37,6 +38,7 @@ ReactDOM.render(
         <Route path="/userhome" element={<UserHomeScreen />} />
         <Route path="/game" element={<GameScreen />} />
         <Route path="/book" element={<BookScreen />} />
+        <Route path="/questlist" element={<QuestList />} />
         <Route path="/explore" element={<ExploreScreen />} />
       </Routes>
     </Router>
