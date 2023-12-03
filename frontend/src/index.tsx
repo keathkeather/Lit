@@ -20,6 +20,7 @@ import BookScreen from './Home/BookScreen';
 import ExploreScreen from './Home/ExploreScreen';
 import QuestList from './Home/QuestList';
 import HelpScreen from './Home/HelpScreen';
+import QuizScreen from './Home/QuizScreen';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
@@ -42,6 +43,7 @@ ReactDOM.render(
         <Route path="/questlist" element={<QuestList />} />
         <Route path="/explore" element={<ExploreScreen />} />
         <Route path="/help" element={<HelpScreen />} />
+        <Route path="/quiz/:quizId" element={<QuizScreen />} />
       </Routes>
     </Router>
     </UserProvider>
