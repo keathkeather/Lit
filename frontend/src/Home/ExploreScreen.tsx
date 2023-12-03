@@ -81,7 +81,7 @@ const ExploreScreen: React.FC = () => {
              style={{width: '1300px'}}>
           {books.map((book) => (
             <BookEntry
-              key={book.bookId}
+              bookId={book.bookId}
               title={book.bookName}
               genre={book.genre}
               // author={book.author}
