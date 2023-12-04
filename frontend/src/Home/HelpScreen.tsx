@@ -1,28 +1,44 @@
 import React, { useEffect, useState } from 'react';
 import Header from './Header'
-import { useLocation  } from 'react-router-dom';
-import FetchUser from './FetchUser';
-import { useUser } from './UserContext';
+import { useLocation, useParams  } from 'react-router-dom';
 import Accordion from './Accordion';
+import axios from 'axios';
+
+interface AccountEntity{
+  accountId: number;
+  email: string;
+  firstName: string;
+  lastname: string;
+  gender: string;
+}
 
 const HelpScreen: React.FC = () => {
-  const fetchUser = FetchUser();
-  const { user, setUser } = useUser();
+  const [loading, setLoading] = useState(true);
+  const [account, setAccount] = useState<AccountEntity>();
   const location = useLocation();
-  const accountId: number | undefined = location.state?.accountId;
+  const { accountId } = useParams<{ accountId: string }>();
+  const numAccountId = Number(accountId);
 
   useEffect(() => {
     const getUserData = async () => {
-      if (accountId !== undefined) {
-        const userData = await fetchUser(accountId);
-        setUser(userData);
-      } else {
-        console.error('accountId is undefined');
+      console.log(`i am on the help page ${numAccountId}`)
+      try {
+        if (numAccountId !== undefined) {
+          const response = await axios.get<AccountEntity>(`http://localhost:8080/account/${numAccountId}`);
+          const responseAcc = response.data;
+          setAccount(responseAcc);
+        } else {
+          console.error('accountId is undefined');
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      } finally {
+        setLoading(false);
       }
     };
-
+  
     getUserData();
-  }, [fetchUser, setUser, accountId, location.state]);
+  }, [numAccountId]);
 
   const faqData = [
     { question: '01\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0How are the stories gamefied?', answer: 'Our stories are gamified using the Monogatari visual novel engine. This engine allows us to create interactive and engaging narratives, providing users with choices that impact the storyline. Readers can make decisions at key points in the story, shaping their unique experience. With Monogatari, we bring a dynamic and immersive storytelling experience to our users, making literature an interactive adventure.' },
@@ -83,7 +99,7 @@ const HelpScreen: React.FC = () => {
         <div className="flex flex-col items-center justify-center mt-16">
             
           <div className="relative">
-            <img src="litimg/help.png" alt="Help" className="w-screen h-full" />
+            <img src="/litimg/help.png" alt="Help" className="w-screen h-full" />
             <div className="absolute top-1/2 left-1/3 transform -translate-x-1/2 -translate-y-1/2">
               <div className="mb-14 ml-40">
                   <div className="text-white font-semibold text-2xl">Welcome to Lit Help Center</div>
@@ -131,7 +147,7 @@ const HelpScreen: React.FC = () => {
 
           <div className="mt-20 mb-20">
             <button onClick={openFeedbackForm}>
-              <img src="litimg/feedbackbtn.svg" alt="feedbackbtn" className="w-80" />
+              <img src="/litimg/feedbackbtn.svg" alt="feedbackbtn" className="w-80" />
             </button>
           </div>
 

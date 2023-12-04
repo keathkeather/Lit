@@ -1,31 +1,31 @@
 import React, { useState, useEffect } from 'react'; // Make sure to import useState
 import Header from './Header';
 import { useNavigate, useLocation } from 'react-router-dom';
-import FetchUser from './FetchUser';
-import { useUser } from './UserContext';
+// import FetchUser from './FetchUser';
+// import { useUser } from './UserContext';
 
 
 
 const MyList: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
-  const fetchUser = FetchUser();
-  const { user, setUser } = useUser();
+  // const fetchUser = FetchUser();
+  // const { user, setUser } = useUser();
   const location = useLocation();
   const accountId: number | undefined = location.state?.accountId;
 
-  useEffect(() => {
-    const getUserData = async () => {
-      if (accountId !== undefined) {
-        const userData = await fetchUser(accountId);
-        setUser(userData);
-      } else {
-        console.error('accountId is undefined');
-      }
-    };
+  // useEffect(() => {
+  //   const getUserData = async () => {
+  //     if (accountId !== undefined) {
+  //       const userData = await fetchUser(accountId);
+  //       setUser(userData);
+  //     } else {
+  //       console.error('accountId is undefined');
+  //     }
+  //   };
 
-    getUserData();
-  }, [fetchUser, setUser, accountId]);
+  //   getUserData();
+  // }, [fetchUser, setUser, accountId]);
 
   const handlePlay = () => {
     navigate('/book');
@@ -58,7 +58,7 @@ const MyList: React.FC = () => {
         
         <div className="flex flex-col items-center justify-center mt-16">
             
-        <div className="relative">
+        {/* <div className="relative">
           <img src="litimg/home.png" alt="Home" className="w-screen h-full" />
           <div className="absolute top-1/2 left-1/3 transform -translate-x-1/2 -translate-y-1/2">
             <div className="flex items-center"
@@ -69,7 +69,7 @@ const MyList: React.FC = () => {
               )}
               </div>
           </div>
-        </div>
+        </div> */}
 
         <div className="mt-6 mb-10 flex items-center">
           <div className="text-black text-2xl font-bold mr-[60rem]">My List</div>

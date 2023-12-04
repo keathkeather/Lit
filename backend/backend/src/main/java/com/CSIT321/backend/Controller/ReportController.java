@@ -3,6 +3,7 @@ package com.CSIT321.backend.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +21,7 @@ import java.util.List;
 public class ReportController {
     @Autowired
     ReportService reportService;
-
+    @CrossOrigin
     @PostMapping("/create")
     public ResponseEntity<ReportEntity> createReport(@RequestBody ReportEntity report){
         try{
@@ -30,6 +31,7 @@ public class ReportController {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
+    @CrossOrigin
     @GetMapping("/getAllReport")
     public ResponseEntity<List<ReportEntity>>getAllReport(){
         try{
@@ -39,6 +41,7 @@ public class ReportController {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
+    @CrossOrigin
     @PutMapping("/deleteReport/{reportId}")
     public ResponseEntity<ReportEntity>deleteReport(@PathVariable int reportId){
         try{
@@ -48,6 +51,7 @@ public class ReportController {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
+    @CrossOrigin
     @PutMapping("/retoreReport/{reportId}")
     public ResponseEntity<ReportEntity>restoreReport(@PathVariable int reportId){
         try{
@@ -57,6 +61,7 @@ public class ReportController {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
+    @CrossOrigin
     @DeleteMapping("/deletedReportPermanently/{reportId}")
     public ResponseEntity<String>deleteReportPermanently(@PathVariable int reportId){
         try{

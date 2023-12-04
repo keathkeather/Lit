@@ -1,31 +1,43 @@
-import React, { useEffect } from 'react';
+import React, {  useEffect, useState } from 'react';
 import Header from './Header'
 import { useNavigate, useLocation  } from 'react-router-dom';
-import FetchUser from './FetchUser';
-import { useUser } from './UserContext';
+import axios from 'axios';
 
+interface AccountEntity{
+  accountId: number;
+  email: string;
+  firstName: string;
+  lastname: string;
+  gender: string;
+}
 const UserHomeScreen: React.FC = () => {
   const navigate = useNavigate();
-  const fetchUser = FetchUser();
-  const { user, setUser } = useUser();
+  const [loading, setLoading] = useState(true);
+  const [account, setAccount] = useState<AccountEntity>(); // Corrected line
   const location = useLocation();
   const accountId: number | undefined = location.state?.accountId;
-  console.log('Location State:', location.state);
 
   useEffect(() => {
     const getUserData = async () => {
-      if (accountId !== undefined) {
-        const userData = await fetchUser(accountId);
-        setUser(userData);
-      } else {
-        console.error('accountId is undefined');
+      console.log('testtestets ')
+      try {
+        if (accountId !== undefined) {
+          const response = await axios.get<AccountEntity>(`http://localhost:8080/account/${accountId}`);
+          const responseAcc = response.data;
+          setAccount(responseAcc);
+        } else {
+          console.error('accountId is undefined');
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      } finally {
+        setLoading(false);
       }
     };
-
-    console.log('accountId in UserHomeScreen:', accountId);
+  
     getUserData();
-  }, [fetchUser, setUser, accountId]);
-
+  }, [accountId]);
+  
   const handlePlay = () => {
     navigate('/book');
   };
@@ -49,7 +61,7 @@ const UserHomeScreen: React.FC = () => {
   return (
     <div className="overflow-y-auto">
 
-        <Header accountId={accountId}/>
+        <Header/>
         
         <div className="flex flex-col items-center justify-center mt-16">
             
@@ -59,8 +71,8 @@ const UserHomeScreen: React.FC = () => {
             <div className="flex items-center"
             style={{ width: '620px', marginRight: '100px' }}>
               <img src="litimg/litsy.png" alt="Litsy" className="w-40 mr-4" />
-              {user && (
-              <div className="text-white text-3xl font-semibold mt-2">Welcome, {user.username}! May you have a wondrous adventure to the World of Filipino Literature</div>
+              {account && (
+              <div className="text-white text-3xl font-semibold mt-2">Welcome, {account.firstName}! May you have a wondrous adventure to the World of Filipino Literature</div>
               )}
               </div>
           </div>

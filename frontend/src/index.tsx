@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { UserProvider } from './Home/UserContext';
+import { AccountProvider } from './Home/AccountContext';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -29,7 +29,7 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <UserProvider>
+    <AccountProvider>
     <Router>
       <Routes>
         <Route path="/" element={<LoadingScreen />} />
@@ -46,7 +46,7 @@ ReactDOM.render(
         <Route path="/book" element={<BookScreen />} />
         <Route path="/questlist" element={<QuestList />} />
         <Route path="/explore" element={<ExploreScreen />} />
-        <Route path="/help" element={<HelpScreen />} />
+        <Route path="/help/:accountId" element={<HelpScreen />} />
         <Route path="/quiz/:quizId" element={<QuizScreen />} />
         <Route path="/mylist" element={<MyList />} />
         <Route path="/admin" element={<AdminHomeScreen/>}/>
@@ -54,7 +54,7 @@ ReactDOM.render(
         <Route path="/reportsandfeedbacks" element={<FeedbackAndReports />} />
       </Routes>
     </Router>
-    </UserProvider>
+    </AccountProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

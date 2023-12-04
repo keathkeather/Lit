@@ -3,6 +3,7 @@ package com.CSIT321.backend.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +21,7 @@ import java.util.List;
 public class FeedbackController {
     @Autowired
     FeedbackService feedbackService;
-
+    @CrossOrigin
     @PostMapping("/create")
     public ResponseEntity<FeedbackEntity> createFeedback(@RequestBody FeedbackEntity feedback){
         try{
@@ -30,6 +31,7 @@ public class FeedbackController {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
+    @CrossOrigin
     @GetMapping("/getAllFeedbacks")
     public ResponseEntity<List<FeedbackEntity>>getAllFeedBack(){
         try{
@@ -39,6 +41,7 @@ public class FeedbackController {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
+    @CrossOrigin
     @PutMapping("/deleteFeedback/{feedbackId}")
     public ResponseEntity<FeedbackEntity>deleteFeedback(@PathVariable int feedbackId){
         try{
@@ -48,6 +51,7 @@ public class FeedbackController {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
+    @CrossOrigin
     @PutMapping("/restoreFeedback/{feedbackId}")
     public ResponseEntity<FeedbackEntity>restoreFeedback(@PathVariable int feedbackId){
         try{
@@ -57,6 +61,7 @@ public class FeedbackController {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
+    @CrossOrigin
     @DeleteMapping("/deleteFeedBackPermanently/{feedbackId}")
     public ResponseEntity<String>deleteFeedBackPermanently(@PathVariable int feedbackId){
         try{
