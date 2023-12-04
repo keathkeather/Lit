@@ -12,12 +12,19 @@ interface AccountEntity{
   gender: string;
 }
 
+interface FeedbackEntity{
+  account: AccountEntity;
+  feedbackText: string;
+}
+
 const HelpScreen: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [account, setAccount] = useState<AccountEntity>();
   const location = useLocation();
   const { accountId } = useParams<{ accountId: string }>();
   const numAccountId = Number(accountId);
+  const [showFeedbackForm, setShowFeedbackForm] = useState(false);
+  const [feedbackText, setFeedbackText] = useState('');
 
   useEffect(() => {
     const getUserData = async () => {
@@ -47,9 +54,6 @@ const HelpScreen: React.FC = () => {
     { question: '04\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0Does this include folklore stories in the Philippines?', answer: 'Absolutely! Folklore is a distinct and captivating genre within Lit. We take pride in offering a collection of stories that delve into the rich and enchanting world of Philippine folklore. Readers can explore tales inspired by local myths, legends, and traditions, providing a unique and culturally immersive reading experience. Discover the magic and wonder of Philippine folklore right here on Lit!' },
   ];
 
-  const [showFeedbackForm, setShowFeedbackForm] = useState(false);
-  const [feedbackText, setFeedbackText] = useState('');
-
   const openFeedbackForm = () => {
     setShowFeedbackForm(true);
   };
@@ -59,37 +63,45 @@ const HelpScreen: React.FC = () => {
     setFeedbackText('');
   };
 
-  const handleSendFeedback = () => {
-    // Ensure there is feedback text before sending
+  const handleSendFeedback = async () => {
     if (!feedbackText) {
       alert('Please provide feedback before sending.');
       return;
     }
-
-    // Fetch API endpoint for sending feedback
-    fetch('http://localhost:8080/feedback/create', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+  
+    const jsonData = {
+      account: {
+        accountId: numAccountId,
       },
-      body: JSON.stringify({
-        account: {
-          accountId: accountId,
+      feedback: feedbackText,
+    };
+  
+    try {
+      const response = await fetch('http://localhost:8080/feedback/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        feedback: feedbackText,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
+        body: JSON.stringify(jsonData),
+      });
+  
+      console.log('Response:', response);
+  
+      if (response.ok) {
+        const data = await response.json();
         console.log('Feedback created successfully:', data);
         closeFeedbackForm();
-        // Optionally: You can do something after successful feedback submission
-      })
-      .catch((error) => {
-        console.error('Error creating feedback:', error);
-        alert('An error occurred while sending feedback.');
-      });
-  };
+      } else {
+        closeFeedbackForm();
+        console.error('Error creating feedback:', response.statusText);
+        //alert('An error occurred while sending feedback.');
+      }
+    } catch (error) {
+      closeFeedbackForm();
+      console.error('Error creating feedback:', error);
+      //alert('An error occurred while sending feedback.');
+    }
+  };  
 
   return (
     <div className="overflow-y-auto">
