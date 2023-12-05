@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import PasswordChecklist from "react-password-checklist";
-
+import { useAccount } from '../Home/AccountContext';
 import axios from 'axios'
 
 interface SignupScreenProps {}
 
 const SignupScreen: React.FC<SignupScreenProps> = () => {
+  const {setAccount} = useAccount();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [username, setUsername] = useState('');
@@ -51,6 +52,7 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
       });
 
       console.log(response.data); // Log the response if needed
+      setAccount(response.data.account);
       navigate('/checkpoint');
     } catch (err) {
       alert(err);
