@@ -23,8 +23,14 @@ interface LoginScreenProps {}
 const LoginScreen: React.FC<LoginScreenProps> = () => {
   const [usernameOrEmail, setUsernameOrEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [loginError, setLoginError] = useState(false); 
 
   const navigate = useNavigate();
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -48,15 +54,13 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
           userData.password === password
         );
       });
-      if(isUserAutheticatedAsAdmin){
-        navigate('/admin',{state : {accountId: isUserAutheticatedAsAdmin.account.accountId}});
-      }
-      else if (isUserAuthenticated) {
+      if (isUserAutheticatedAsAdmin) {
+        navigate('/admin', { state: { accountId: isUserAutheticatedAsAdmin.account.accountId } });
+      } else if (isUserAuthenticated) {
         console.log('Login Successful!');
-
         navigate('/userhome', { state: { accountId: isUserAuthenticated.account.accountId } });
       } else {
-        alert('Login Failed. Please check your credentials.');
+        setLoginError(true); // Set login error to true
       }
     } catch (error) {
       console.error('Error during login:', error);
@@ -75,7 +79,14 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
       </button>
       <img src="litimg/loginbg.png" alt="Login Background" className="w-full h-full object-cover"/>
 
+
+      {/*form column*/}
       <div className="absolute top-0 mt-80 left-1/4 mr-40 transform translate-x-1/2 -translate-y-1/2 bg-white p-10 rounded-md max-w-2xl w-full">
+      {loginError && ( // Conditional rendering of error message
+        <div className="border border-[#ff4d4d] bg-[#ff4d4d28] rounded-md flex items-center py-4">
+        <p className="text-[#ff4d4d] ml-4">Incorrect Username or Password.</p>
+      </div>
+        )}
         <form onSubmit={handleLogin}>
           <div className="mb-4">
             <label htmlFor="user" className="block text-gray text-xl font-bold mb-4 mt-4">
@@ -90,19 +101,36 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
               required
             />
           </div>
-          <div className="mb-4">
-            <label htmlFor="password" className="block text-gray text-xl font-bold mb-4">
+          <div className="relative">
+            <label htmlFor="user" className="block text-gray text-xl font-bold mb-4 mt-4">
               Password
             </label>
-            <input
-              type="password"
-              id="password"
-              className="w-full border rounded-md py-2 px-2 mb-4 text-lg"
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-              required
-            />
-          </div>
+              <input
+                type={showPassword ? 'text' : 'password'}
+                id="password"
+                className="w-full border rounded-md py-2 px-2 mb-4 text-lg pr-10"
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
+                required
+              />
+              <span
+                className="absolute inset-y-0 right-0 flex items-center pr-2 cursor-pointer mt-7"
+                onClick={togglePasswordVisibility}
+              >
+                {showPassword ? (
+                <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none">
+                <path stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1.933 10.909A4.357 4.357 0 0 1 1 9c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 19 9c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M2 17 18 1m-5 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                </svg>
+                ) : (
+                  <svg className="w-6 h-4 text-[#0000] dark:text-white p-" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none">
+                  <g stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
+                    <path d="M10 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                    <path d="M10 13c4.97 0 9-2.686 9-6s-4.03-6-9-6-9 2.686-9 6 4.03 6 9 6Z"/>
+                  </g>
+                </svg>
+                )}
+              </span>
+            </div>
           <div className="flex flex-col items-center">
             <button
               type="submit"
