@@ -51,7 +51,6 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
       });
 
       console.log(response.data); // Log the response if needed
-      alert("User Registration Successful!");
       navigate('/checkpoint');
     } catch (err) {
       alert(err);
@@ -113,11 +112,18 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
               required
             />
           </div>
-          <div className="mb-4 flex">
+          <div className="mb-4">
             <div className="mr-4">
               <label className="block text-gray text-xl font-bold mb-2">Gender</label>
-              <div className="flex items-row mt-4 mb-4">
-                <div className="ml-8 mr-4 border border-gray rounded dark:border-gray py-2 px-12">
+              <div className="flex items-center mt-4 mb-4">
+                <div className="mr-4 border border-gray rounded dark:border-gray py-2 px-12 "
+                 onClick={() => document.getElementById('male')?.click()}
+                 style={{
+                  cursor: 'pointer',
+                  transition: 'background-color 0.3s ease',
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#ccebff'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
                   <input
                     type="radio"
                     id="male"
@@ -134,7 +140,14 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
                     Male
                   </label>
                 </div>
-                <div className="mr-4 border border-gray rounded dark:border-gray py-2 px-10">
+                <div className="mr-4 border border-gray rounded dark:border-gray py-2 px-10"
+                 onClick={() => document.getElementById('female')?.click()}
+                 style={{
+                  cursor: 'pointer',
+                  transition: 'background-color 0.3s ease',
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#ccebff'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
                   <input
                     type="radio"
                     id="female"
@@ -151,7 +164,14 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
                     Female
                   </label>
                 </div>
-                <div className="border border-gray rounded dark:border-gray py-2 px-6">
+                <div className="border border-gray rounded dark:border-gray py-2 px-10"
+                 onClick={() => document.getElementById('nonBinary')?.click()}
+                 style={{
+                  cursor: 'pointer',
+                  transition: 'background-color 0.3s ease',
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#ccebff'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
                   <input
                     type="radio"
                     id="nonBinary"
@@ -159,10 +179,10 @@ const SignupScreen: React.FC<SignupScreenProps> = () => {
                     value="nonBinary"
                     checked={gender === 'nonBinary'}
                     onChange={() => {
-                      setGender('male');
+                      setGender('nonBinary');
                       setGenderError(''); // Clear error when a gender is selected
                     }}
-                    className="mr-2"
+                    className='mr-2'
                   />
                   <label htmlFor="nonBinary" className="text-gray text-xl">
                     Non-binary
