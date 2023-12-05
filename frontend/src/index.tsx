@@ -53,7 +53,7 @@ ReactDOM.render(
         <Route path="/admin" element={<AdminHomeScreen/>}/>
         <Route path="/subscription" element={<SubscriptionScreen/>}/>
         <Route path="/reportsandfeedbacks" element={<FeedbackAndReports />} />
-        <Route path="/edituser" element={<EditUserScreen />} />
+        <Route path="/edituser/:accountId" element={<EditUserScreen />} />
       </Routes>
     </Router>
     </AccountProvider>

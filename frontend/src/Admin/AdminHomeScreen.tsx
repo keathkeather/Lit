@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Sidebar from './Sidebar';
 
 interface RoleEntity {
@@ -85,9 +86,12 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
                   <td className="px-6 py-4">{user.account.email}</td>
                   <td className="px-6 py-4"> {user.account.role.role_name} </td>
                   <td className="px-6 py-4 text-right">
-                    <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                    <Link to={`/edituser/${user.account.accountId}`} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
                       Edit
-                    </a>
+                    </Link>
+                    <Link to={`/}`} className="font-medium text-blue-600 dark:text-blue-500 hover:underline ms-3">
+                      Remove
+                    </Link>
                   </td>
                 </tr>
               ))}

@@ -49,10 +49,10 @@ const EditUserScreen: React.FC<EditUserScreenProps> = () => {
 
       if (response.ok) {
         console.log('User details successfully updated');
-        // Optionally, you can redirect or perform other actions upon success
+        
       } else {
         console.error('Failed to update user details:', response.statusText);
-        // Handle the failure, show an error message, etc.
+        
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -60,61 +60,81 @@ const EditUserScreen: React.FC<EditUserScreenProps> = () => {
       } else {
         console.error('Non-Error object thrown during update:', error);
       }
-      // Handle network or other errors
+      
     }
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setUser((prevUser) => ({
-      ...prevUser,
-      [name]: value,
-    }));
-  };
-
-  // Assuming user.account is an object, check if user.account is defined before accessing its properties
-  const email = user.account?.email || '';
-
-  // Assuming user.account.role is an object, check if user.account.role is defined before accessing its properties
-  const roleName = user.account?.role?.role_name || '';
+  
+    setUser((prevUser) => {
+      if (name === 'username') {
+        return { ...prevUser, [name]: value };
+      } else if (name === 'account.email') {
+        return { ...prevUser, account: { ...prevUser.account, email: value } };
+      } else if (name === 'account.role.role_name') {
+        return { ...prevUser, account: { ...prevUser.account, role: { ...prevUser.account.role, role_name: value } } };
+      } else {
+        // Handle other top-level properties if needed
+        return { ...prevUser, [name]: value };
+      }
+    });
+  };  
 
   return (
-    <div>
-      <h2>Edit User Details</h2>
-      <form onSubmit={handleFormSubmit}>
-        <div>
-          <label htmlFor="username">Username:</label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            value={user.username}
-            onChange={handleInputChange}
-          />
+    <div className="flex">
+      <div className="flex p-4">
+        <div className="relative overflow-x shadow-md sm:rounded-lg bg-[#D3D3D3]">
+          <form onSubmit={handleFormSubmit} className="w-full">
+            <div className="grid grid-cols-4 gap-4">
+              <div className="col-span-1">
+                <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+                  Username:
+                </label>
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  value={user.username}
+                  onChange={handleInputChange}
+                  className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+                />
+              </div>
+              <div className="col-span-1">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                  Email:
+                </label>
+                <input
+                  type="text"
+                  id="email"
+                  name="account.email"
+                  value={user.account?.email}
+                  onChange={handleInputChange}
+                  className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+                />
+              </div>
+              <div className="col-span-1">
+                <label htmlFor="role" className="block text-sm font-medium text-gray-700">
+                  Role:
+                </label>
+                <input
+                  type="text"
+                  id="role"
+                  name="account.role.role_name"
+                  value={user.account?.role?.role_name}
+                  onChange={handleInputChange}
+                  className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+                />
+              </div>
+              <div className="col-span-1 flex items-end">
+                <button type="submit" className="bg-[#F88125] hover:bg-[#0C2467] text-white font-bold py-2 px-4 rounded">
+                  Save Changes
+                </button>
+              </div>
+            </div>
+          </form>
         </div>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="text"
-            id="email"
-            name="account.email"
-            value={email}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="role">Role:</label>
-          <input
-            type="text"
-            id="role"
-            name="account.role.role_name"
-            value={roleName}
-            onChange={handleInputChange}
-          />
-        </div>
-        {/* Add more fields for other user details you want to edit */}
-        <button type="submit">Save Changes</button>
-      </form>
+      </div>
     </div>
   );
 };
