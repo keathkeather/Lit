@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import {  useAccount } from '../Home/AccountContext';
 import axios from 'axios';
 
 interface RoleEntity{
@@ -7,8 +8,11 @@ interface RoleEntity{
 }
 
 interface AccountEntity {
-  email: string;
   accountId: number;
+  email: string;
+  firstName: string;
+  lastName: string;
+
   role : RoleEntity;
 }
 
@@ -27,7 +31,7 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
   const [loginError, setLoginError] = useState(false); 
 
   const navigate = useNavigate();
-
+  const {setAccount} = useAccount();
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -55,10 +59,12 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
         );
       });
       if (isUserAutheticatedAsAdmin) {
-        navigate('/admin', { state: { accountId: isUserAutheticatedAsAdmin.account.accountId } });
+        setAccount(isUserAutheticatedAsAdmin.account);
+        navigate('/admin');
       } else if (isUserAuthenticated) {
         console.log('Login Successful!');
-        navigate('/userhome', { state: { accountId: isUserAuthenticated.account.accountId } });
+        setAccount(isUserAuthenticated.account);
+        navigate('/userhome');
       } else {
         setLoginError(true); // Set login error to true
       }

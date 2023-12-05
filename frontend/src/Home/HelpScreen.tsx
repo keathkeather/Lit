@@ -1,22 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Header from './Header'
-import { useParams  } from 'react-router-dom';
 import Accordion from './Accordion';
-import axios from 'axios';
+import { useAccount } from './AccountContext';
 
-interface AccountEntity{
-  accountId: number;
-  email: string;
-  firstName: string;
-  lastname: string;
-  gender: string;
-}
+
 
 const HelpScreen: React.FC = () => {
   const [loading, setLoading] = useState(true);
-  const [account, setAccount] = useState<AccountEntity>();
-  const { accountId } = useParams<{ accountId: string }>();
-  const numAccountId = Number(accountId);
+  const {account} = useAccount();
   const [feedbackText, setFeedbackText] = useState('');
   const [reportText, setReportText] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
@@ -26,27 +17,14 @@ const HelpScreen: React.FC = () => {
   const [reportError, setReportError] = useState('');
   const [feedbackError, setFeedbackError] = useState('');
   const allModalVisible = isModalVisible || isPModalVisible || isFModalVisible || isSModalVisible;
-
   useEffect(() => {
-    const getUserData = async () => {
-      console.log(`i am on the help page ${numAccountId}`);
-      try {
-        if (numAccountId !== undefined) {
-          const response = await axios.get<AccountEntity>(`http://localhost:8080/account/${numAccountId}`);
-          const responseAcc = response.data;
-          setAccount(responseAcc);
-        } else {
-          console.error('accountId is undefined');
-        }
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-  
-    getUserData();
-  }, [numAccountId]);
+    if(account){
+      setLoading(false);
+    } else {
+      setLoading(true);
+    }
+  }, [account]);
+ 
 
   const faqData = [
     { question: '01\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0How are the stories gamefied?', answer: 'Our stories are gamified using the Monogatari visual novel engine. This engine allows us to create interactive and engaging narratives, providing users with choices that impact the storyline. Readers can make decisions at key points in the story, shaping their unique experience. With Monogatari, we bring a dynamic and immersive storytelling experience to our users, making literature an interactive adventure.' },
@@ -66,7 +44,7 @@ const HelpScreen: React.FC = () => {
   
     const jsonData = {
       account: {
-        accountId: numAccountId,
+        accountId: account?.accountId,
       },
       feedback: feedbackText,
     };
@@ -107,7 +85,7 @@ const HelpScreen: React.FC = () => {
   
     const jsonData = {
       account: {
-        accountId: numAccountId,
+        accountId: account?.accountId,
       },
       report: reportText,
     };

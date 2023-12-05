@@ -1,31 +1,17 @@
 import React, { useState, useEffect } from 'react'; // Make sure to import useState
 import Header from './Header';
 import { useNavigate, useLocation } from 'react-router-dom';
-// import FetchUser from './FetchUser';
-// import { useUser } from './UserContext';
 
 
 
 const MyList: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
-  // const fetchUser = FetchUser();
-  // const { user, setUser } = useUser();
+
   const location = useLocation();
   const accountId: number | undefined = location.state?.accountId;
 
-  // useEffect(() => {
-  //   const getUserData = async () => {
-  //     if (accountId !== undefined) {
-  //       const userData = await fetchUser(accountId);
-  //       setUser(userData);
-  //     } else {
-  //       console.error('accountId is undefined');
-  //     }
-  //   };
-
-  //   getUserData();
-  // }, [fetchUser, setUser, accountId]);
+ 
 
   const handlePlay = () => {
     navigate('/book');

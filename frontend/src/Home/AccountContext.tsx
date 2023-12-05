@@ -4,6 +4,7 @@ interface Account {
   accountId: number;
   email: string;
   firstName: string;
+  lastName: string;
   // Add other properties as needed
 }
 

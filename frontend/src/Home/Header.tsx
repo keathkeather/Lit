@@ -1,47 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { useNavigate, Link} from 'react-router-dom';
 import { useAccount } from './AccountContext';
-import axios from 'axios';
-interface AccountEntity{
-  accountId: number;
-  email: string;
-  firstName: string;
-  lastname: string;
-  gender: string;
-}
+
 interface HeaderProps {}
 
 const Header: React.FC<HeaderProps> = () => {
   const navigate = useNavigate();
-  const { account, setAccount } = useAccount();
+  const { account} = useAccount();
   const [loading, setLoading] = useState(true);
-  const location = useLocation();
-  const accountId: number | undefined = location.state?.accountId;
-
- 
   useEffect(() => {
-    const getUserData = async () => {
-      console.log('testtestets ')
-      try {
-        if (accountId !== undefined) {
-          const response = await axios.get<AccountEntity>(`http://localhost:8080/account/${accountId}`);
-          const responseAcc = response.data;
-          setAccount(responseAcc);
-          console.log('data added');
-        } else {
-          console.error('accountId is undefined');
-        }
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-  
-    getUserData();
-  }, [accountId]);
-
-
+    if(account){
+      setLoading(false);
+    } else {
+      setLoading(true);
+    }
+  }, [account]);
   const handleLogoClick = () => {
     navigate('/');
   };
@@ -53,14 +26,13 @@ const Header: React.FC<HeaderProps> = () => {
     console.log('Help link clicked!');
 
     if (account) {
-      console.log(`passing ${account.accountId} to  help`)
+      console.log(`passing ${account.firstName} to  help`)
       navigate(`/help/${account.accountId}`);
     } else {
       console.error('Account is null or undefined');
     }
   };
-
-  return (
+  return (  
     <header className="bg-dblue fixed top-0 left-0 right-0 z-10 p-2 md:p-4 flex flex-row lg:flex-row items-center justify-between shadow-lg">
       <div className="flex items-center lg:ml-10">
         <button onClick={handleLogoClick}>
@@ -93,7 +65,7 @@ const Header: React.FC<HeaderProps> = () => {
             </li>
             <li>
               <Link
-                to={`/help/${account?.accountId}`}
+                to='/help'
                 className="text-base lg:text-lg font-bold text-white hover:text-bgc2"
                 onClick={handleHelpClick}
               >

@@ -17,7 +17,7 @@ import ContactusScreen from './Landing/ContactusScreen';
 import UserHomeScreen from './Home/UserHomeScreen';
 import GameScreen from './Home/GameScreen';
 import BookScreen from './Home/BookScreen';
-import ExploreScreen from './Home/ExploreScreen';
+import ExploreScreen from './Home/ExploreScreen'; 
 import QuestList from './Home/QuestList';
 import HelpScreen from './Home/HelpScreen';
 import QuizScreen from './Home/QuizScreen';
@@ -47,13 +47,13 @@ ReactDOM.render(
         <Route path="/book" element={<BookScreen />} />
         <Route path="/questlist" element={<QuestList />} />
         <Route path="/explore" element={<ExploreScreen />} />
-        <Route path="/help/:accountId" element={<HelpScreen />} />
+        <Route path="/help" element={<HelpScreen />} />
         <Route path="/quiz/:quizId" element={<QuizScreen />} />
         <Route path="/mylist" element={<MyList />} />
         <Route path="/admin" element={<AdminHomeScreen/>}/>
         <Route path="/subscription" element={<SubscriptionScreen/>}/>
         <Route path="/reportsandfeedbacks" element={<FeedbackAndReports />} />
-        <Route path="/edituser/:accountId" element={<EditUserScreen />} />
+        <Route path="/edituser" element={<EditUserScreen />} />
       </Routes>
     </Router>
     </AccountProvider>

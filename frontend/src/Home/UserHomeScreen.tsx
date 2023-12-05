@@ -1,43 +1,11 @@
-import React, {  useEffect, useState } from 'react';
+import React, {} from 'react';
 import Header from './Header'
-import { useNavigate, useLocation  } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate} from 'react-router-dom';
+import { useAccount } from './AccountContext';
 
-interface AccountEntity{
-  accountId: number;
-  email: string;
-  firstName: string;
-  lastname: string;
-  gender: string;
-}
 const UserHomeScreen: React.FC = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
-  const [account, setAccount] = useState<AccountEntity>(); // Corrected line
-  const location = useLocation();
-  const accountId: number | undefined = location.state?.accountId;
-
-  useEffect(() => {
-    const getUserData = async () => {
-      console.log('testtestets ')
-      try {
-        if (accountId !== undefined) {
-          const response = await axios.get<AccountEntity>(`http://localhost:8080/account/${accountId}`);
-          const responseAcc = response.data;
-          setAccount(responseAcc);
-        } else {
-          console.error('accountId is undefined');
-        }
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-  
-    getUserData();
-  }, [accountId]);
-  
+  const {account} = useAccount();
   const handlePlay = () => {
     navigate('/book');
   };
