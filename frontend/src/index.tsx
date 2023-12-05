@@ -25,6 +25,7 @@ import MyList from './Home/MyList';
 import AdminHomeScreen from './Admin/AdminHomeScreen';
 import FeedbackAndReports from './Admin/FeedbackandReports';
 import SubscriptionScreen from './Subscription/SubscriptionScreen';
+import EditUserScreen from './Admin/EditUserScreen';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
@@ -52,6 +53,7 @@ ReactDOM.render(
         <Route path="/admin" element={<AdminHomeScreen/>}/>
         <Route path="/subscription" element={<SubscriptionScreen/>}/>
         <Route path="/reportsandfeedbacks" element={<FeedbackAndReports />} />
+        <Route path="/edituser" element={<EditUserScreen />} />
       </Routes>
     </Router>
     </AccountProvider>
