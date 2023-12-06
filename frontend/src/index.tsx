@@ -26,6 +26,7 @@ import AdminHomeScreen from './Admin/AdminHomeScreen';
 import FeedbackAndReports from './Admin/FeedbackandReports';
 import SubscriptionScreen from './Subscription/SubscriptionScreen';
 import EditUserScreen from './Admin/EditUserScreen';
+import BeAnAuthorScreen from './Home/BeAnAuthorScreen';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
@@ -54,6 +55,7 @@ ReactDOM.render(
         <Route path="/subscription" element={<SubscriptionScreen/>}/>
         <Route path="/reportsandfeedbacks" element={<FeedbackAndReports />} />
         <Route path="/edituser" element={<EditUserScreen />} />
+        <Route path="/beanauthor" element={<BeAnAuthorScreen />} />
       </Routes>
     </Router>
     </AccountProvider>

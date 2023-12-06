@@ -17,6 +17,7 @@ const HelpScreen: React.FC = () => {
   const [reportError, setReportError] = useState('');
   const [feedbackError, setFeedbackError] = useState('');
   const allModalVisible = isModalVisible || isPModalVisible || isFModalVisible || isSModalVisible;
+  
   useEffect(() => {
     if(account){
       setLoading(false);
@@ -200,7 +201,7 @@ const HelpScreen: React.FC = () => {
             <div className="absolute top-1/2 left-1/3 transform -translate-x-1/2 -translate-y-1/2">
               <div className="mb-14 ml-40">
                   <div className="text-white font-semibold text-2xl">Welcome to Lit Help Center</div>
-                  <div className="text-white font-bold text-5xl mt-2">What can we help you for today?</div>
+                  <div className="text-white font-bold text-5xl mt-2">What can we help you with today?</div>
               </div>
             </div>
           </div>
