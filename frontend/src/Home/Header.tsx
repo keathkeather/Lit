@@ -8,6 +8,7 @@ const Header: React.FC<HeaderProps> = () => {
   const navigate = useNavigate();
   const { account } = useAccount();
   const [loading, setLoading] = useState(true);
+  const [isDropdownVisible, setDropdownVisible] = useState(false);
   const [isHModalVisible, setHModalVisible] = useState(false);
   const [isAModalVisible, setAModalVisible] = useState(false);
   const [isSuModalVisible, setSuModalVisible] = useState(false);
@@ -35,6 +36,10 @@ const Header: React.FC<HeaderProps> = () => {
     } else {
       console.error('Account is null or undefined');
     }
+  };
+
+  const handleUserLogoClick = () => {
+    setDropdownVisible(!isDropdownVisible);
   };
 
   const handleUserClick = () => {
@@ -121,7 +126,7 @@ const Header: React.FC<HeaderProps> = () => {
           </li>
         </ul>
       </div>
-      <div className="flex items-center">
+      <div className="flex items-center mr-28">
         {loading ? (
           <div className="text-white text-lg font-bold mr-2"></div>
         ) : (
@@ -131,9 +136,64 @@ const Header: React.FC<HeaderProps> = () => {
             </div>
           )
         )}
-        <button onClick={handleUserClick}>
-          <img src="/litimg/userlogo.svg" alt="User Logo" className="w-10 mr-32" />
-        </button>
+         <div className="relative">
+          <button onClick={handleUserLogoClick}>
+            <img src="/litimg/userlogo.svg" alt="User Logo" className="w-10 mr-2"/>
+          </button>
+          {isDropdownVisible && (
+            <div className="absolute bg-white mt-4 rounded border" style={{width: '176px'}}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                <div onClick={handleUserClick} style={{ cursor: 'pointer', width: '176px' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E5E7EB'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
+                  <button className="ml-2 mt-3 mb-3 text-sm font-bold flex flex-row items-center">
+                    <svg className="w-4 h-4 text-black mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 18">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-2 3h4a4 4 0 0 1 4 4v2H1v-2a4 4 0 0 1 4-4Z"/>
+                    </svg>
+                    Profile
+                  </button>
+                </div>
+                <div onClick={handleAchievementsClick} style={{ cursor: 'pointer', width: '176px' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E5E7EB'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
+                  <button className="ml-2 mt-3 mb-3 text-sm font-bold flex flex-row items-center">
+                    <svg className="w-4 h-4 text-black mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 21 20">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m11.479 1.712 2.367 4.8a.532.532 0 0 0 .4.292l5.294.769a.534.534 0 0 1 .3.91l-3.83 3.735a.534.534 0 0 0-.154.473l.9 5.272a.535.535 0 0 1-.775.563l-4.734-2.49a.536.536 0 0 0-.5 0l-4.73 2.487a.534.534 0 0 1-.775-.563l.9-5.272a.534.534 0 0 0-.154-.473L2.158 8.48a.534.534 0 0 1 .3-.911l5.294-.77a.532.532 0 0 0 .4-.292l2.367-4.8a.534.534 0 0 1 .96.004Z"/>
+                    </svg>
+                    Achievements
+                  </button>
+                </div>
+                <div className="text-sm" style={{ marginTop: '-16px' }}>______________________________</div>
+                <div onClick={handleSubscriptionClick} style={{ cursor: 'pointer', width: '176px' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E5E7EB'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
+                  <button className="ml-2 mt-3 mb-3 text-sm font-bold flex flex-row items-center">
+                    <svg className="w-4 h-4 text-black mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 15a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0h8m-8 0-1-4m9 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-9-4h10l2-7H3m2 7L3 4m0 0-.792-3H1"/>
+                    </svg>
+                    Subscription
+                  </button>
+                </div>
+                <div className="text-sm" style={{ marginTop: '-16px' }}>______________________________</div>
+                <div onClick={handleSettingsClick} style={{ cursor: 'pointer', width: '176px' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E5E7EB'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
+                  <button className="ml-2 mt-3 mb-3 text-sm font-bold flex flex-row items-center">
+                    <svg className="w-4 h-4 text-black mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                      <g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                        <path d="M19 11V9a1 1 0 0 0-1-1h-.757l-.707-1.707.535-.536a1 1 0 0 0 0-1.414l-1.414-1.414a1 1 0 0 0-1.414 0l-.536.535L12 2.757V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v.757l-1.707.707-.536-.535a1 1 0 0 0-1.414 0L2.929 4.343a1 1 0 0 0 0 1.414l.536.536L2.757 8H2a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h.757l.707 1.707-.535.536a1 1 0 0 0 0 1.414l1.414 1.414a1 1 0 0 0 1.414 0l.536-.535L8 17.243V18a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-.757l1.707-.708.536.536a1 1 0 0 0 1.414 0l1.414-1.414a1 1 0 0 0 0-1.414l-.535-.536.707-1.707H18a1 1 0 0 0 1-1Z"/>
+                        <path d="M10 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                      </g>
+                    </svg>
+                    Settings
+                  </button>
+                </div>
+                <div className="text-sm" style={{ marginTop: '-16px' }}>______________________________</div>
+                <div onClick={handleLogoClick} style={{ cursor: 'pointer', width: '176px' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E5E7EB'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
+                  <button className="ml-2 mt-3 mb-3 text-sm font-bold flex flex-row items-center">
+                    <svg className="w-4 h-4 text-black mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 15">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 7.5h11m0 0L8 3.786M12 7.5l-4 3.714M12 1h3c.53 0 1.04.196 1.414.544.375.348.586.82.586 1.313v9.286c0 .492-.21.965-.586 1.313A2.081 2.081 0 0 1 15 14h-3"/>
+                    </svg>
+                    Log out
+                  </button>
+                </div>
+                <div className="mb-3 text-sm" style={{ marginTop: '-16px' }}>______________________________</div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       {allHModalVisible && (
