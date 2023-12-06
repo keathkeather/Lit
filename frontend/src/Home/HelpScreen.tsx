@@ -169,10 +169,12 @@ const HelpScreen: React.FC = () => {
     <div className={`overflow-y-auto ${allModalVisible ? 'modal-open' : ''}`}>
 
         <Header/>
-        {allModalVisible && <div className="overlay"></div>}
+
+        {allModalVisible && <div className="help-overlay"></div>}
+
         <style>
           {`
-            .overlay {
+            .help-overlay {
               position: fixed;
               top: 0;
               left: 0;
@@ -182,14 +184,14 @@ const HelpScreen: React.FC = () => {
               z-index: 10;
             }
 
-            .modal {
+            .help-modal {
               position: fixed;
               right: 1%;
               bottom: 2%;
               z-index: 11;
             }
 
-            .modal-open {
+            .help-modal-open {
               overflow: hidden;
             }
           `}
@@ -229,7 +231,7 @@ const HelpScreen: React.FC = () => {
 
           <div
             id="popup-modal"
-            className={`modal ${isModalVisible ? '' : 'hidden'}`}
+            className={`help-modal ${isModalVisible ? '' : 'hidden'}`}
           >
             <div className="w-full max-w-md max-h-full">
               <div className="relative bg-white border border-white rounded-lg">
@@ -253,7 +255,7 @@ const HelpScreen: React.FC = () => {
 
           <div
             id="popup-pmodal"
-            className={`modal ${isPModalVisible ? '' : 'hidden'}`}
+            className={`help-modal ${isPModalVisible ? '' : 'hidden'}`}
           >
             <div className="w-full max-w-md max-h-full">
               <div className="relative bg-white border border-white rounded-lg flex flex-col items-center"
@@ -306,7 +308,7 @@ const HelpScreen: React.FC = () => {
 
           <div
             id="popup-fmodal"
-            className={`modal ${isFModalVisible ? '' : 'hidden'}`}
+            className={`help-modal ${isFModalVisible ? '' : 'hidden'}`}
           >
             <div className="w-full max-w-md max-h-full">
               <div className="relative bg-white border border-white rounded-lg flex flex-col items-center"
@@ -359,7 +361,7 @@ const HelpScreen: React.FC = () => {
 
           <div
             id="popup-smodal"
-            className={`modal ${isSModalVisible ? '' : 'hidden'}`}
+            className={`help-modal ${isSModalVisible ? '' : 'hidden'}`}
           >
             <div className="w-full max-w-md max-h-full">
               <div className="relative bg-white border border-white rounded-lg flex flex-col items-center"

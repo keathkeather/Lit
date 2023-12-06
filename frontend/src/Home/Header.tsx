@@ -8,11 +8,11 @@ const Header: React.FC<HeaderProps> = () => {
   const navigate = useNavigate();
   const { account } = useAccount();
   const [loading, setLoading] = useState(true);
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [isHModalVisible, setHModalVisible] = useState(false);
   const [isAModalVisible, setAModalVisible] = useState(false);
   const [isSuModalVisible, setSuModalVisible] = useState(false);
   const [isSeModalVisible, setSeModalVisible] = useState(false);
-  const allModalVisible = isModalVisible || isAModalVisible || isSuModalVisible || isSeModalVisible;
+  const allHModalVisible = isHModalVisible || isAModalVisible || isSuModalVisible || isSeModalVisible;
 
   useEffect(() => {
     if (account) {
@@ -38,7 +38,7 @@ const Header: React.FC<HeaderProps> = () => {
   };
 
   const handleUserClick = () => {
-    setModalVisible(!isModalVisible);
+    setHModalVisible(!isHModalVisible);
   };
 
   const handleAchievementsClick = () => {
@@ -54,8 +54,8 @@ const Header: React.FC<HeaderProps> = () => {
   };
 
   const closeModal = () => {
-    if(isModalVisible === true){
-      setModalVisible(false);
+    if(isHModalVisible === true){
+      setHModalVisible(false);
     }
     if(isAModalVisible === true){
       setAModalVisible(false);
@@ -136,9 +136,13 @@ const Header: React.FC<HeaderProps> = () => {
         </button>
       </div>
 
+      {allHModalVisible && (
+        <div className="header-overlay"></div>
+      )}
+
       <style>
         {`
-          .overlay {
+          .header-overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -148,26 +152,22 @@ const Header: React.FC<HeaderProps> = () => {
             z-index: 10;
           }
 
-          .modal {
+          .header-modal {
             position: fixed;
             top: 35%;
             left: 35%;
             z-index: 11;
           }
 
-          .modal-open {
+          .header-modal-open {
             overflow: hidden;
           }
         `}
       </style>
-
-      {allModalVisible && (
-        <div className="overlay"></div>
-      )}
       
       <div
-      id="popup-modal"
-      className={`modal ${isModalVisible ? '' : 'hidden'}`}
+      id="hpopup-modal"
+      className={`header-modal ${isHModalVisible ? '' : 'hidden'}`}
       >
         <div className="w-full max-w-md max-h-full"
               style={{width: '500px'}}>
@@ -225,7 +225,7 @@ const Header: React.FC<HeaderProps> = () => {
 
       <div
       id="apopup-modal"
-      className={`modal ${isAModalVisible ? '' : 'hidden'}`}
+      className={`header-modal ${isAModalVisible ? '' : 'hidden'}`}
       >
         <div className="w-full max-w-md max-h-full"
               style={{width: '500px'}}>
@@ -283,7 +283,7 @@ const Header: React.FC<HeaderProps> = () => {
 
       <div
       id="supopup-modal"
-      className={`modal ${isSuModalVisible ? '' : 'hidden'}`}
+      className={`header-modal ${isSuModalVisible ? '' : 'hidden'}`}
       >
         <div className="w-full max-w-md max-h-full"
               style={{width: '500px'}}>
@@ -341,7 +341,7 @@ const Header: React.FC<HeaderProps> = () => {
 
       <div
       id="sepopup-modal"
-      className={`modal ${isSeModalVisible ? '' : 'hidden'}`}
+      className={`header-modal ${isSeModalVisible ? '' : 'hidden'}`}
       >
         <div className="w-full max-w-md max-h-full"
               style={{width: '500px'}}>
@@ -397,7 +397,7 @@ const Header: React.FC<HeaderProps> = () => {
                   to="/beanauthor"
                   type="button"
                   className="mt-5 px-40 py-2 bg-bgc2 text-white font-semibold cursor-pointer text-sm"
-                  onClick={handleBeAnAuthorClick}
+                  onClick={() => { handleSettingsClick(); handleBeAnAuthorClick(); }}
                 >
                   Be an Author
                 </Link>
