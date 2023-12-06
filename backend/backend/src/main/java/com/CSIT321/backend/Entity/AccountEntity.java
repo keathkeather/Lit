@@ -32,12 +32,19 @@ public class AccountEntity {
     @JsonManagedReference
     private BookListEntity bookList;
 
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private AccountAchievementEntity accountAchievement;
+
     private boolean isDeleted;
     
     public AccountEntity(){
         super();
         if(this.bookList == null){
             this.bookList = new BookListEntity(this);
+        }
+        if(this.accountAchievement == null){
+            this.accountAchievement = new AccountAchievementEntity(this);
         }
 
       
@@ -55,6 +62,9 @@ public class AccountEntity {
         this.gender = gender;
         if(this.bookList == null){
             this.bookList = new BookListEntity(this);
+        }
+        if(this.accountAchievement == null){
+            this.accountAchievement = new AccountAchievementEntity(this);
         }
      
         
@@ -116,6 +126,14 @@ public class AccountEntity {
     public void setBookList(BookListEntity bookList){
         this.bookList = bookList;
     }
+    public AccountAchievementEntity getAccountAchievement(){
+        return this.accountAchievement;
+    }
+    public void setAccountAchievement(AccountAchievementEntity accountAchievement){
+        this.accountAchievement = accountAchievement;
+        accountAchievement.setAccount(this);
+    }
+    
   
 
 }

@@ -24,6 +24,7 @@ public class AccountAchievementController {
             AccountAchievementEntity achievementList = accountAchievementService.addAchievement(accountId, achievementId);
             return new ResponseEntity<>(achievementList,HttpStatus.OK);
         }catch(Exception e){
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

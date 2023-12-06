@@ -9,6 +9,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import java.util.ArrayList;
 import java.util.List;
 @Entity
 @Table(name = "accountAchievement")
@@ -17,8 +21,11 @@ public class AccountAchievementEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int accountAchievementId;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL, CascadeType.PERSIST})
+    @JsonBackReference
+    @JoinColumn(name = "account_id")
     private AccountEntity account;
+
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "account_achievement_id")
@@ -33,6 +40,7 @@ public class AccountAchievementEntity {
 
     public AccountAchievementEntity(AccountEntity account) {
         this.account = account;
+        this.achievements = new ArrayList<>(); // Initialize the achievements field
         this.isDeleted = false;
     }
 

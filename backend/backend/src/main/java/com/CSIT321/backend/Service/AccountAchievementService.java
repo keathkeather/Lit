@@ -24,19 +24,26 @@ public class AccountAchievementService {
     @Autowired
     AchievementRepository achievementRepository;
 
-    public AccountAchievementEntity addAchievement(int accountId,int achievementId){
+    public AccountAchievementEntity addAchievement(int accountId, int achievementId){
         try{
             AccountEntity account = accountRepository.findById(accountId).orElseThrow(() -> new NoResultException("Account " + accountId + " does not exist"));
-            AccountAchievementEntity accoountAchievement = accountAchievementRepository.findByAccount(account).orElseThrow(() -> new NoResultException("Account " + accountId + " does not exist"));
-            List<AchievementEntity> achievements = accoountAchievement.getAchievements();
+    
+            // Retrieve or create an AccountAchievementEntity for the account
+            AccountAchievementEntity accountAchievement = accountAchievementRepository.findByAccount(account)
+                    .orElse(new AccountAchievementEntity(account));
+    
+            List<AchievementEntity> achievements = accountAchievement.getAchievements();
             AchievementEntity achieved = achievementRepository.findById(achievementId).orElseThrow(() -> new NoResultException("Achievement " + achievementId + " does not exist"));
             achievements.add(achieved);
-            accoountAchievement.setAchievements(achievements);
-            return accountAchievementRepository.save(accoountAchievement);
-        }catch(Exception e){
+            accountAchievement.setAchievements(achievements);
+            return accountAchievementRepository.save(accountAchievement);
+        } catch(Exception e){
             throw e;
         }
     }
+    
+    
+    
     public AccountAchievementEntity removeAchievement(int accountId, int achievementId) {
         AccountEntity account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new NoResultException("Account " + accountId + " does not exist"));
