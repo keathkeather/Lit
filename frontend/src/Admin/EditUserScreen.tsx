@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 interface EditUserScreenProps {}
 
 const EditUserScreen: React.FC<EditUserScreenProps> = () => {
-  const { accountId } = useParams<{ accountId: string }>();
+  const { userId } = useParams<{ userId: string }>();
   const [user, setUser] = useState({
     username: '',
     password: '',
@@ -22,7 +22,7 @@ const EditUserScreen: React.FC<EditUserScreenProps> = () => {
 
   const fetchUserDetails = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/user/getUser/${accountId}`);
+      const response = await fetch(`http://localhost:8080/user/getUser/${userId}`);
       const data = await response.json();
 
       setUser(data);
@@ -33,13 +33,13 @@ const EditUserScreen: React.FC<EditUserScreenProps> = () => {
 
   useEffect(() => {
     fetchUserDetails();
-  }, [accountId]);
+  }, [userId]);
 
   const handleFormSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     try {
-      const response = await fetch(`http://localhost:8080/user/updateUser/${accountId}`, {
+      const response = await fetch(`http://localhost:8080/user/updateUser/${userId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

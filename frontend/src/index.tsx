@@ -54,7 +54,7 @@ ReactDOM.render(
         <Route path="/admin" element={<AdminHomeScreen/>}/>
         <Route path="/subscription" element={<SubscriptionScreen/>}/>
         <Route path="/reportsandfeedbacks" element={<FeedbackAndReports />} />
-        <Route path="/edituser" element={<EditUserScreen />} />
+        <Route path="/edituser/:userId" element={<EditUserScreen />} />
         <Route path="/beanauthor" element={<BeAnAuthorScreen />} />
       </Routes>
     </Router>
