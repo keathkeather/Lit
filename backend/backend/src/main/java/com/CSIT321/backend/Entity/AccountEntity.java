@@ -36,6 +36,10 @@ public class AccountEntity {
     @JsonManagedReference
     private AccountAchievementEntity accountAchievement;
 
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private QuizAnsweredEntity quizAnswered;
+
     private boolean isDeleted;
     
     public AccountEntity(){
@@ -46,12 +50,10 @@ public class AccountEntity {
         if(this.accountAchievement == null){
             this.accountAchievement = new AccountAchievementEntity(this);
         }
-
-      
-
+         if(this.quizAnswered == null){
+            this.quizAnswered = new QuizAnsweredEntity(this);
+        }
         this.isDeleted = false;
-
-        
     }
     public AccountEntity(UserEntity user, String email,RolesEntity role,String firstName , String lastName , String gender){
         this.user = user;
@@ -66,8 +68,9 @@ public class AccountEntity {
         if(this.accountAchievement == null){
             this.accountAchievement = new AccountAchievementEntity(this);
         }
-     
-        
+        if(this.quizAnswered == null){
+            this.quizAnswered = new QuizAnsweredEntity(this);
+        }  
         this.isDeleted = false;
 
     }
@@ -132,6 +135,12 @@ public class AccountEntity {
     public void setAccountAchievement(AccountAchievementEntity accountAchievement){
         this.accountAchievement = accountAchievement;
         accountAchievement.setAccount(this);
+    }
+    public QuizAnsweredEntity getQuizAnswered(){
+        return this.quizAnswered;
+    }
+    public void setQuizAnswered(QuizAnsweredEntity quizAnswered){
+        this.quizAnswered = quizAnswered;
     }
     
   
