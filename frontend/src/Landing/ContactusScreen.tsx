@@ -55,8 +55,6 @@ const ContactusScreen: React.FC<ContactusScreenProps> = () => {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      let result = await response.text();
-
       setFormData({
         name: "",
         email: "",
@@ -71,7 +69,10 @@ const ContactusScreen: React.FC<ContactusScreenProps> = () => {
 
   return (
     <div className="bg-bgc1 min-h-screen flex flex-col relative">
-      <Header />
+      <div className="z-30">
+        <Header />
+        </div>
+      
       {(isSModalVisible || isEModalVisible) && (
         <div className="bea-overlay"></div>
       )}
