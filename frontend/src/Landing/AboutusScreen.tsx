@@ -36,9 +36,8 @@ const AboutusScreen: React.FC<AboutusScreenProps> = () => {
         enriched future for <br/>education is inherently more thrilling than a stagnant one. Today, our team is<br/>passionately engaged 
         in crafting cutting-edge technologies to actualize this<br/>vision. </h2>
 
-        <h2 className="text-2xl font-normal text-white leading-relaxed -ml-[20rem] mb-24">Lit was established with a vision rooted in the belief that an 
-        enriched future for <br/>education is inherently more thrilling than a stagnant one. Today, our team is<br/>passionately engaged 
-        in crafting cutting-edge technologies to actualize this<br/>vision. </h2>
+        <h2 className="text-2xl font-normal text-white leading-relaxed -ml-[20rem] mb-24">With the overarching objective of empowering students and educators alike, <br/>
+        our ultimate aim is to create an educational landscape that not only captivates <br/> but also propels individuals toward a future of limitless possibilities.</h2>
       </div>
     </div>
 
