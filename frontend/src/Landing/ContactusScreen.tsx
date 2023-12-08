@@ -10,8 +10,10 @@ const ContactusScreen: React.FC<ContactusScreenProps> = () => {
     email: '',
     message: '',
   });
-  
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -21,31 +23,41 @@ const ContactusScreen: React.FC<ContactusScreenProps> = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const { name, email, message } = formData;
-
-    let details = {
-      name,
-      email,
-      message,
-    };
-
-    let response = await fetch('http://localhost:5000/contact', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8',
-      },
-      body: JSON.stringify(details),
-    });
-
-    let result = await response.json();
-    alert(result.status);
-
-    setFormData({
-      name: '',
-      email: '',
-      message: '',
-    });
+  
+    try {
+      const { name, email, message } = formData;
+  
+      let details = {
+        name: name,
+        email,
+        message,
+      };
+  
+      let response = await fetch('http://localhost:8080/email/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8',
+        },
+        body: JSON.stringify(details),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      let result = await response.text(); 
+  
+      alert(result);
+  
+      setFormData({
+        name: '',
+        email: '',
+        message: '',
+      });
+    } catch (error) {
+      console.error('Error during fetch or parsing:', error);
+      alert('Error sending email');
+    }
   };
 
   return (
