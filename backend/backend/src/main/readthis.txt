@@ -1,0 +1,10 @@
+for integration for spring-email add this to the application.properties 
+
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=lit.filico@gmail.com
+spring.mail.password=ekqnyhhceybyrszl
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+
+this will make sure that the host email is connected to the backend server 
