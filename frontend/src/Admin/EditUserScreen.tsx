@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 interface EditUserScreenProps {}
 
 const EditUserScreen: React.FC<EditUserScreenProps> = () => {
   const { userId } = useParams<{ userId: string }>();
+  const navigate = useNavigate();
   const [user, setUser] = useState({
     username: '',
     password: '',
@@ -49,6 +50,7 @@ const EditUserScreen: React.FC<EditUserScreenProps> = () => {
 
       if (response.ok) {
         console.log('User details successfully updated');
+        navigate('/admin');
         
       } else {
         console.error('Failed to update user details:', response.statusText);
