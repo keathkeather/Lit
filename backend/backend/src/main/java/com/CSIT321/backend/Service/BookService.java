@@ -72,24 +72,6 @@ public class BookService {
             throw e;
         }
     }
-    public BookEntity approveBook(int bookId){
-        try{
-            BookEntity book =bookRepository.findById(bookId).orElseThrow(() -> new EntityNotFoundException("book " + bookId + " does not exist"));
-            book.approve();
-            return book;
-        }catch(DataAccessException e){
-            throw e;
-        }
-    }
-    public BookEntity dissapproveBook(int bookId){
-        try{
-            BookEntity book =bookRepository.findById(bookId).orElseThrow(() -> new EntityNotFoundException("book " + bookId + " does not exist"));
-            book.disapprove();
-            return book;
-        }catch(DataAccessException e){
-            throw e;
-        }
-    }
     public List<QuizEntity> getQuiz(int bookId){
         try{
             BookEntity book =bookRepository.findById(bookId).orElseThrow(() -> new EntityNotFoundException("book " + bookId + " does not exist"));

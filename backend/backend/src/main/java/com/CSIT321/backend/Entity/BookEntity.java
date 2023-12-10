@@ -33,22 +33,30 @@ public class BookEntity {
     private List<AchievementEntity> achievement;
 
     
-    private boolean isApproved;
+
 
     private boolean isDeleted;
 
     public BookEntity(){
         super();
         this.isDeleted = false;
-        this.isApproved = false;
     }
-    public BookEntity(String bookName, String bookDescription,List<AchievementEntity> achievement, List<QuizEntity> quiz){
+    public BookEntity(AccountEntity author , String bookName, String bookDescription, String genre){
+        this.author = author;
         this.bookName = bookName;
         this.bookDescription = bookDescription;
+        this.genre = genre;
+        this.isDeleted = false;
+    }
+
+    public BookEntity(String bookName, String bookDescription,String genre,AccountEntity author,List<AchievementEntity> achievement, List<QuizEntity> quiz){
+        this.bookName = bookName;
+        this.bookDescription = bookDescription;
+        this.genre = genre;
+        this.author = author;
         this.achievement = achievement;
         this.quiz = quiz;
         this.isDeleted = false;
-        this.isApproved=false;
     }
     public int getBookId(){
         return this.bookId;
@@ -98,15 +106,4 @@ public class BookEntity {
     public void recover(){
         this.isDeleted = false;
     }
-    public boolean getIsapproved(){
-        return this.isApproved;
-    }
-    public void approve(){
-        this.isApproved = true;
-    }
-    public void disapprove(){
-        this.isApproved = false;
-    }
-
-
 }

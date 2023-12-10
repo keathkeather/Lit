@@ -98,26 +98,7 @@ public class BookController {
             throw e;
         }
     }
-    @CrossOrigin
-    @PutMapping("/approveBook/{bookId}")
-    public ResponseEntity<BookEntity> approveBook(@PathVariable int bookId){
-        try{
-            BookEntity approvedBook = bookService.approveBook(bookId);
-            return new ResponseEntity<>(approvedBook,HttpStatus.OK);
-        }catch(Exception e){
-            throw e;
-        }
-    }
-    @CrossOrigin
-    @PutMapping("/dissapprove/{bookId}")
-    public ResponseEntity<BookEntity> disapproveBook(@PathVariable int bookId){
-        try{
-            BookEntity approvedBook = bookService.dissapproveBook(bookId);
-            return new ResponseEntity<>(approvedBook,HttpStatus.OK);
-        }catch(Exception e){
-            throw e;
-        }
-    }
+  
     @CrossOrigin
     @GetMapping("/getQuiz/{bookId}")
     public ResponseEntity<List<QuizDTO>> getQuizPerBook(@PathVariable int bookId) {
