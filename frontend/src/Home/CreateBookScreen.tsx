@@ -5,10 +5,12 @@ import { useAccount } from './AccountContext';
 const CreateBookScreen: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const {account} = useAccount();
+  const [titleText, setTitleText] = useState('');
+  const [titleError, setTitleError] = useState('');
   const [descriptionText, setDescriptionText] = useState('');
-  const [portfolioText, setPorfolioText] = useState('');
   const [descriptionError, setDescriptionError] = useState('');
-  const [portfolioError, setPortfolioError] = useState('');
+  const [genreText, setGenreText] = useState('');
+  const [genreError, setGenreError] = useState('');
   const [isSModalVisible, setSModalVisible] = useState(false);
   const [isFModalVisible, setFModalVisible] = useState(false);
   const allBEAModalVisible = isSModalVisible || isFModalVisible;
@@ -34,12 +36,13 @@ const CreateBookScreen: React.FC = () => {
       account: {
         accountId: account?.accountId,
       },
-      request: descriptionText,
-      portfolioLink: portfolioText,
+      bookName: titleText,
+      bookDescription: descriptionText,
+      genre: genreText,
     };
   
     try {
-      const response = await fetch('http://localhost:8080/authorRequest/create', {
+      const response = await fetch('http://localhost:8080/bookRequest/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -50,17 +53,18 @@ const CreateBookScreen: React.FC = () => {
       console.log('Response:', response);
   
       if (response.ok) {
+        setTitleText('');
         setDescriptionText('');
-        setPorfolioText('');
+        setGenreText('');
         const data = await response.json();
-        console.log('Request submitted successfully:', data);
+        console.log('Book request submitted successfully:', data);
         toggleSModal();
       } else {
-        console.error('Error submitting request:', response.statusText);
+        console.error('Error submitting book request 1:', response.statusText);
         toggleFModal();
       }
     } catch (error) {
-      console.error('Error submitting request:', error);
+      console.error('Error submitting book request 2:', error);
       toggleFModal();
     }
   };
@@ -117,7 +121,7 @@ const CreateBookScreen: React.FC = () => {
                     <div className="flex flex-col items-center mt-4 mb-4">
                         <img src="/litimg/beas.png" alt="Success" className="w-16 mt-6" />
                         <div className="mt-4 font-bold text-2xl" style={{color: '#27AE60'}}>SUCCESS!</div>
-                        <div className="mt-4 font-semibold text-md">Your request was submitted successfully.</div>
+                        <div className="mt-4 font-semibold text-md">Your book request was submitted successfully.</div>
                         <div className="mt-1 font-normal text-sm">Goodluck with your application!</div>
                         <button type="button" onClick={toggleSModal} className="mt-6 mb-4">
                             <img src="/litimg/continuebtn.svg" alt="Continue Button" className="w-48" />
@@ -137,7 +141,7 @@ const CreateBookScreen: React.FC = () => {
                     <div className="flex flex-col items-center mt-4 mb-4">
                         <img src="/litimg/beaf.png" alt="Success" className="w-16 mt-6" />
                         <div className="mt-4 font-bold text-2xl" style={{color: '#F21E1E'}}>OOPS!</div>
-                        <div className="mt-4 font-semibold text-md">There was an issue submitting your application.</div>
+                        <div className="mt-4 font-semibold text-md">There was an issue submitting your book request.</div>
                         <div className="mt-1 font-normal text-sm">If the problem persists, contact us for assistance.</div>
                         <button type="button" onClick={toggleFModal} className="mt-6 mb-4">
                             <img src="/litimg/tryagainbtn.svg" alt="Continue Button" className="w-48" />
@@ -150,62 +154,91 @@ const CreateBookScreen: React.FC = () => {
         <div className="flex flex-col justify-center mt-16">
             <div className="mt-12 text-black text-4xl font-bold ml-32">Book Details</div>
             <div className="text-lgray text-2xl text-center">_________________________________________________________________________________________________________________________________</div>
-            <div className="mt-6 ml-32">
-                <div className="text-black text-xl font-semibold">About Yourself</div>
-                {descriptionError && (
-                    <div className="text-sm" style={{color: '#EE0000'}}>{descriptionError}</div>
-                )}
-                <textarea
-                    placeholder={`Write a description about yourself!`}
-                    value={descriptionText}
-                    style={{ height: '200px', width: '800px'}}
-                    className="mt-2 border rounded-md py-2 px-2 mb-2 text-sm"
-                    onChange={(e) => {
-                    setDescriptionText(e.target.value);
-                    setDescriptionError('');
-                    }}
-                />
+            <div className="flex flex-row">
+                <div className="ml-28 flex flex-col items-center">
+                    <img src="/litimg/addbc.png" alt="Add Book Cover" className="w-80 ml-20 mt-10" />
+                </div>
+                <div className="flex flex-col items-center">
+                <div className="mt-6 ml-24">
+                        <div className="text-black text-xl font-semibold">Book Title</div>
+                        {titleError && (
+                            <div className="text-sm" style={{color: '#EE0000'}}>{titleError}</div>
+                        )}
+                        <textarea
+                            placeholder={`Untitled Book`}
+                            value={titleText}
+                            style={{ height: '40px', width: '800px'}}
+                            className="mt-2 border rounded-md py-2 px-2 mb-2 text-sm"
+                            onChange={(e) => {
+                            setTitleText(e.target.value);
+                            setTitleError('');
+                            }}
+                        />
+                    </div>
+                    <div className="ml-24">
+                        <div className="text-black text-xl font-semibold">Book Description</div>
+                        {descriptionError && (
+                            <div className="text-sm" style={{color: '#EE0000'}}>{descriptionError}</div>
+                        )}
+                        <textarea
+                            placeholder={`Write a description about your book!`}
+                            value={descriptionText}
+                            style={{ height: '150px', width: '800px'}}
+                            className="mt-2 border rounded-md py-2 px-2 mb-2 text-sm"
+                            onChange={(e) => {
+                            setDescriptionText(e.target.value);
+                            setDescriptionError('');
+                            }}
+                        />
+                    </div>
+                    <div className="ml-24">
+                        <div className="text-black text-xl font-semibold">Book Genre</div>
+                        {genreError && (
+                            <div className="text-sm" style={{color: '#EE0000'}}>{genreError}</div>
+                        )}
+                        <textarea
+                            placeholder={`Fiction, Fable, Romance, Drama, etc...`}
+                            value={genreText}
+                            style={{ height: '40px', width: '800px'}}
+                            className="mt-2 border rounded-md py-2 px-2 mb-2 text-sm"
+                            onChange={(e) => {
+                            setGenreText(e.target.value);
+                            setGenreError('');
+                            }}
+                        />
+                    </div>
+                    <button onClick={() => {
+                        let hasError = false;
+
+                        if (!genreText.trim()) {
+                            setGenreError('Please provide genre of your book.');
+                            hasError = true;
+                        } else {
+                            setGenreError('');
+                        }
+
+                        if (!descriptionText.trim()) {
+                            setDescriptionError('Please provide description about your book.');
+                            hasError = true;
+                        } else {
+                            setDescriptionError('');
+                        }
+
+                        if (!titleText.trim()) {
+                            setTitleError('Please provide title of your book.');
+                            hasError = true;
+                        } else {
+                            setTitleError('');
+                        }
+
+                        if (!hasError) {
+                            handleSubmitClick();
+                        }
+                    }} className="ml-24 mt-4">
+                        <img src="/litimg/sbbtn.svg" alt="submit book btn" className="w-36" />
+                    </button>
+                </div>
             </div>
-            <div className="ml-32">
-                <div className="text-black text-xl font-semibold">Link of Portfolio</div>
-                {portfolioError && (
-                    <div className="text-sm" style={{color: '#EE0000'}}>{portfolioError}</div>
-                )}
-                <textarea
-                    placeholder={`johndoe.framer.website, etc..`}
-                    value={portfolioText}
-                    style={{ height: '40px', width: '800px'}}
-                    className="mt-2 border rounded-md py-2 px-2 mb-2 text-sm"
-                    onChange={(e) => {
-                    setPorfolioText(e.target.value);
-                    setPortfolioError('');
-                    }}
-                />
-            </div>
-            <button onClick={() => {
-                let hasError = false;
-
-                if (!descriptionText.trim()) {
-                    setDescriptionError('Please provide description about yourself.');
-                    hasError = true;
-                } else {
-                    setDescriptionError('');
-                }
-
-                if (!portfolioText.trim()) {
-                    setPortfolioError('Please provide link of your portfolio.');
-                    hasError = true;
-                } else {
-                    setPortfolioError('');
-                }
-
-                if (!hasError) {
-                    handleSubmitClick();
-                }
-            }} className="ml-32 mt-4">
-                <img src="/litimg/submitsbtn.svg" alt="submitbtn" className="w-36" />
-            </button>
-            <img id="bottomImage" src="/litimg/BEAbg.png" alt="bottom bg" className="fixed bottom-0 left-0 w-full z-n1" style={{ pointerEvents: 'none' }}/>
         </div>
     </div>
   );
