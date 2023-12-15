@@ -109,7 +109,7 @@ const Header: React.FC<HeaderProps> = () => {
           </li>
           <li>
             <Link
-              to="/mylist"
+              to={account?.role.role_id === 2 ? '/authormylist' : '/mylist'}
               className="text-base lg:text-lg font-bold text-white mr-3 md:mr-4 hover:text-bgc2"
             >
               My List

@@ -5,7 +5,12 @@ interface Account {
   email: string;
   firstName: string;
   lastName: string;
+  role : Role;
   // Add other properties as needed
+}
+
+interface Role{
+  role_id: number;
 }
 
 interface AccountContextProps {
