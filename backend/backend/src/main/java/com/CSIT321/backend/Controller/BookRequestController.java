@@ -9,6 +9,7 @@ import com.CSIT321.backend.Service.BookRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +26,8 @@ import javax.persistence.NoResultException;
 public class BookRequestController {
     @Autowired
     BookRequestService bookRequestService;
-
+    
+    @CrossOrigin
     @PostMapping("/create")
     public ResponseEntity<BookRequestEntity> createBookRequest(@RequestBody BookRequestEntity bookRequestEntity){
         try{
@@ -40,6 +42,7 @@ public class BookRequestController {
             return new  ResponseEntity <>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @CrossOrigin
     @GetMapping("/all")
     public ResponseEntity<List<BookRequestEntity>> getAllBookRequest(){
         try{
@@ -49,6 +52,7 @@ public class BookRequestController {
             return new  ResponseEntity <>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @CrossOrigin
     @GetMapping("/perAccount/{accountId}")
     public ResponseEntity<List<BookRequestEntity>> getBookRequestPerAccount(@PathVariable int accountId){
         try{
@@ -61,6 +65,7 @@ public class BookRequestController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @CrossOrigin
     @GetMapping("/perBookRequest/{bookRequestId}")
     public ResponseEntity<BookRequestEntity> getBookRequest(@PathVariable int bookRequestId){
         try{
@@ -73,6 +78,7 @@ public class BookRequestController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @CrossOrigin
     @PutMapping("/approveRequest/{bookRequestId}")
     public ResponseEntity<BookRequestEntity> approveRequest(@PathVariable int bookRequestId){
         try{
@@ -85,6 +91,7 @@ public class BookRequestController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @CrossOrigin
     @PutMapping("/denyRequest/{bookRequestId}")
     public ResponseEntity<BookRequestEntity> denyRequest(@PathVariable int bookRequestId){
         try{
@@ -97,6 +104,7 @@ public class BookRequestController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @CrossOrigin
     @DeleteMapping("/delete/{bookRequestId}")
     public ResponseEntity<String> deleteBookRequest(@PathVariable int bookRequestId){
         try{
