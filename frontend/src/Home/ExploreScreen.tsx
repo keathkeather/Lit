@@ -84,8 +84,7 @@ const ExploreScreen: React.FC = () => {
               bookId={book.bookId}
               title={book.bookName}
               genre={book.genre}
-              // author={book.author}
-              // Add other fields as needed
+              author={book.author}
               onPlusClick={() => handlePlus(book.bookId)}
               onPlayClick={handlePlay}
             />

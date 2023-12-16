@@ -4,11 +4,15 @@ interface BookEntryProps {
   bookId: number;
   title: string;
   genre: string;
+  author: {
+    firstName: string;
+    lastName: string;
+  };
   onPlusClick: () => void;
   onPlayClick: (bookId: number) => void;
 }
 
-const BookEntry: React.FC<BookEntryProps> = ({ bookId, title, genre, onPlusClick, onPlayClick }) => {
+const BookEntry: React.FC<BookEntryProps> = ({ bookId, title, genre, author, onPlusClick, onPlayClick }) => {
   return (
     <div className="mb-5">
       <div className="ml-12 font-bold text-sm mb-3">{genre}</div>
@@ -20,9 +24,8 @@ const BookEntry: React.FC<BookEntryProps> = ({ bookId, title, genre, onPlusClick
               <img src="litimg/plusbtn.svg" alt="plusbtn" className="w-15" />
             </button>
           </div>
-          <div className="ml-5 mb-3 text-lg font-semibold">{title}</div>
-          {/* Render author as text directly */}
-          {/* <div className="ml-5 mb-3 font-medium text-sm text-lblue">{author}</div> */}
+          <div className="ml-5 text-lg font-semibold">{title}</div>
+          <div className="ml-5 mb-3 font-medium text-sm text-lblue">{`${author.firstName} ${author.lastName}`}</div>
           <button onClick={() => onPlayClick(bookId)} className="mx-auto mb-5">
             <img src="litimg/playbtn.svg" alt="playbtn" className="w-60" />
           </button>

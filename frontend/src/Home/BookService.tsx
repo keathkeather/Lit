@@ -1,8 +1,11 @@
 export interface Book {
     bookId: number;
     bookName: string;
-    genre: string
-    // Add other fields as needed
+    genre: string;
+    author: {
+      firstName: string;
+      lastName: string;
+    };
   }
   
   export const fetchBooks = async (): Promise<Book[]> => {

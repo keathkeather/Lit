@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Header from './Header';
 import { useNavigate } from 'react-router-dom';
 import { useAccount } from './AccountContext';
+import AuthorBooks from './AuthorBooks';
 
 const AuthorMyList: React.FC = () => {
   const {account} = useAccount();
@@ -46,7 +47,12 @@ const AuthorMyList: React.FC = () => {
             <div className="text-lgray text-2xl text-center">_________________________________________________________________________________________________________________________________</div>
         </div>
 
-        <div className="mt-6 mb-10 flex items-center">
+        {/* Display the published books of the signed-in author */}
+        {account && (
+          <AuthorBooks signedInUser={{ firstName: account.firstName, lastName: account.lastName }} />
+        )}
+
+        <div className="mt-6 mb-2 flex items-center">
           <div className="text-black text-3xl font-bold mr-[69rem]">My List</div>
           <div className="relative inline-block text-left">
             <div>
@@ -76,6 +82,7 @@ const AuthorMyList: React.FC = () => {
             )}
           </div>
         </div>
+        <div className="text-lgray text-2xl text-center">_________________________________________________________________________________________________________________________________</div>
 
         </div>
     </div>
