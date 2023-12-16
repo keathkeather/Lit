@@ -41,6 +41,18 @@ public class FeedbackController {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
+
+    @CrossOrigin
+    @GetMapping("/getAllAvailableFeedback")
+    public ResponseEntity<List<FeedbackEntity>>getAllAvailableFeedback(){
+        try{
+            List<FeedbackEntity> feedbackList = feedbackService.getAllAvailableFeedback();
+            return new ResponseEntity<>(feedbackList,HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+    }
+
     @CrossOrigin
     @PutMapping("/deleteFeedback/{feedbackId}")
     public ResponseEntity<FeedbackEntity>deleteFeedback(@PathVariable int feedbackId){

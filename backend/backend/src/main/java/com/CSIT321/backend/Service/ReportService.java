@@ -21,6 +21,14 @@ public class ReportService {
     public List<ReportEntity> getAllReports(){
         return reportRepository.findAll();
     }
+    
+    public List<ReportEntity> getAllAvailableReports(){
+        try{
+            return reportRepository.findByIsDeleted(false).get();
+        }catch(Exception e){
+            throw e;
+        }
+    }
     public ReportEntity deleteReport(int reportId){
         try{
             ReportEntity deletedReport = reportRepository.findById(reportId).orElseThrow(() -> new EntityNotFoundException("Report " + reportId + " does not exist"));

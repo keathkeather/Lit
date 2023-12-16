@@ -41,6 +41,18 @@ public class ReportController {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
+    
+    @CrossOrigin
+    @GetMapping("/getAllAvailableReport")
+    public ResponseEntity<List<ReportEntity>>getAllAvailableReport(){
+        try{
+            List<ReportEntity> reportList = reportService.getAllAvailableReports();
+            return new ResponseEntity<>(reportList,HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+    }
+
     @CrossOrigin
     @PutMapping("/deleteReport/{reportId}")
     public ResponseEntity<ReportEntity>deleteReport(@PathVariable int reportId){

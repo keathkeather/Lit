@@ -21,6 +21,15 @@ public class FeedbackService {
     public List<FeedbackEntity> getAllFeedbacks(){
         return feedbackRepository.findAll();
     }
+    public List<FeedbackEntity> getAllAvailableFeedback(){
+        try{
+            return feedbackRepository.findByIsDeleted(false).get();
+        }catch(Exception e){
+            throw e;
+        }
+    }
+
+
     public FeedbackEntity deleteFeedback(int feedbackId){
         try{
             FeedbackEntity deletedFeedback = feedbackRepository.findById(feedbackId).orElseThrow(() -> new EntityNotFoundException("Feedback " + feedbackId + " does not exist"));
