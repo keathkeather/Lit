@@ -48,7 +48,7 @@ const BooksScreen: React.FC<BooksScreenProps> = () => {
   useEffect(() => {
     const fetchBooksData = async () => {
       try {
-        const booksResponse = await fetch(`http://localhost:8080/book/all`);
+        const booksResponse = await fetch(`http://localhost:8080/book/allAvailableBooks`);
         const booksData: BookEntity[] = await booksResponse.json();
         setBooks(booksData);
 
@@ -66,8 +66,8 @@ const BooksScreen: React.FC<BooksScreenProps> = () => {
   const handleDeleteBook = async (bookId: number) => {
     try {
       // Send a request to delete the book
-      const deleteResponse = await fetch(`http://localhost:8080/book/deletePermanently/${bookId}`, {
-        method: 'DELETE',
+      const deleteResponse = await fetch(`http://localhost:8080/book/delete/${bookId}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -81,7 +81,7 @@ const BooksScreen: React.FC<BooksScreenProps> = () => {
       console.log('Book successfully deleted');
 
       // Fetch the updated list of books
-      const updatedBooksResponse = await fetch(`http://localhost:8080/book/all`);
+      const updatedBooksResponse = await fetch(`http://localhost:8080/book/allAvailableBooks`);
       const updatedBooksData: BookEntity[] = await updatedBooksResponse.json();
 
       // Update the state with the updated list of books

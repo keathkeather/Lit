@@ -77,8 +77,8 @@ const ExploreScreen: React.FC = () => {
             </div>
         </div>
 
-        <div className="mt-5 mr-7 flex flex-wrap justify-between"
-             style={{width: '1300px'}}>
+        <div className="mt-5 ml-16 flex flex-wrap items-left"
+             style={{width: '1400px'}}>
           {books.map((book) => (
             <BookEntry
               bookId={book.bookId}

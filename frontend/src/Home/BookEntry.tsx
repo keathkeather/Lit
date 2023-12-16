@@ -14,7 +14,7 @@ interface BookEntryProps {
 
 const BookEntry: React.FC<BookEntryProps> = ({ bookId, title, genre, author, onPlusClick, onPlayClick }) => {
   return (
-    <div className="mb-5">
+    <div className="mb-5 mr-2">
       <div className="ml-12 font-bold text-sm mb-3">{genre}</div>
       <div className="flex flex-row items-center">
         <div className="flex flex-col ml-8">

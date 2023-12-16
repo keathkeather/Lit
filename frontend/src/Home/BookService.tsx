@@ -10,7 +10,7 @@ export interface Book {
   
   export const fetchBooks = async (): Promise<Book[]> => {
     try {
-      const response = await fetch('http://localhost:8080/book/all');
+      const response = await fetch('http://localhost:8080/book/allAvailableBooks');
       if (!response.ok) {
         throw new Error('Failed to fetch books');
       }
