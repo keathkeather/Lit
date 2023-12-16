@@ -4,13 +4,25 @@ import React, { useState, useEffect } from 'react';
 import Carousel from './Carousel';
 import BookEntry from './BookEntry';
 import { fetchBooks, Book } from './BookService';
+import addBookListService from '../ApiClient/addBookListService';
+import { useAccount } from './AccountContext';
+import { useBook } from './BookContext';
 
 const ExploreScreen: React.FC = () => {
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const [books, setBooks] = useState<Book[]>([]);
   const [searchInput, setSearchInput] = useState<string>('');
   const [originalBooks, setOriginalBooks] = useState<Book[]>([]);
-
+  const {account} = useAccount();
+  const {setBook} = useBook();
+  useEffect(() => {
+    if(account){
+      setLoading(false);
+    } else {
+      setLoading(true);
+    }
+  }, [account]);
   useEffect(() => {
     const fetchBooksData = async () => {
       try {
@@ -37,13 +49,15 @@ const ExploreScreen: React.FC = () => {
     setBooks(filteredBooks);
   };
 
-  const handlePlay = () => {
-    navigate('/book');
+  const handlePlay = (book:Book) => {
+    setBook(book);
+    navigate('/book');  
   };
 
   const handlePlus = (bookId: number) => {
     // logic here...
-    console.log(`Clicked on Plus button for Book ID: ${bookId}`);
+    // addBookListService(account?.accountId??0 , bookId);
+    console.log(`BookId:"+${bookId}`);
   };
 
   return (
@@ -86,7 +100,7 @@ const ExploreScreen: React.FC = () => {
               genre={book.genre}
               author={book.author}
               onPlusClick={() => handlePlus(book.bookId)}
-              onPlayClick={handlePlay}
+              onPlayClick={()=>handlePlay(book)}
             />
           ))}
         </div>

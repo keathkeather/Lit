@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.CSIT321.backend.Service.BookListService;
 import com.CSIT321.backend.Entity.BookEntity;
 import com.CSIT321.backend.Entity.BookListEntity;
+import com.CSIT321.backend.Exceptions.AlreadyExistOnListException;
 
 @RestController
 @RequestMapping("/booklist")
@@ -62,8 +63,11 @@ public class BookListController {
         try{
             BookListEntity bookList = bookListService.addBookToList(accountId, bookId);
             return new ResponseEntity<>(bookList, HttpStatus.OK);
+        }catch(AlreadyExistOnListException e){
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }catch(Exception e){
-            throw e;
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     @CrossOrigin

@@ -1,12 +1,13 @@
 import React from 'react';
 import Header from './Header';
 import { useNavigate } from 'react-router-dom';
-
+import { useBook } from './BookContext';
 interface BookScreenProps {}
 
 const BookScreen: React.FC<BookScreenProps> = () => {
   const navigate = useNavigate();
-
+  const { book } = useBook();
+  console.log(book?.bookId)
   const handleGame = () => {
     navigate('/game');
   };
@@ -18,7 +19,7 @@ const BookScreen: React.FC<BookScreenProps> = () => {
   return (
     <div className="overflow-y-full">
       <Header />
-
+      
       <div className="ml-32 mt-[6rem]">
         <div className="flex items">
           {/* Image */}
