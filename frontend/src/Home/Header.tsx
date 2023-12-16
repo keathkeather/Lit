@@ -456,10 +456,18 @@ const Header: React.FC<HeaderProps> = () => {
                 <Link
                   to="/beanauthor"
                   type="button"
-                  className="mt-5 px-40 py-2 bg-bgc2 text-white font-semibold cursor-pointer text-sm"
+                  className="ml-5 mt-5 px-40 py-2 bg-bgc2 text-white font-semibold cursor-pointer text-sm"
                   onClick={() => { handleSettingsClick(); handleBeAnAuthorClick(); }}
                 >
                   Be an Author
+                </Link>
+                <Link
+                  to="/subscription"
+                  type="button"
+                  className="ml-6 mt-5 px-32 py-2 bg-bgc2 text-white font-semibold cursor-pointer text-sm"
+                  onClick={() => { handleSettingsClick(); handleBeAnAuthorClick(); }}
+                >
+                  Manage Subscription
                 </Link>
               </div>
             </div>
