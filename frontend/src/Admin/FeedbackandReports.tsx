@@ -73,16 +73,7 @@ const FeedbackAndReports: React.FC<FeedbackAndReportsProps> = () => {
     return reports.slice(startIndex, endIndex);
   };
 
-  const handleDeleteFeedback = async (feedbackId: number) => {
-    setSelectedFeedbackId(feedbackId);
-    setShowFeedbackDeleteModal(true);
-  };
-
-  const handleDeleteReport = async (reportId: number) => {
-    setSelectedReportId(reportId);
-    setShowReportDeleteModal(true);
-  };
-
+  // *** Delete Feedback and Report *** //
   const confirmDeleteFeedback = async () => {
     if (selectedFeedbackId) {
       try {
@@ -169,7 +160,7 @@ const FeedbackAndReports: React.FC<FeedbackAndReportsProps> = () => {
                       <button
                         onClick={() => {
                           setSelectedFeedbackId(feedback.feedBackId); // Set the selected report ID to be deleted
-                          setShowFeedbackDeleteModal(true); // Show the delete report confirmation modal
+                          setShowFeedbackDeleteModal(true); // * Show the delete report confirmation modal
                         }}
                         className="focus:outline-none text-xs text-[#c72b2b] bg-[#c72b2b28] hover:bg-[#c72b2b] hover:text-white font-medium rounded-lg px-5 py-1.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
                       >
@@ -233,7 +224,7 @@ const FeedbackAndReports: React.FC<FeedbackAndReportsProps> = () => {
                       <button
                         onClick={() => {
                           setSelectedReportId(report.reportId); // Set the selected report ID to be deleted
-                          setShowReportDeleteModal(true); // Show the delete report confirmation modal
+                          setShowReportDeleteModal(true); // * Show the delete report confirmation modal
                         }}
                         className="focus:outline-none text-xs text-[#c72b2b] bg-[#c72b2b28] hover:bg-[#c72b2b] hover:text-white font-medium rounded-lg px-5 py-1.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
                       >
