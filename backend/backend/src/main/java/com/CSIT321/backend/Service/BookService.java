@@ -13,7 +13,6 @@ import com.CSIT321.backend.Repository.BookRepository;
 import com.CSIT321.backend.Repository.QuizRepository;
 import com.CSIT321.backend.Entity.BookEntity;
 import com.CSIT321.backend.Entity.QuizEntity;
-import com.CSIT321.backend.Entity.UserEntity;
 
 @Service
 public class BookService {
