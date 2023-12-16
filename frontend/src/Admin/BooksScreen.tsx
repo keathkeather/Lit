@@ -52,7 +52,7 @@ const BooksScreen: React.FC<BooksScreenProps> = () => {
         const booksData: BookEntity[] = await booksResponse.json();
         setBooks(booksData);
 
-        const pendingBooksResponse = await fetch(`http://localhost:8080/bookRequest/all`);
+        const pendingBooksResponse = await fetch(`http://localhost:8080/bookRequest/pending`);
         const pendingBooksData: BookEntity[] = await pendingBooksResponse.json();
         setPendingBooks(pendingBooksData);
       } catch (error) {
@@ -106,28 +106,15 @@ const BooksScreen: React.FC<BooksScreenProps> = () => {
         return;
       }
 
-      // Now, delete the book request
-      const deleteResponse = await fetch(`http://localhost:8080/bookRequest/delete/${bookRequestId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!deleteResponse.ok) {
-        console.error('Failed to delete book request:', deleteResponse.statusText);
-        return;
-      }
-
-      console.log('Book request successfully approved and deleted');
+      console.log('Book request successfully approved');
 
       // Fetch the updated list of books after approval
-      const updatedBooksResponse = await fetch(`http://localhost:8080/book/all`);
+      const updatedBooksResponse = await fetch(`http://localhost:8080/book/allAvailableBooks`);
       const updatedBooksData: BookEntity[] = await updatedBooksResponse.json();
       setBooks(updatedBooksData);
 
       // Fetch the updated list of pending book requests
-      const updatedPendingBooksResponse = await fetch(`http://localhost:8080/bookRequest/all`);
+      const updatedPendingBooksResponse = await fetch(`http://localhost:8080/bookRequest/pending`);
       const updatedPendingBooksData: BookEntity[] = await updatedPendingBooksResponse.json();
 
       // Update the state with the updated list of pending book requests
@@ -152,29 +139,16 @@ const BooksScreen: React.FC<BooksScreenProps> = () => {
         return;
       }
 
-      // Now, delete the book request
-      const deleteResponse = await fetch(`http://localhost:8080/bookRequest/delete/${bookRequestId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!deleteResponse.ok) {
-        console.error('Failed to delete book request:', deleteResponse.statusText);
-        return;
-      }
-
-      console.log('Book request successfully approved and deleted');
+      console.log('Book request successfully denied');
 
       // Fetch the updated list of pending book requests
-      const updatedPendingBooksResponse = await fetch(`http://localhost:8080/bookRequest/all`);
+      const updatedPendingBooksResponse = await fetch(`http://localhost:8080/bookRequest/pending`);
       const updatedPendingBooksData: BookEntity[] = await updatedPendingBooksResponse.json();
 
       // Update the state with the updated list of pending book requests
       setPendingBooks(updatedPendingBooksData);
     } catch (error) {
-      console.error('Error handling book approval:', error);
+      console.error('Error handling book denial:', error);
     }
   };
 
