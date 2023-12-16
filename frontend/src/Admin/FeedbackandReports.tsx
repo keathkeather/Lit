@@ -27,6 +27,12 @@ const FeedbackAndReports: React.FC<FeedbackAndReportsProps> = () => {
   const [feedbacks, setFeedbacks] = useState<FeedbackEntity[]>([]);
   const [reports, setReports] = useState<ReportEntity[]>([]);
 
+  //Modal
+  const [showFeedbackDeleteModal, setShowFeedbackDeleteModal] = useState(false);
+  const [showReportDeleteModal, setShowReportDeleteModal] = useState(false);
+  const [selectedFeedbackId, setSelectedFeedbackId] = useState<number | null>(null);
+  const [selectedReportId, setSelectedReportId] = useState<number | null>(null);
+
   // Pagination settings
   const itemsPerPage = 3;
   const [feedbackCurrentPage, setFeedbackCurrentPage] = useState(1);
@@ -37,8 +43,8 @@ const FeedbackAndReports: React.FC<FeedbackAndReportsProps> = () => {
     const fetchData = async () => {
       try {
         const [feedbacksResponse, reportsResponse] = await Promise.all([
-          fetch('http://localhost:8080/feedback/getAllFeedbacks'),
-          fetch('http://localhost:8080/report/getAllReport')
+          fetch('http://localhost:8080/feedback/getAllAvailableFeedback'),
+          fetch('http://localhost:8080/report/getAllAvailableReport')
         ]);
 
         const feedbacksData: FeedbackEntity[] = await feedbacksResponse.json();
@@ -68,17 +74,65 @@ const FeedbackAndReports: React.FC<FeedbackAndReportsProps> = () => {
   };
 
   const handleDeleteFeedback = async (feedbackId: number) => {
-    // Implement delete feedback functionality here
+    setSelectedFeedbackId(feedbackId);
+    setShowFeedbackDeleteModal(true);
   };
-  
+
   const handleDeleteReport = async (reportId: number) => {
-    // Implement delete report functionality here
+    setSelectedReportId(reportId);
+    setShowReportDeleteModal(true);
+  };
+
+  const confirmDeleteFeedback = async () => {
+    if (selectedFeedbackId) {
+      try {
+        const response = await fetch(`http://localhost:8080/feedback/deleteFeedback/${selectedFeedbackId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        if (!response.ok) {
+          const errorResponse = await response.json();
+          throw new Error(errorResponse.message || 'Failed to delete feedback');
+        }
+        setFeedbacks((prevFeedbacks) => prevFeedbacks.filter((feedback) => feedback.feedBackId !== selectedFeedbackId));
+        console.log('Feedback deleted successfully');
+      } catch (error) {
+        console.error('Error deleting feedback:', error);
+      } finally {
+        setShowFeedbackDeleteModal(false);
+      }
+    }
+  };
+
+  const confirmDeleteReport = async () => {
+    if (selectedReportId) {
+      try {
+        const response = await fetch(`http://localhost:8080/report/deleteReport/${selectedReportId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        if (!response.ok) {
+          const errorResponse = await response.json();
+          throw new Error(errorResponse.message || 'Failed to delete report');
+        }
+        setReports((prevReports) => prevReports.filter((report) => report.reportId !== selectedReportId));
+        console.log('Report deleted successfully');
+      } catch (error) {
+        console.error('Error deleting report:', error);
+      } finally {
+        setShowReportDeleteModal(false);
+      }
+    }
   };
 
   return (
     <div className="flex">
       <Sidebar />
-      <div className="flex-1 ml-64 p-4">
+      <div className="flex-1 ml-64 p-5">
         {/* Feedbacks Table */}
         <div className="p-5 pb-0 pt-4">
           <h2 className="text-2xl font-bold mb-4 text-gray">Feedbacks</h2>
@@ -113,7 +167,10 @@ const FeedbackAndReports: React.FC<FeedbackAndReportsProps> = () => {
                     <td className="px-6 py-3">{feedback.feedback}</td>
                     <td className="py-1.5">
                       <button
-                        onClick={() => handleDeleteFeedback(feedback.feedBackId)}
+                        onClick={() => {
+                          setSelectedFeedbackId(feedback.feedBackId); // Set the selected report ID to be deleted
+                          setShowFeedbackDeleteModal(true); // Show the delete report confirmation modal
+                        }}
                         className="focus:outline-none text-xs text-[#c72b2b] bg-[#c72b2b28] hover:bg-[#c72b2b] hover:text-white font-medium rounded-lg px-5 py-1.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
                       >
                         Delete
@@ -125,7 +182,7 @@ const FeedbackAndReports: React.FC<FeedbackAndReportsProps> = () => {
             </table>
           </div>
           {/* Pagination for Feedbacks */}
-          <div className="flex justify-center mt-4 bg-[#eeeeeec1] p-2.5 rounded-lg">
+          <div className="flex justify-center mt-4 p-2 rounded-lg">
             {Array.from({ length: Math.ceil(feedbacks.length / itemsPerPage) }, (_, index) => (
               <button
                 key={index + 1}
@@ -174,7 +231,10 @@ const FeedbackAndReports: React.FC<FeedbackAndReportsProps> = () => {
                     <td className="px-6 py-3">{report.report}</td>
                     <td className="py-1.5">
                       <button
-                        onClick={() => handleDeleteReport(report.reportId)}
+                        onClick={() => {
+                          setSelectedReportId(report.reportId); // Set the selected report ID to be deleted
+                          setShowReportDeleteModal(true); // Show the delete report confirmation modal
+                        }}
                         className="focus:outline-none text-xs text-[#c72b2b] bg-[#c72b2b28] hover:bg-[#c72b2b] hover:text-white font-medium rounded-lg px-5 py-1.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
                       >
                         Delete
@@ -186,7 +246,7 @@ const FeedbackAndReports: React.FC<FeedbackAndReportsProps> = () => {
             </table>
           </div>
           {/* Pagination for Reports */}
-          <div className="flex justify-center mt-4 bg-[#eeeeeec1] p-2.5 rounded-lg">
+          <div className="flex justify-center mt-4 p-2.5 rounded-lg">
             {Array.from({ length: Math.ceil(reports.length / itemsPerPage) }, (_, index) => (
               <button
                 key={index + 1}
@@ -200,6 +260,53 @@ const FeedbackAndReports: React.FC<FeedbackAndReportsProps> = () => {
             ))}
           </div>
         </div>
+        {/* Delete Feedback Modal */}
+        {showFeedbackDeleteModal && (
+          <div className="fixed top-0 left-0 w-full h-full bg-[#000] bg-opacity-50 flex justify-center items-center z-50">
+            <div className="bg-white rounded-[15px] shadow-lg p-12">
+              <h2 className='text-[24px] text-center font-bold mb-3 text-[#c72b2b]'>Delete Feedback</h2>
+              <p className="text-lg font-semibold mb-4 text-center ">Are you sure you want to delete <br/>Feedback?</p>
+              <div className="flex justify-between">
+                <button
+                  onClick={() => setShowFeedbackDeleteModal(false)}
+                  className="px-4 py-2 bg-[#10235d12] text-gray-700 rounded font-semibold w-[120px]"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={confirmDeleteFeedback}
+                  className="px-4 py-2 bg-[#c72b2b] text-white rounded font-semibold w-[120px]"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Delete Report Modal */}
+        {showReportDeleteModal && (
+          <div className="fixed top-0 left-0 w-full h-full bg-[#000] bg-opacity-50 flex justify-center items-center z-50 ">
+            <div className="bg-white rounded-[15px] shadow-lg p-12">
+              <h2 className='text-[24px] text-center font-bold mb-3 text-[#c72b2b]'>Delete Report</h2>
+              <p className="text-lg font-semibold mb-4 text-center ">Are you sure you want to delete <br/>Report?</p>
+              <div className="flex justify-between">
+                <button
+                  onClick={() => setShowReportDeleteModal(false)}
+                  className="px-4 py-2 bg-[#10235d12] text-gray-700 rounded font-semibold w-[120px]"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={confirmDeleteReport}
+                  className="px-4 py-2 bg-[#c72b2b] text-white rounded font-semibold w-[120px]"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
