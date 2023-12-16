@@ -10,6 +10,7 @@ import com.CSIT321.backend.Entity.BookRequestEntity;
 import com.CSIT321.backend.Repository.AccountRepository;
 import com.CSIT321.backend.Repository.BookRepository;
 import com.CSIT321.backend.Repository.BookRequestRepository;
+import com.CSIT321.backend.Exceptions.AlreadyProcessedRequestException;
 import com.CSIT321.backend.Exceptions.UnauthorizedAccountException;
 import java.util.List;
 @Service
@@ -68,6 +69,17 @@ public class BookRequestService {
             throw e;
         }
     }
+    public List<BookRequestEntity> getAllPendingBookRequest(){
+            try{
+                List<BookRequestEntity> requestList = bookRequestRepository.findByStatus("Pending").get();
+                return requestList;     
+            }catch(Exception e){
+                throw e;
+            }
+    }
+
+
+
 
     // @param for this is is the bookRequestId @param/
     //* approves the bookRequest then creates a new book in the process */ 
@@ -76,15 +88,19 @@ public class BookRequestService {
             BookRequestEntity request = bookRequestRepository.findById(bookRequestId)
                     .orElseThrow(() -> new NoResultException("Book Creation Request "  + bookRequestId + " does not exist"));
 
-            request.approve();//* chagnes the status of the request to Approved */
-            BookEntity book = new BookEntity(   
-                request.getAuthor(),
-                request.getBookName(),
-                request.getBookDescription(),
-                request.getGenre()
-            );
-            bookRepository.save(book); //* saves the newsly created book  */
-            return bookRequestRepository.save(request);
+            if(request.getStatus()=="Pending"){
+                request.approve();//* changes the status of the request to Approved */
+                BookEntity book = new BookEntity(   
+                    request.getAuthor(),
+                    request.getBookName(),
+                    request.getBookDescription(),
+                    request.getGenre()
+                );
+                bookRepository.save(book); //* saves the newsly created book  */
+                return bookRequestRepository.save(request);
+            }else{
+                throw new AlreadyProcessedRequestException("Book Creation Request "  + bookRequestId + " is already processed");
+            }
         }catch(Exception e){
             throw e;
         }
@@ -97,8 +113,14 @@ public class BookRequestService {
         try{
             BookRequestEntity request = bookRequestRepository.findById(bookRequestId)
                     .orElseThrow(() -> new NoResultException("Book Creation Request "  + bookRequestId + " does not exist"));
-            request.reject(); // * changes the status of the request to rejected */
-            return bookRequestRepository.save(request);
+
+            if(request.getStatus()=="Pending"){
+                request.reject();//* changes the status of the request to Rejected */
+                return bookRequestRepository.save(request);
+            }else{
+                throw new AlreadyProcessedRequestException("Book Creation Request "  + bookRequestId + " is already processed");
+            }
+            
         }catch(Exception e){
             throw e;
         }  

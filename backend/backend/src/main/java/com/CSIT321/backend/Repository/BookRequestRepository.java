@@ -10,5 +10,5 @@ import java.util.List;
 
 public interface BookRequestRepository extends JpaRepository<BookRequestEntity,Integer> {
     Optional<List<BookRequestEntity>> findByAccount(AccountEntity account);
-    
+    Optional<List<BookRequestEntity>> findByStatus(String status);
 } 

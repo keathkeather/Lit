@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.CSIT321.backend.Entity.BookRequestEntity;
 import com.CSIT321.backend.Exceptions.UnauthorizedAccountException;
 import com.CSIT321.backend.Service.BookRequestService;
-
+import com.CSIT321.backend.Exceptions.AlreadyProcessedRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,6 +53,20 @@ public class BookRequestController {
         }
     }
     @CrossOrigin
+    @GetMapping("/pending")
+    public ResponseEntity<List<BookRequestEntity>> getAllPendingBookRequest(){
+        try{
+            List<BookRequestEntity> request = bookRequestService.getAllPendingBookRequest();
+            return new ResponseEntity<>(request, HttpStatus.OK);
+        }catch(Exception e){
+            e.printStackTrace();
+            return new  ResponseEntity <>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+
+    @CrossOrigin
     @GetMapping("/perAccount/{accountId}")
     public ResponseEntity<List<BookRequestEntity>> getBookRequestPerAccount(@PathVariable int accountId){
         try{
@@ -60,8 +74,8 @@ public class BookRequestController {
             return new ResponseEntity<>(request, HttpStatus.OK);
         }catch(NoResultException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            
         }catch(Exception e){
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -86,6 +100,10 @@ public class BookRequestController {
             return new ResponseEntity<>(request, HttpStatus.OK);
         }catch(NoResultException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        }catch(AlreadyProcessedRequestException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        
         }catch(Exception e){
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -112,6 +130,10 @@ public class BookRequestController {
             return new ResponseEntity<>("Book request" + bookRequestId+" deleted succesfully", HttpStatus.OK);
         }catch(NoResultException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        }catch(AlreadyProcessedRequestException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        
         }catch(Exception e){
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
