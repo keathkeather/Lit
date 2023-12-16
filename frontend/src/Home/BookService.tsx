@@ -1,6 +1,7 @@
 export interface Book {
     bookId: number;
     bookName: string;
+    bookDescription: string;
     genre: string;
     author: {
       firstName: string;

@@ -2,10 +2,14 @@ import React, { createContext, useContext, ReactNode } from 'react';
 
 interface Book {
     bookId: number;
+    bookName: string;
+    bookDescription: string;
+    author: {
+      firstName: string;
+      lastName: string;
+    };
   // Add other properties as needed
 }
-
-
 
 interface BookContextProps {
   book: Book | null;

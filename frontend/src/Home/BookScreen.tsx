@@ -28,9 +28,9 @@ const BookScreen: React.FC<BookScreenProps> = () => {
           {/* Text and Button beside the image */}
           <div className="text-black mt-6 ml-4 flex flex-col">
             <div>
-              <p className="text-4xl font-bold mb-4">Ibong Adarna</p>
-              <p className="text-xl text-[#5C83C4] mb-4">Isinulat ni Jose De la Cruz</p>
-              <p className="text-xl text-black leading-relaxed mb-4 mr-32">Sa kaharian ng Berbanya, nagkasakit si Haring Fernando. Para sa kanyang paggaling, kinakailangang hulihin ang Ibong Adarna. Si Don Juan ang nagtagumpay sa misyon na ito, ngunit kailangang harapin ang inggit at pag-aagam-agam ng kanyang mga kapatid.</p>
+              <p className="text-4xl font-bold mb-4">{book?.bookName}</p>
+              <p className="text-xl text-[#5C83C4] mb-4">Isinulat ni {book?.author.firstName} {book?.author.lastName}</p>
+              <p className="text-xl text-black leading-relaxed mb-4 mr-32">{book?.bookDescription}</p>
             </div>
 
             {/* Progress Bar */}
