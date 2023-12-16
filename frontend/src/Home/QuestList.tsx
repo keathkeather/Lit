@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Header from './Header';
+import { useBook } from './BookContext';
 
 interface QuestListProps {}
 
 const QuestList: React.FC<QuestListProps> = () => {
     const navigate = useNavigate();
-    const { bookId } = useParams<{ bookId: string }>();
+    const { bookId, setBookId } = useBook(); // Access bookId from context
     const [quizzes, setQuizzes] = useState<any[]>([]);
     console.log('Extracted bookId:', bookId);
 
@@ -23,7 +24,7 @@ const QuestList: React.FC<QuestListProps> = () => {
 
     useEffect(() => {
       console.log('Fetching quizzes for bookId:', bookId);
-      fetch(`http://localhost:8080/book/getQuiz/1`)
+      fetch(`http://localhost:8080/book/getQuiz/${bookId}`)
         .then((response) => response.json())
         .then((data) => {
           console.log('Fetched data:', data); // Log the fetched data

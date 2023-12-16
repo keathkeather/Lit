@@ -6,14 +6,19 @@ interface BookScreenProps {}
 
 const BookScreen: React.FC<BookScreenProps> = () => {
   const navigate = useNavigate();
-  const { book } = useBook();
+  const { book, setBookId } = useBook(); // Obtain setBookId from useBook hook
+
   console.log(book?.bookId)
   const handleGame = () => {
     navigate('/game');
   };
 
   const handleQuests = () => {
-    navigate('/questlist');
+    // Assuming bookId is available in your book object, otherwise, adjust accordingly
+    if (book?.bookId) {
+      setBookId(book.bookId); // Set bookId in context
+      navigate('/questlist'); // Navigate to QuestList screen
+    }
   };
 
   return (
@@ -50,9 +55,6 @@ const BookScreen: React.FC<BookScreenProps> = () => {
                 <img src="litimg/playbtn.svg" alt="playbtn" className="w-12 lg:w-48 mr-2 lg:mr-3" />
               </button>
             </div>
-
-           
-
           </div>
         </div>
       </div>

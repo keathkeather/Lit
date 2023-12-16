@@ -11,18 +11,23 @@ interface Book {
   // Add other properties as needed
 }
 
+// Inside BookContext
 interface BookContextProps {
   book: Book | null;
+  bookId: number | null; // Add bookId property
   setBook: React.Dispatch<React.SetStateAction<Book | null>>;
+  setBookId: React.Dispatch<React.SetStateAction<number | null>>; // Function to set bookId
 }
 
 const BookContext = createContext<BookContextProps | undefined>(undefined);
 
+// Update BookProvider component
 export const BookProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [book, setBook] = React.useState<Book | null>(null);
+  const [bookId, setBookId] = React.useState<number | null>(null);
 
   return (
-    <BookContext.Provider value={{ book, setBook }}>
+    <BookContext.Provider value={{ book, setBook, bookId, setBookId }}>
       {children}
     </BookContext.Provider>
   );
