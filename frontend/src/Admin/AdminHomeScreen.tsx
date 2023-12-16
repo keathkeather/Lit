@@ -29,14 +29,26 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
   const [filter, setFilter] = useState<string | null>(null);
   const [usersCurrentPage, setUsersCurrentPage] = useState(1);
   const [isDelUserModalVisible, setDelUserModalVisible] = useState(false);
-  const [selectedDelUserId, setSelectedDelUserId] = useState<number | null>(null as number | null);
-  const allUserModalVisible = isDelUserModalVisible;
+  const [selectedDelUserId, setSelectedDelUserId] = useState<number | null>(null);
+  const [isEditUserModalVisible, setEditUserModalVisible] = useState(false);
+  const [selectedEditUser, setSelectedEditUser] = useState<UserEntity | null>(null);
+  const allUserModalVisible = isDelUserModalVisible || isEditUserModalVisible;
+  const [editedUsername, setEditedUsername] = useState<string>('');
+  const [editedEmail, setEditedEmail] = useState<string>('');
 
   const toggleDelUserModal = (userId: number) => {
-    console.log('toggleDelUserModal called with userId:', userId);
     setSelectedDelUserId(userId);
     setDelUserModalVisible(!isDelUserModalVisible);
   };
+
+  const toggleEditUserModal = (user: UserEntity) => {
+  // Initialize the state variables with the current user details
+  setEditedUsername(user.username || '');
+  setEditedEmail(user.account.email || '');
+
+  setSelectedEditUser(user);
+  setEditUserModalVisible(!isEditUserModalVisible);
+};
 
   const fetchUsers = async () => {
     try {
@@ -89,7 +101,51 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
       setDelUserModalVisible(false); // Close the modal after deletion
     }
   }
-  };  
+  };
+  
+  const handleEditUser = async () => {
+    try {
+      if (!selectedEditUser) {
+        console.error('Invalid user data for editing');
+        return;
+      }
+  
+      const response = await fetch(
+        `http://localhost:8080/user/updateUser/${selectedEditUser.account.accountId}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username: editedUsername,
+            email: editedEmail,
+            // Add more fields as needed
+          }),
+        }
+      );
+  
+      if (response.ok) {
+        // Update the user in the state with the new details
+        setUsers((prevUsers) =>
+          prevUsers.map((user) =>
+            user.account.accountId === selectedEditUser.account.accountId
+              ? { ...user, username: editedUsername, account: { ...user.account, email: editedEmail } }
+              : user
+          )
+        );
+  
+        console.log('User updated successfully');
+      } else {
+        const errorResponse = await response.json();
+        throw new Error(errorResponse.message || 'Failed to update user');
+      }
+  
+      setEditUserModalVisible(false); // Close the modal after successful update
+    } catch (error) {
+      console.error('Error updating user:', error);
+    }
+  };
 
   const itemsPerPage = 7;
   const getUsersForCurrentPage = () => {
@@ -118,30 +174,33 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
   return (
     <div className="flex">
       
-              {isDelUserModalVisible && (
-                <div className="bs-overlay"></div>
-              )}
+              {isDelUserModalVisible && <div className="bs-overlay"></div>}
+              {isEditUserModalVisible && <div className="bs-edit-modal-overlay"></div>}   
               <style>
                 {`
-                .bs-overlay {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background-color: rgba(0, 0, 0, 0.5);
-                    z-index: 100;
+                .bs-overlay,
+                .bs-edit-modal-overlay {
+                  position: fixed;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 100%;
+                  background-color: rgba(0, 0, 0, 0.5);
+                  z-index: 100;
                 }
 
-                .bs-modal {
-                    position: fixed;
-                    top: 31%;
-                    left: 40%;
-                    z-index: 100;
+                .bs-modal,
+                .bs-edit-modal {
+                  position: fixed;
+                  top: 50%;
+                  left: 50%;
+                  transform: translate(-50%, -50%);
+                  z-index: 100;
                 }
 
-                .bs-modal-open {
-                    overflow: hidden;
+                .bs-modal-open,
+                .bs-edit-modal-open {
+                  overflow: hidden;
                 }
                 `}
               </style>
@@ -216,12 +275,13 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
                   <td className="px-6 py-4">{user.account.email}</td>
                   <td className="px-6 py-4"> {user.account.role.role_name} </td>
                   <td className="px-6 py-4">
-                    <Link
-                      to={`/edituser/${user.account.accountId}`}
-                      className="mr-2 focus:outline-none text-xs text-[#427A5B] bg-[#DEEDE5] hover:bg-[#427A5B] hover:text-white font-medium rounded-lg px-5 py-2 mb-1 mt-1"
+                    <button
+                      onClick={() => toggleEditUserModal(user)}
+                      className="focus:outline-none text-xs text-[#427A5B] bg-[#DEEDE5] hover:bg-[#427A5B] hover:text-white font-medium rounded-lg px-5 py-2 mb-1 mt-1"
                     >
                       Edit
-                    </Link>
+                    </button>
+                    <span className="mx-2">|</span>
                     <button
                       onClick={() => toggleDelUserModal(user.account.accountId)}
                       className="focus:outline-none text-xs text-[#c72b2b] bg-[#c72b2b28] hover:bg-[#c72b2b] hover:text-white font-medium rounded-lg px-5 py-1.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
@@ -263,6 +323,64 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
                   </button>
                   <button type="button" onClick={handleDeleteUser} className="px-8 py-2 rounded bg-[#c72b2b] text-white font-semibold cursor-pointer text-sm">
                     Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          id="user-edit-modal"
+          className={`bs-modal ${isEditUserModalVisible ? '' : 'hidden'}`}
+        >
+          <div className="w-full max-w-md max-h-full" style={{ width: '300px' }}>
+            <div className="relative bg-white border border-white rounded-xl">
+              <div className="flex flex-col items-center mt-4 mb-4 p-4">
+                <div className="mt-2 font-bold text-xl text-[#427A5B]">Edit User</div>
+                <div className="font-semibold text-md text-center p-4">
+                  {/* Input fields for editing user details */}
+                  <div className="mb-4">
+                  <label htmlFor="edit-username" className="block text-sm font-medium text-gray-700">
+                    Username
+                  </label>
+                  <input
+                    type="text"
+                    id="edit-username"
+                    name="edit-username"
+                    value={editedUsername}
+                    onChange={(e) => setEditedUsername(e.target.value)}
+                    className="mt-1 p-2 w-full border rounded-md"
+                  />
+                  </div>
+                  <div className="mb-4">
+                  <label htmlFor="edit-email" className="block text-sm font-medium text-gray-700">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    id="edit-email"
+                    name="edit-email"
+                    value={editedEmail}
+                    onChange={(e) => setEditedEmail(e.target.value)}
+                    className="mt-1 p-2 w-full border rounded-md"
+                  />
+                  </div>
+                  {/* Add more input fields based on your user details */}
+                </div>
+                <div className="flex flex-row mt-2 mb-2">
+                  <button
+                    type="button"
+                    onClick={() => setEditUserModalVisible(false)}
+                    className="mr-5 px-8 py-2 rounded bg-[#E6E6E6] text-black font-semibold cursor-pointer text-sm"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleEditUser}
+                    className="px-8 py-2 rounded bg-[#427A5B] text-white font-semibold cursor-pointer text-sm"
+                  >
+                    Update
                   </button>
                 </div>
               </div>
