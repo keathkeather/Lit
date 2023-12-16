@@ -95,7 +95,18 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
   const getUsersForCurrentPage = () => {
     const startIndex = (usersCurrentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    return users.slice(startIndex, endIndex);
+
+    // Filter users based on the selected role
+    const filteredUsers = filter
+    ? users.filter((user) => user.account.role.role_name === filter)
+    : users;
+
+    const filteredAndExcludedUsers =
+    filter !== 'Author' ? filteredUsers.filter((user) => user.account.role.role_name !== 'Author') : filteredUsers;
+
+    console.log('Filtered Users:', filteredAndExcludedUsers);
+
+    return filteredAndExcludedUsers.slice(startIndex, endIndex);
   };
 
   useEffect(() => {
@@ -140,7 +151,7 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
           <ul className="flex flex-wrap -mb-px">
             <li className="me-2">
               <a
-                href="/admin"
+                href="#"
                 onClick={() => handleFilter(null)}
                 className={`inline-block p-4 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 ${
                   filter === null ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'
@@ -167,53 +178,61 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
 
         {/* User table */}
         <div className="relative overflow-x-auto mt-5 shadow-md sm:rounded-lg h-[32.5rem]">
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-          <thead className="text-xs uppercase dark:bg-gray-700 dark:text-gray-400 bg-[#10235d12] text-center">
-            <tr>
-              <th scope="col" className="px-6 py-3">Username</th>
-              <th scope="col" className="px-6 py-3">Email</th>
-              <th scope="col" className="px-6 py-3">Role</th>
-              <th scope="col" className="px-6 py-3">Action</th>
-            </tr>
-          </thead>
-          <tbody className="text-center">
-            {getUsersForCurrentPage().map((user, index) => (
-              <tr
-                key={user.account.accountId}
-                className={`${
-                  index % 2 === 0
-                    ? 'bg-[#ffffff] dark:bg-gray-800'
-                    : 'bg-[#10235d08] dark:bg-gray-900'
-                } ${
-                  index !== users.length - 1 ? 'border-b-[#000] dark:border-b-[#000]' : ''
-                }`}
-              >
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-black"
-                >
-                  {user.username}
+          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead className="text-xs uppercase dark:bg-gray-700 dark:text-gray-400 bg-[#10235d12] text-center">
+              <tr>
+                <th scope="col" className="px-6 py-3">
+                  Username
                 </th>
-                <td className="px-6 py-4">{user.account.email}</td>
-                <td className="px-6 py-4"> {user.account.role.role_name} </td>
-                <td className="px-6 py-4">
-                  <Link
-                    to={`/edituser/${user.account.accountId}`}
-                    className="mr-2 focus:outline-none text-xs text-[#427A5B] bg-[#DEEDE5] hover:bg-[#427A5B] hover:text-white font-medium rounded-lg px-5 py-2 mb-1 mt-1"
-                  >
-                    Edit
-                  </Link>
-                  <button
-                    onClick={() => toggleDelUserModal(user.account.accountId)}
-                    className="focus:outline-none text-xs text-[#c72b2b] bg-[#c72b2b28] hover:bg-[#c72b2b] hover:text-white font-medium rounded-lg px-5 py-1.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-                  >
-                    Delete
-                  </button>
-                </td>
+                <th scope="col" className="px-6 py-3">
+                  Email
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Role
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Action
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="text-center">
+              {getUsersForCurrentPage().map((user, index) => (
+                <tr
+                  key={user.account.accountId}
+                  className={`${
+                    index % 2 === 0
+                      ? 'bg-[#ffffff] dark:bg-gray-800'
+                      : 'bg-[#10235d08] dark:bg-gray-900'
+                  } ${
+                    index !== users.length - 1 ? 'border-b-[#000] dark:border-b-[#000]' : ''
+                  }`}
+                >
+                  <th
+                    scope="row"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-black"
+                  >
+                    {user.username}
+                  </th>
+                  <td className="px-6 py-4">{user.account.email}</td>
+                  <td className="px-6 py-4"> {user.account.role.role_name} </td>
+                  <td className="px-6 py-4">
+                    <Link
+                      to={`/edituser/${user.account.accountId}`}
+                      className="mr-2 focus:outline-none text-xs text-[#427A5B] bg-[#DEEDE5] hover:bg-[#427A5B] hover:text-white font-medium rounded-lg px-5 py-2 mb-1 mt-1"
+                    >
+                      Edit
+                    </Link>
+                    <button
+                      onClick={() => toggleDelUserModal(user.account.accountId)}
+                      className="focus:outline-none text-xs text-[#c72b2b] bg-[#c72b2b28] hover:bg-[#c72b2b] hover:text-white font-medium rounded-lg px-5 py-1.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
         <div className="flex justify-center mt-4 p-2.5 rounded-lg">
           {Array.from({ length: Math.ceil(users.length / itemsPerPage) }, (_, index) => (
