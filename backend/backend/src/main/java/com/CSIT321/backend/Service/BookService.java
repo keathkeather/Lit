@@ -1,7 +1,6 @@
 package com.CSIT321.backend.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -13,7 +12,8 @@ import com.CSIT321.backend.Repository.BookRepository;
 import com.CSIT321.backend.Repository.QuizRepository;
 import com.CSIT321.backend.Entity.BookEntity;
 import com.CSIT321.backend.Entity.QuizEntity;
-
+import com.CSIT321.backend.Exceptions.UnauthorizedAccountException;
+import com.CSIT321.backend.Entity.AccountEntity;
 @Service
 public class BookService {
     @Autowired
@@ -22,10 +22,20 @@ public class BookService {
     QuizRepository quizRepository;
     @Autowired
     AchievementRepository achievementRepository;
-
+    @Autowired
+    AccountService accountService;
     public BookEntity createBook(BookEntity book) {
-
-        return bookRepository.save(book);
+        try{
+            AccountEntity account = accountService.getAccountById(book.getAuthor().getAccountId());
+            if(account.getRole().getRole_id()==2){
+                return bookRepository.save(book);
+            }else{
+                throw new UnauthorizedAccountException("Account "+account.getAccountId() + "Is not authorized to create a book" );
+            }
+        }catch(Exception e){
+            throw e;
+        }
+        
 
     }
 
@@ -36,6 +46,9 @@ public class BookService {
     public BookEntity getBookById(int bid) {
         return bookRepository.findById(bid)
                 .orElseThrow(() -> new NoSuchElementException("book " + bid + " does not exist"));
+    }
+    public List<BookEntity>getAllAvailableBooks(){
+        return bookRepository.findByIsDeleted(false).get();
     }
 
     public BookEntity updateBook(int bookId, BookEntity newbook) {
@@ -49,7 +62,7 @@ public class BookService {
             book.setAchievement(newbook.getAchievement());
             book.setQuiz(newbook.getQuiz());
             return bookRepository.save(book);
-        } catch (DataAccessException e) {
+        } catch (Exception e) {
             throw e;
         }
     }
@@ -60,7 +73,7 @@ public class BookService {
                     .orElseThrow(() -> new EntityNotFoundException("book " + bookId + " does not exist"));
             book.delete();
             return bookRepository.save(book);
-        } catch (DataAccessException e) {
+        } catch (Exception e) {
             throw e;
         }
     }
@@ -71,7 +84,7 @@ public class BookService {
                     .orElseThrow(() -> new EntityNotFoundException("book " + bookId + " does not exist"));
             book.recover();
             return bookRepository.save(book);
-        } catch (DataAccessException e) {
+        } catch (Exception e) {
             throw e;
         }
     }
@@ -81,7 +94,7 @@ public class BookService {
             bookRepository.findById(bookId)
                     .orElseThrow(() -> new EntityNotFoundException("book " + bookId + " does not exist"));
             bookRepository.deleteById(bookId);
-        } catch (DataAccessException e) {
+        } catch (Exception e) {
             throw e;
         }
     }
@@ -91,7 +104,7 @@ public class BookService {
             BookEntity book = bookRepository.findById(bookId)
                     .orElseThrow(() -> new EntityNotFoundException("book " + bookId + " does not exist"));
             return book.getQuiz();
-        } catch (DataAccessException e) {
+        } catch (Exception e) {
             throw e;
         }
     }

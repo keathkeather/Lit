@@ -3,6 +3,8 @@ package com.CSIT321.backend.Controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.CSIT321.backend.Exceptions.UnauthorizedAccountException;
-import com.CSIT321.backend.Entity.AccountEntity;
 import com.CSIT321.backend.Entity.BookEntity;
 import com.CSIT321.backend.Entity.QuizEntity;
 import com.CSIT321.backend.Entity.DTO.QuizDTO;
@@ -36,15 +37,9 @@ public class BookController {
     @CrossOrigin
     @PostMapping(value = "/create", consumes = "application/json;charset=UTF-8")
     public ResponseEntity<BookEntity> createBook(@RequestBody BookEntity book) {
-        try {
-            AccountEntity account = accountService.getAccountById(book.getAuthor().getAccountId());
-            if (account.getRole().getRole_id() == 2) {
-
+       try{
                 BookEntity createdBook = bookService.createBook(book);
                 return new ResponseEntity<>(createdBook, HttpStatus.CREATED);
-            } else {
-                throw new UnauthorizedAccountException("User is not authorized for book creation");
-            }
         } catch (UnauthorizedAccountException e) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         } catch (Exception e) {
@@ -65,10 +60,21 @@ public class BookController {
         try {
             BookEntity book = bookService.getBookById(bid);
             return new ResponseEntity<>(book, HttpStatus.OK);
-        } catch (Exception e) {
-            throw e;
+        }catch(EntityNotFoundException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } 
+        catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @CrossOrigin
+    @GetMapping("/allAvailableBooks")
+    public ResponseEntity<List<BookEntity>> getAllAvailableBooks() {
+        List<BookEntity> result = bookService.getAllAvailableBooks();
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
 
     @CrossOrigin
     @PutMapping("/update/{bookId}")
