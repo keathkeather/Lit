@@ -26,10 +26,10 @@ import com.CSIT321.backend.Service.AccountService;
 @RestController
 @RequestMapping(value = "/book")
 public class BookController {
-    
+
     @Autowired
     BookService bookService;
-    
+
     @Autowired
     AccountService accountService;
 
@@ -39,14 +39,14 @@ public class BookController {
         try {
             AccountEntity account = accountService.getAccountById(book.getAuthor().getAccountId());
             if (account.getRole().getRole_id() == 2) {
-                
+
                 BookEntity createdBook = bookService.createBook(book);
                 return new ResponseEntity<>(createdBook, HttpStatus.CREATED);
-            }else{
+            } else {
                 throw new UnauthorizedAccountException("User is not authorized for book creation");
             }
         } catch (UnauthorizedAccountException e) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN); 
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
@@ -54,51 +54,66 @@ public class BookController {
 
     @CrossOrigin
     @GetMapping("/all")
-    public ResponseEntity<List<BookEntity>> getAll(){
+    public ResponseEntity<List<BookEntity>> getAll() {
         List<BookEntity> result = bookService.getAllBooks();
-        return new ResponseEntity<>(result,HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @CrossOrigin
+    @GetMapping("/getBook/{bid}")
+    public ResponseEntity<BookEntity> getBookById(@PathVariable int bid) {
+        try {
+            BookEntity book = bookService.getBookById(bid);
+            return new ResponseEntity<>(book, HttpStatus.OK);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
     @CrossOrigin
     @PutMapping("/update/{bookId}")
-    public ResponseEntity<BookEntity> updateBook(@PathVariable int bookId, @RequestBody BookEntity newBook){
-        try{
-            BookEntity updatedBook  = bookService.updateBook(bookId, newBook);
-            return new ResponseEntity<>(updatedBook,HttpStatus.OK);
-        }catch(Exception e){
+    public ResponseEntity<BookEntity> updateBook(@PathVariable int bookId, @RequestBody BookEntity newBook) {
+        try {
+            BookEntity updatedBook = bookService.updateBook(bookId, newBook);
+            return new ResponseEntity<>(updatedBook, HttpStatus.OK);
+        } catch (Exception e) {
             throw e;
         }
     }
+
     @CrossOrigin
     @PutMapping("/delete/{bookId}")
-    public ResponseEntity<BookEntity> deleteBook(@PathVariable int bookId){
-        try{
-            BookEntity deletedbook  = bookService.deleteBook(bookId);
-            return new ResponseEntity<>(deletedbook,HttpStatus.OK);
-        }catch(Exception e){
+    public ResponseEntity<BookEntity> deleteBook(@PathVariable int bookId) {
+        try {
+            BookEntity deletedbook = bookService.deleteBook(bookId);
+            return new ResponseEntity<>(deletedbook, HttpStatus.OK);
+        } catch (Exception e) {
             throw e;
         }
     }
+
     @CrossOrigin
     @PutMapping("/recover/{bookId}")
-    public ResponseEntity<BookEntity> recoverBook(@PathVariable int bookId){
-        try{
-            BookEntity recoveredBook  = bookService.recoverBook(bookId);
-            return new ResponseEntity<>(recoveredBook,HttpStatus.OK);
-        }catch(Exception e){
+    public ResponseEntity<BookEntity> recoverBook(@PathVariable int bookId) {
+        try {
+            BookEntity recoveredBook = bookService.recoverBook(bookId);
+            return new ResponseEntity<>(recoveredBook, HttpStatus.OK);
+        } catch (Exception e) {
             throw e;
         }
     }
+
     @CrossOrigin
     @DeleteMapping("/deletePermanently/{bookId}")
-    public ResponseEntity<String> deleteBookPermanently(@PathVariable int bookId){
-        try{
+    public ResponseEntity<String> deleteBookPermanently(@PathVariable int bookId) {
+        try {
             bookService.deleteBookPermanently(bookId);
-            return new ResponseEntity<>("bookdeleted",HttpStatus.OK);
-        }catch(Exception e){
+            return new ResponseEntity<>("bookdeleted", HttpStatus.OK);
+        } catch (Exception e) {
             throw e;
         }
     }
-  
+
     @CrossOrigin
     @GetMapping("/getQuiz/{bookId}")
     public ResponseEntity<List<QuizDTO>> getQuizPerBook(@PathVariable int bookId) {
@@ -108,11 +123,10 @@ public class BookController {
 
             for (QuizEntity quiz : quizzes) {
                 QuizDTO quizDTO = new QuizDTO(
-                    quiz.getQuizId(),
-                    quiz.getQuizName(),
-                    quiz.getQuestions(),  
-                    quiz.getPerfectScore()
-                );
+                        quiz.getQuizId(),
+                        quiz.getQuizName(),
+                        quiz.getQuestions(),
+                        quiz.getPerfectScore());
                 quizDTOs.add(quizDTO);
             }
 
