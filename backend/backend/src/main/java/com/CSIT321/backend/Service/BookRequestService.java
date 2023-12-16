@@ -88,7 +88,7 @@ public class BookRequestService {
             BookRequestEntity request = bookRequestRepository.findById(bookRequestId)
                     .orElseThrow(() -> new NoResultException("Book Creation Request "  + bookRequestId + " does not exist"));
 
-            if(request.getStatus()=="Pending"){
+            if("Pending".equals(request.getStatus())){
                 request.approve();//* changes the status of the request to Approved */
                 BookEntity book = new BookEntity(   
                     request.getAuthor(),
@@ -114,7 +114,7 @@ public class BookRequestService {
             BookRequestEntity request = bookRequestRepository.findById(bookRequestId)
                     .orElseThrow(() -> new NoResultException("Book Creation Request "  + bookRequestId + " does not exist"));
 
-            if(request.getStatus()=="Pending"){
+            if("Pending".equals(request.getStatus())){
                 request.reject();//* changes the status of the request to Rejected */
                 return bookRequestRepository.save(request);
             }else{

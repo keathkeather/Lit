@@ -117,6 +117,10 @@ public class BookRequestController {
             return new ResponseEntity<>(request, HttpStatus.OK);
         }catch(NoResultException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            
+        }catch(AlreadyProcessedRequestException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    
         }catch(Exception e){
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -131,9 +135,6 @@ public class BookRequestController {
         }catch(NoResultException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-        }catch(AlreadyProcessedRequestException e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        
         }catch(Exception e){
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
