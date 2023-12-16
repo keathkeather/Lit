@@ -57,24 +57,26 @@ const BooksScreen: React.FC<BooksScreenProps> = () => {
     };
 
     fetchBooksData();
-  }, []); // Run once on component mount
+  }, []);
 
   const handleDeleteBook = async (bookId: number) => {
     // Your implementation here
   };
   
-  const handleApproveBook = async (bookId: number) => {
+  const handleApproveBook = async (bookRequestId: number) => {
     // Your implementation here
   };
   
-  const handleDeclineBook = async (bookId: number) => {
+  const handleDeclineBook = async (bookRequestId: number) => {
     // Your implementation here
   };
 
   return (
     <div className="flex">
       <Sidebar />
+
       <div className="flex-1 ml-64 p-4">
+
         {/* Books Table */}
         <div className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">Books</h2>
@@ -146,7 +148,9 @@ const BooksScreen: React.FC<BooksScreenProps> = () => {
             </tbody>
           </table>
         </div>
+        
       </div>
+
     </div>
   );
 };
