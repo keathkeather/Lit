@@ -39,6 +39,16 @@ public class UserController{
             throw e;
         }
     }
+    @CrossOrigin
+    @GetMapping("/getAllAvailableUsers")
+    public ResponseEntity<List<UserEntity>> getAllAvailableUsers(){
+        try{
+            List<UserEntity> users = userService.getAllAvailableUsers();
+            return new ResponseEntity<>(users,HttpStatus.OK);
+        }catch(Exception e){
+            throw e;
+        }
+    }
     
     @CrossOrigin
     @GetMapping("/getUser/{uid}")
