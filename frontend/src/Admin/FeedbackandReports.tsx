@@ -27,11 +27,17 @@ const FeedbackAndReports: React.FC<FeedbackAndReportsProps> = () => {
   const [feedbacks, setFeedbacks] = useState<FeedbackEntity[]>([]);
   const [reports, setReports] = useState<ReportEntity[]>([]);
 
-  //Modal
+  // * Delete Modal
   const [showFeedbackDeleteModal, setShowFeedbackDeleteModal] = useState(false);
   const [showReportDeleteModal, setShowReportDeleteModal] = useState(false);
   const [selectedFeedbackId, setSelectedFeedbackId] = useState<number | null>(null);
   const [selectedReportId, setSelectedReportId] = useState<number | null>(null);
+
+  // * Feedback and Report modal
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [selectedFeedback, setSelectedFeedback] = useState<FeedbackEntity | null>(null);
+  const[selectedReport, setSelectedReport] = useState<ReportEntity | null>(null);
 
   // Pagination settings
   const itemsPerPage = 3;
@@ -155,7 +161,15 @@ const FeedbackAndReports: React.FC<FeedbackAndReportsProps> = () => {
                     <td className="px-6 py-3 font-bold">{feedback.account.accountId}</td>
                     <td className="px-6 py-3">{feedback.account.firstName}</td>
                     <td className="px-6 py-3">{feedback.account.lastName}</td>
-                    <td className="px-6 py-3">{feedback.feedback}</td>
+                    <td 
+                    className="px-6 py-3 cursor-pointer hover:text-bgc2 underline font-semibold"
+                    onClick={() => {
+                      setSelectedFeedback(feedback); // Set the selected feedback
+                      setShowFeedbackModal(true); // Show the modal
+                    }}
+                    >
+                      View Feedback
+                    </td>
                     <td className="py-1.5">
                       <button
                         onClick={() => {
@@ -219,7 +233,15 @@ const FeedbackAndReports: React.FC<FeedbackAndReportsProps> = () => {
                     <td className="px-6 py-3 font-bold">{report.account.accountId}</td>
                     <td className="px-6 py-3">{report.account.firstName}</td>
                     <td className="px-6 py-3">{report.account.lastName}</td>
-                    <td className="px-6 py-3">{report.report}</td>
+                    <td
+                      className="px-6 py-3 cursor-pointer hover:text-bgc2 underline font-semibold"
+                      onClick={() => {
+                        setSelectedReport(report); // Set the selected feedback
+                        setShowReportModal(true); // Show the modal
+                      }}
+                    >
+                      View Report
+                    </td>
                     <td className="py-1.5">
                       <button
                         onClick={() => {
@@ -236,6 +258,7 @@ const FeedbackAndReports: React.FC<FeedbackAndReportsProps> = () => {
               </tbody>
             </table>
           </div>
+
           {/* Pagination for Reports */}
           <div className="flex justify-center mt-4 p-2.5 rounded-lg">
             {Array.from({ length: Math.ceil(reports.length / itemsPerPage) }, (_, index) => (
@@ -251,6 +274,63 @@ const FeedbackAndReports: React.FC<FeedbackAndReportsProps> = () => {
             ))}
           </div>
         </div>
+
+       {/* View Feedback Modal */}
+        {showFeedbackModal && selectedFeedback && (
+          <div className="fixed top-0 left-0 w-full h-full bg-[#000] bg-opacity-50 flex justify-center items-center z-50">
+            <div className="w-[500px] bg-white rounded-lg ">
+              {/* Header section */}
+              <div className="bg-[#10235d] rounded-t-lg text-white p-4 mb-4 flex justify-between items-center">
+                <h2 className="text-lg font-semibold">Feedback Details</h2>
+                <button
+                  onClick={() => {
+                    setSelectedFeedback(null); // Clear the selected feedback
+                    setShowFeedbackModal(false);
+                  }}
+                  className="focus:outline-none float-right"
+                >
+                  <img src="/litimg/close.png" alt="xbtn" className="w-3.5 mr-1.5" />
+                </button>
+              </div>
+              {/* Feedback Details */}
+              <div className='p-6 pt-2'>
+                <h1 className="text-lg font-bold">Name</h1>
+                <p>{selectedFeedback.account.firstName} {selectedFeedback.account.lastName}</p>
+                <h1 className="text-lg font-bold mt-4">Feedback</h1>
+                <p>{selectedFeedback.feedback}</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* View Report Modal */}
+        {showReportModal && selectedReport && (
+          <div className="fixed top-0 left-0 w-full h-full bg-[#000] bg-opacity-50 flex justify-center items-center z-50">
+          <div className="w-[500px] bg-white rounded-lg ">
+            {/* Header section */}
+            <div className="bg-[#10235d] rounded-t-lg text-white p-4 mb-4 flex justify-between items-center">
+              <h2 className="text-lg font-semibold">Feedback Details</h2>
+              <button
+                onClick={() => {
+                  setSelectedReport(null); // Clear the selected report
+                  setShowReportModal(false);
+                }}
+                className="focus:outline-none float-right"
+              >
+                <img src="/litimg/close.png" alt="xbtn" className="w-3.5 mr-1.5" />
+              </button>
+            </div>
+            {/* Feedback Details */}
+            <div className='p-6 pt-2'>
+              <h1 className="text-lg font-bold">Name</h1>
+              <p>{selectedReport.account.firstName} {selectedReport.account.lastName}</p>
+              <h1 className="text-lg font-bold mt-4">Feedback</h1>
+              <p>{selectedReport.report}</p>
+            </div>
+          </div>
+        </div>
+        )}
+
         {/* Delete Feedback Modal */}
         {showFeedbackDeleteModal && (
           <div className="fixed top-0 left-0 w-full h-full bg-[#000] bg-opacity-50 flex justify-center items-center z-50">
