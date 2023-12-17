@@ -28,14 +28,18 @@ public class AccountService {
         return accountRepository.save(account);
     }
      public AccountEntity getAccountById(int accountId) {
-        return accountRepository.findById(accountId).orElse(null);
+        return accountRepository.findById(accountId).orElseThrow(() -> new NoResultException("Account " + accountId + " does not exist"));
     }
     
     public List<AccountEntity> getAllAccounts() {
         return accountRepository.findAll();
     }
+    public List<AccountEntity> getAllAuthors(){
+        return accountRepository.findByRole(2).get();
+    }
+
     public AccountEntity updateAccount(int accountId, AccountEntity newAccount) {
-        AccountEntity accountEntity = accountRepository.findById(accountId).orElse(null);
+        AccountEntity accountEntity = accountRepository.findById(accountId).orElseThrow(() -> new NoResultException("Account " + accountId + " does not exist"));
         if (accountEntity!= null) {
             accountEntity.setUser(newAccount.getUser());
             accountEntity.setEmail(newAccount.getEmail());
@@ -71,8 +75,10 @@ public class AccountService {
         accountRepository.deleteById(accountId);
     }
 
-    public void purchaseSubscription(AccountEntity account , int subscriptionId ){
+    public void purchaseSubscription(int  accountId , int subscriptionId ){
+        AccountEntity account = accountRepository.findById(accountId).orElseThrow(() -> new NoResultException("Account " + accountId + " does not exist"));;
         SubscriptionEntity subscription = subscriptionRepository.findById(subscriptionId).get();
+
         if(accountSubscriptionRepository.existsByAccount(account)){
             throw new IllegalStateException("Account already Subscribed");
         }

@@ -10,6 +10,8 @@ import com.CSIT321.backend.Service.AccountService;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 
 @RestController
 @RequestMapping("/account")
@@ -33,24 +35,41 @@ public class AccountController {
     @CrossOrigin
     @GetMapping("/{accountId}")
     public ResponseEntity<AccountEntity> getAccountById(@PathVariable int accountId) {
+        try{
         AccountEntity account = accountService.getAccountById(accountId);
-        if (account != null) {
             return new ResponseEntity<>(account, HttpStatus.OK);
-        } else {
+        } catch(NoResultException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @CrossOrigin
+    @GetMapping("/authors")
+    public ResponseEntity<List<AccountEntity>> getAllAuthors() {
+        try{ 
+            List<AccountEntity> accounts = accountService.getAllAuthors();
+            return new ResponseEntity<>(accounts, HttpStatus.OK);
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @CrossOrigin
     @PostMapping("/purchaseSub/{accountId}")
     public ResponseEntity<String> purchaseSubscription(
         @PathVariable int accountId, @RequestParam int subscriptionId) {
-        AccountEntity account  = accountService.getAccountById(accountId);
-        if(account != null){
-            accountService.purchaseSubscription(account, subscriptionId);
+        try{
+            accountService.purchaseSubscription(accountId, subscriptionId);
             return new ResponseEntity<>("Subscription Purchased",HttpStatus.OK);
-        }
-        else{
+        }catch(NoResultException e){
             return new ResponseEntity<>("Account not found",HttpStatus.NOT_FOUND);
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -58,12 +77,15 @@ public class AccountController {
     @PutMapping("/update/{accountId}")
     public ResponseEntity<AccountEntity> updateAccount( @PathVariable int accountId, @RequestBody AccountEntity updatedAccount)
      {
-        AccountEntity updateAccount = accountService.updateAccount(accountId, updatedAccount);
-        if (updateAccount != null) {
+        try{
+            AccountEntity updateAccount = accountService.updateAccount(accountId, updatedAccount);
             return new ResponseEntity<>(updateAccount, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        
+       
     }
     @CrossOrigin
     @PutMapping("/unsubscribe/{accountId}")
@@ -73,6 +95,9 @@ public class AccountController {
             return new ResponseEntity<>("Subscription Cancelled", HttpStatus.OK);
         } catch (IllegalStateException e) {
             return new ResponseEntity<>("account not found", HttpStatus.BAD_REQUEST);
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
