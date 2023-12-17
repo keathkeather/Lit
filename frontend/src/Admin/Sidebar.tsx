@@ -8,7 +8,7 @@ const Sidebar: React.FC<SidebarProps> = () => {
     <aside className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-[#0C2647] dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700">
       <div className="h-full px-3 py-4 overflow-y-auto">
         <img src="/litimg/litlogo3.png" alt="Lit Logo 3" className="w-[10rem] h-[4rem] ml-6 mb-8 mt-4" />
-        <hr className="border-[#797D8C] w-[20rem] -ml-4"></hr>
+        <hr className="border-[#797D8C] w-full"></hr>
         <ul className="space-y-4 mt-8">
           <li>
             <Link
