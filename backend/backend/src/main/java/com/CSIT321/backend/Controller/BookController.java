@@ -75,6 +75,28 @@ public class BookController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @CrossOrigin 
+    @GetMapping("/getBookByAuthor/{accountId}")
+    public ResponseEntity<List<BookEntity>> getAllBookByAuthor(@PathVariable int accountId) {
+        try {
+            List<BookEntity> publishedBooks = bookService.getAllBookByAuthor(accountId);
+            return new ResponseEntity<>(publishedBooks, HttpStatus.OK);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    @CrossOrigin
+    @GetMapping("/getBookCountByAuthor/{accountId}")
+    public ResponseEntity<Integer> getBookCountByAuthor(@PathVariable int accountId) {
+        try {
+            int publishedBooks = bookService.getBookCountByAuthor(accountId);
+            return new ResponseEntity<>(publishedBooks, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
 
     @CrossOrigin
     @PutMapping("/update/{bookId}")

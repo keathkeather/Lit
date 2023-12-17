@@ -7,6 +7,7 @@ import java.util.NoSuchElementException;
 
 import javax.persistence.EntityNotFoundException;
 
+import com.CSIT321.backend.Repository.AccountRepository;
 import com.CSIT321.backend.Repository.AchievementRepository;
 import com.CSIT321.backend.Repository.BookRepository;
 import com.CSIT321.backend.Repository.QuizRepository;
@@ -23,10 +24,10 @@ public class BookService {
     @Autowired
     AchievementRepository achievementRepository;
     @Autowired
-    AccountService accountService;
+    AccountRepository accountRepository;
     public BookEntity createBook(BookEntity book) {
         try{
-            AccountEntity account = accountService.getAccountById(book.getAuthor().getAccountId());
+            AccountEntity account = accountRepository.findById(book.getAuthor().getAccountId()).orElseThrow(() -> new NoSuchElementException("Account " +book.getAuthor().getAccountId() + " does not exist"));;
             if(account.getRole().getRole_id()==2){
                 return bookRepository.save(book);
             }else{
@@ -50,6 +51,26 @@ public class BookService {
     public List<BookEntity>getAllAvailableBooks(){
         return bookRepository.findByIsDeleted(false).get();
     }
+
+    public List<BookEntity>getAllBookByAuthor(int accountId){
+        try{
+            AccountEntity account = accountRepository.findById(accountId).orElseThrow(() -> new NoSuchElementException("Account " +accountId + " does not exist"));;
+            List<BookEntity> publishedBooks = bookRepository.findByAuthor(account).get();
+            return publishedBooks;
+        }catch(Exception e){
+            throw e;
+        }
+    }
+    public int getBookCountByAuthor(int accountId){
+        try{
+            AccountEntity account = accountRepository.findById(accountId).orElseThrow(() -> new NoSuchElementException("Account " +accountId + " does not exist"));;
+            List<BookEntity> publishedBooks = bookRepository.findByAuthor(account).get();
+            return publishedBooks.size();
+        }catch(Exception e){
+            throw e;
+        }
+    }
+
 
     public BookEntity updateBook(int bookId, BookEntity newbook) {
         try {
