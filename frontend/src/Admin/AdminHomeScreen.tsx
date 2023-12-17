@@ -35,6 +35,14 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
   const allUserModalVisible = isDelUserModalVisible || isEditUserModalVisible;
   const [editedUsername, setEditedUsername] = useState<string>('');
   const [editedEmail, setEditedEmail] = useState<string>('');
+  const [isUsersTabVisible, setUsersTabVisible] = useState(true);
+  const [isAuthorsTabVisible, setAuthorsTabVisible] = useState(false);
+  const [usersItemsPerPage, setUsersItemsPerPage] = useState(3);
+  const [authorsItemsPerPage, setAuthorsItemsPerPage] = useState(3); // You can set the desired value
+  const [authorsTableHeight, setAuthorsTableHeight] = useState<number>(32.5); // Set the initial height as needed
+
+
+
 
   const toggleDelUserModal = (userId: number) => {
     setSelectedDelUserId(userId);
@@ -68,7 +76,11 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
 
   const handleFilter = (role: string | null) => {
     setFilter(role);
-  };
+    // Set the visibility of tabs based on the selected role
+    setUsersTabVisible(role === null);
+    setAuthorsTabVisible(role === 'Author');
+    
+  };  
 
   const handleDeleteUser = async () => {
     console.log('Deleting user with userId:', selectedDelUserId);
@@ -147,7 +159,8 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
     }
   };
 
-  const itemsPerPage = 7;
+  const itemsPerPage = isAuthorsTabVisible ? authorsItemsPerPage : usersItemsPerPage;
+
   const getUsersForCurrentPage = () => {
     const startIndex = (usersCurrentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
@@ -167,6 +180,133 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
     return filteredAndExcludedUsers.slice(startIndex, endIndex);
   };
 
+  const renderUsersTable = (usersToDisplay: UserEntity[]) => (
+    <div className="relative overflow-x-auto mt-5 shadow-md sm:rounded-lg">
+      <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+      <thead className="text-xs uppercase dark:bg-gray-700 dark:text-gray-400 bg-[#10235d12] text-center">
+                <tr>
+                  <th scope="col" className="px-6 py-3">
+                    Username
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Email
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Role
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="text-center">
+                {getUsersForCurrentPage().map((user, index) => (
+                  <tr
+                    key={user.account.accountId}
+                    className={`${
+                      index % 2 === 0
+                        ? 'bg-[#ffffff] dark:bg-gray-800'
+                        : 'bg-[#10235d08] dark:bg-gray-900'
+                    } ${
+                      index !== users.length - 1 ? 'border-b-[#000] dark:border-b-[#000]' : ''
+                    }`}
+                  >
+                    <th
+                      scope="row"
+                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-black"
+                    >
+                      {user.username}
+                    </th>
+                    <td className="px-6 py-4">{user.account.email}</td>
+                    <td className="px-6 py-4"> {user.account.role.role_name} </td>
+                    <td className="px-6 py-4">
+                      <button
+                        onClick={() => toggleEditUserModal(user)}
+                        className="focus:outline-none text-xs text-[#427A5B] bg-[#DEEDE5] hover:bg-[#427A5B] hover:text-white font-medium rounded-lg px-5 py-2 mb-1 mt-1"
+                      >
+                        Edit
+                      </button>
+                      <span className="mx-2">|</span>
+                      <button
+                        onClick={() => toggleDelUserModal(user.account.accountId)}
+                        className="focus:outline-none text-xs text-[#c72b2b] bg-[#c72b2b28] hover:bg-[#c72b2b] hover:text-white font-medium rounded-lg px-5 py-1.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+      </table>
+    </div>
+  );
+
+  const renderAuthorsTable = () => {
+    const authorUsers = users.filter((user) => user.account.role.role_name === 'Author');
+  
+    return (
+      <div
+        id="authors"
+        role="tabpanel"
+        aria-labelledby="authors-tab"
+        style={{ height: `${authorsTableHeight}rem` }}
+      >
+        <div className="relative overflow-x-auto mt-5 shadow-md sm:rounded-lg">
+          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead className="text-xs uppercase dark:bg-gray-700 dark:text-gray-400 bg-[#10235d12] text-center">
+              <tr>
+                <th scope="col" className="px-6 py-3">
+                  User ID
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Username
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Published Books
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody className="text-center">
+              {authorUsers.map((author, index) => (
+                <tr
+                  key={author.account.accountId}
+                  className={`${
+                    index % 2 === 0
+                      ? 'bg-[#ffffff] dark:bg-gray-800'
+                      : 'bg-[#10235d08] dark:bg-gray-900'
+                  } ${
+                    index !== authorUsers.length - 1 ? 'border-b-[#000] dark:border-b-[#000]' : ''
+                  }`}
+                >
+                  <th
+                    scope="row"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-black"
+                  >
+                    {author.account.accountId}
+                  </th>
+                  <td className="px-6 py-4">{author.username}</td>
+                  <td className="px-6 py-4">{/* Display the number of published books */}</td>
+                  <td className="px-6 py-4">
+                    <button
+                      className="focus:outline-none text-xs text-[#427A5B] bg-[#DEEDE5] hover:bg-[#427A5B] hover:text-white font-medium rounded-lg px-5 py-2 mb-1 mt-1"
+                      
+                    >
+                      View Books
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    );
+  };
+  
+
   useEffect(() => {
     if (!allUsersFetched) {
       fetchUsers();
@@ -175,7 +315,6 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
 
   return (
     <div className="flex">
-      
               {isDelUserModalVisible && <div className="bs-overlay"></div>}
               {isEditUserModalVisible && <div className="bs-edit-modal-overlay"></div>}   
               <style>
@@ -207,190 +346,152 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
                 `}
               </style>
       <Sidebar />
-      <div className="flex-1 ml-64 p-4">
-        <div className="text-sm font-medium text-center text-gray-500 border-white border-gray-200 dark:text-gray-400 dark:border-gray-700">
-          <ul className="flex flex-wrap -mb-px">
-            <li className="me-2">
-              <a
-                href="#"
-                onClick={() => handleFilter(null)}
-                className={`inline-block p-4 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 ${
-                  filter === null ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'
-                }`}
-                style={{ textDecoration: 'none' }}
-              >
-                Users
-              </a>
-            </li>
-            <li className="me-2">
-              <a
-                href="#"
-                onClick={() => handleFilter('Author')}
-                className={`inline-block p-4 rounded-t-lg dark:text-blue-500 ${
-                  filter === 'Author' ? 'text-blue-600 border-b-2 border-blue-600 active' : 'hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300'
-                }`}
-                style={{ textDecoration: 'none' }}
-              >
-                Authors
-              </a>
-            </li>
-          </ul>
-        </div>
+    <div className="flex-1 ml-64 p-4">
+      <div className="mb-4 border-gray-200 dark:border-gray-700">
+        <ul className="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist">
+          <li className="me-2" role="presentation">
+            <button
+              className={`inline-block p-4 rounded-t-lg ${isUsersTabVisible ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500'}`}
+              id="users-tab"
+              data-tabs-target="#users"
+              type="button"
+              role="tab"
+              aria-controls="users"
+              aria-selected={isUsersTabVisible}
+              onClick={() => handleFilter(null)}
+            >
+              Users
+            </button>
+          </li>
+          <li className="me-2" role="presentation">
+            <button
+              className={`inline-block p-4 rounded-t-lg ${isAuthorsTabVisible ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500'}`}
+              id="authors-tab"
+              data-tabs-target="#authors"
+              type="button"
+              role="tab"
+              aria-controls="authors"
+              aria-selected={isAuthorsTabVisible}
+              onClick={() => handleFilter('Author')}
+            >
+              Authors
+            </button>
+          </li>
+          {/* Add more tabs as needed */}
+        </ul>
+      </div>
 
-        {/* User table */}
-        <div className="relative overflow-x-auto mt-5 shadow-md sm:rounded-lg h-[32.5rem]">
-          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead className="text-xs uppercase dark:bg-gray-700 dark:text-gray-400 bg-[#10235d12] text-center">
-              <tr>
-                <th scope="col" className="px-6 py-3">
-                  Username
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Email
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Role
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody className="text-center">
-              {getUsersForCurrentPage().map((user, index) => (
-                <tr
-                  key={user.account.accountId}
-                  className={`${
-                    index % 2 === 0
-                      ? 'bg-[#ffffff] dark:bg-gray-800'
-                      : 'bg-[#10235d08] dark:bg-gray-900'
-                  } ${
-                    index !== users.length - 1 ? 'border-b-[#000] dark:border-b-[#000]' : ''
-                  }`}
-                >
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-black"
-                  >
-                    {user.username}
-                  </th>
-                  <td className="px-6 py-4">{user.account.email}</td>
-                  <td className="px-6 py-4"> {user.account.role.role_name} </td>
-                  <td className="px-6 py-4">
-                    <button
-                      onClick={() => toggleEditUserModal(user)}
-                      className="focus:outline-none text-xs text-[#427A5B] bg-[#DEEDE5] hover:bg-[#427A5B] hover:text-white font-medium rounded-lg px-5 py-2 mb-1 mt-1"
-                    >
-                      Edit
+      <div id="default-tab-content">
+        {/* Authors tab content */}
+        {isAuthorsTabVisible && (
+          <div id="authors" role="tabpanel" aria-labelledby="authors-tab">
+            {renderAuthorsTable()}
+          </div>
+        )}
+
+          {isUsersTabVisible && (
+          <div id="users" role="tabpanel" aria-labelledby="users-tab">
+            {/* Render the Users table */}
+            {renderUsersTable(getUsersForCurrentPage())}
+
+          <div className="flex justify-center mt-4 p-2.5 rounded-lg">
+            {Array.from({ length: Math.ceil(users.length / itemsPerPage) }, (_, index) => (
+              <button
+                key={index + 1}
+                className={`mx-1 px-3 py-2 text-xs font-bold rounded-full ${
+                  usersCurrentPage === index + 1 ? 'bg-[#10235d] text-white' : 'bg-[#E6E6E6] text-[#4C4C4C] hover:bg-[#10235d] hover:text-white'
+                }`}
+                onClick={() => setUsersCurrentPage(index + 1)}
+              >
+                {index + 1}
+              </button>
+            ))}
+          </div>
+
+          <div
+            id="user-delete-modal"
+            className={`bs-modal ${isDelUserModalVisible ? '' : 'hidden'}`}
+          >
+            <div className="w-full max-w-md max-h-full" style={{ width: '300px' }}>
+              <div className="relative bg-white border border-white rounded-xl">
+                <div className="flex flex-col items-center mt-4 mb-4 p-4">
+                  <div className="mt-2 font-bold text-xl text-[#c72b2b]">Delete User</div>
+                  <div className="font-semibold text-md text-center p-4">Are you sure you want to delete the user?</div>
+                  <div className="flex flex-row mt-2 mb-2">
+                    <button type="button" onClick={() => setDelUserModalVisible(false)} className="mr-5 px-8 py-2 rounded bg-[#E6E6E6] text-black font-semibold cursor-pointer text-sm">
+                      Cancel
                     </button>
-                    <span className="mx-2">|</span>
-                    <button
-                      onClick={() => toggleDelUserModal(user.account.accountId)}
-                      className="focus:outline-none text-xs text-[#c72b2b] bg-[#c72b2b28] hover:bg-[#c72b2b] hover:text-white font-medium rounded-lg px-5 py-1.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-                    >
+                    <button type="button" onClick={handleDeleteUser} className="px-8 py-2 rounded bg-[#c72b2b] text-white font-semibold cursor-pointer text-sm">
                       Delete
                     </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div className="flex justify-center mt-4 p-2.5 rounded-lg">
-          {Array.from({ length: Math.ceil(users.length / itemsPerPage) }, (_, index) => (
-            <button
-              key={index + 1}
-              className={`mx-1 px-3 py-2 text-xs font-bold rounded-full ${
-                usersCurrentPage === index + 1 ? 'bg-[#10235d] text-white' : 'bg-[#E6E6E6] text-[#4C4C4C] hover:bg-[#10235d] hover:text-white'
-              }`}
-              onClick={() => setUsersCurrentPage(index + 1)}
-            >
-              {index + 1}
-            </button>
-          ))}
-        </div>
-
-        <div
-          id="user-delete-modal"
-          className={`bs-modal ${isDelUserModalVisible ? '' : 'hidden'}`}
-        >
-          <div className="w-full max-w-md max-h-full" style={{ width: '300px' }}>
-            <div className="relative bg-white border border-white rounded-xl">
-              <div className="flex flex-col items-center mt-4 mb-4 p-4">
-                <div className="mt-2 font-bold text-xl text-[#c72b2b]">Delete User</div>
-                <div className="font-semibold text-md text-center p-4">Are you sure you want to delete the user?</div>
-                <div className="flex flex-row mt-2 mb-2">
-                  <button type="button" onClick={() => setDelUserModalVisible(false)} className="mr-5 px-8 py-2 rounded bg-[#E6E6E6] text-black font-semibold cursor-pointer text-sm">
-                    Cancel
-                  </button>
-                  <button type="button" onClick={handleDeleteUser} className="px-8 py-2 rounded bg-[#c72b2b] text-white font-semibold cursor-pointer text-sm">
-                    Delete
-                  </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div
-          id="user-edit-modal"
-          className={`bs-modal ${isEditUserModalVisible ? '' : 'hidden'}`}
-        >
-          <div className="w-full max-w-md max-h-full" style={{ width: '300px' }}>
-            <div className="relative bg-white border border-white rounded-xl">
-              <div className="flex flex-col items-center mt-4 mb-4 p-4">
-                <div className="mt-2 font-bold text-xl text-[#427A5B]">Edit User</div>
-                <div className="font-semibold text-md text-center p-4">
-                  {/* Input fields for editing user details */}
-                  <div className="mb-4">
-                  <label htmlFor="edit-username" className="block text-sm font-medium text-gray-700">
-                    Username
-                  </label>
-                  <input
-                    type="text"
-                    id="edit-username"
-                    name="edit-username"
-                    value={editedUsername}
-                    onChange={(e) => setEditedUsername(e.target.value)}
-                    className="mt-1 p-2 w-full border rounded-md"
-                  />
+          <div
+            id="user-edit-modal"
+            className={`bs-modal ${isEditUserModalVisible ? '' : 'hidden'}`}
+          >
+            <div className="w-full max-w-md max-h-full" style={{ width: '300px' }}>
+              <div className="relative bg-white border border-white rounded-xl">
+                <div className="flex flex-col items-center mt-4 mb-4 p-4">
+                  <div className="mt-2 font-bold text-xl text-[#427A5B]">Edit User</div>
+                  <div className="font-semibold text-md text-center p-4">
+                    {/* Input fields for editing user details */}
+                    <div className="mb-4">
+                    <label htmlFor="edit-username" className="block text-sm font-medium text-gray-700">
+                      Username
+                    </label>
+                    <input
+                      type="text"
+                      id="edit-username"
+                      name="edit-username"
+                      value={editedUsername}
+                      onChange={(e) => setEditedUsername(e.target.value)}
+                      className="mt-1 p-2 w-full border rounded-md"
+                    />
+                    </div>
+                    <div className="mb-4">
+                    <label htmlFor="edit-email" className="block text-sm font-medium text-gray-700">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      id="edit-email"
+                      name="edit-email"
+                      value={editedEmail}
+                      onChange={(e) => setEditedEmail(e.target.value)}
+                      className="mt-1 p-2 w-full border rounded-md"
+                    />
+                    </div>
+                    {/* Add more input fields based on your user details */}
                   </div>
-                  <div className="mb-4">
-                  <label htmlFor="edit-email" className="block text-sm font-medium text-gray-700">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    id="edit-email"
-                    name="edit-email"
-                    value={editedEmail}
-                    onChange={(e) => setEditedEmail(e.target.value)}
-                    className="mt-1 p-2 w-full border rounded-md"
-                  />
+                  <div className="flex flex-row mt-2 mb-2">
+                    <button
+                      type="button"
+                      onClick={() => setEditUserModalVisible(false)}
+                      className="mr-5 px-8 py-2 rounded bg-[#E6E6E6] text-black font-semibold cursor-pointer text-sm"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleEditUser}
+                      className="px-8 py-2 rounded bg-[#427A5B] text-white font-semibold cursor-pointer text-sm"
+                    >
+                        Update
+                      </button>
+                    </div>
                   </div>
-                  {/* Add more input fields based on your user details */}
-                </div>
-                <div className="flex flex-row mt-2 mb-2">
-                  <button
-                    type="button"
-                    onClick={() => setEditUserModalVisible(false)}
-                    className="mr-5 px-8 py-2 rounded bg-[#E6E6E6] text-black font-semibold cursor-pointer text-sm"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleEditUser}
-                    className="px-8 py-2 rounded bg-[#427A5B] text-white font-semibold cursor-pointer text-sm"
-                  >
-                    Update
-                  </button>
                 </div>
               </div>
             </div>
           </div>
+        )}
         </div>
       </div>
-    </div>
+    </div>  
   );
 };
 
