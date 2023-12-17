@@ -158,7 +158,9 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
     : users;
 
     const filteredAndExcludedUsers =
-    filter !== 'Author' ? filteredUsers.filter((user) => user.account.role.role_name !== 'Author') : filteredUsers;
+      filter !== 'Admin' ? filteredUsers.filter((user) => user.account.role.role_name !== 'Admin') : filteredUsers;
+
+
 
     console.log('Filtered Users:', filteredAndExcludedUsers);
 
