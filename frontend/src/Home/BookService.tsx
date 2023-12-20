@@ -3,13 +3,13 @@ export interface Book {
     bookName: string;
     bookDescription: string;
     genre: string;
-    author: {
-      firstName: string;
-      lastName: string;
-    };
+    author: Author;
     quizzes: Quiz[];
 }
-
+interface Author{
+    firstName: string;
+    lastName: string;
+}
 interface Quiz {
     quizId: number;
 }

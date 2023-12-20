@@ -29,6 +29,8 @@ const AuthorBooks: React.FC<AuthorBooksProps> = ({ signedInUser }) => {
     fetchBooksData();
   }, [signedInUser]);
 
+  
+
   const handlePlusClick = (bookId: number) => {
     // Handle the plus button click for the author's books
     console.log(`Clicked on Plus button for Book ID: ${bookId}`);
@@ -41,7 +43,7 @@ const AuthorBooks: React.FC<AuthorBooksProps> = ({ signedInUser }) => {
 
   return (
     <div className="mt-5 ml-14 flex flex-wrap items-left" style={{ width: '1400px' }}>
-      {books.length === 0 ? (
+      {/* {books.length === 0 ? (
         <div className="flex items-center justify-center h-full ml-60 mb-10 mt-10">
             <p className="text-3xl text-lgray font-bold mx-auto ml-52 mt-10 mb-10">You haven't published any books.</p>
         </div>
@@ -57,7 +59,7 @@ const AuthorBooks: React.FC<AuthorBooksProps> = ({ signedInUser }) => {
             onPlayClick={() => handlePlayClick()}
           />
         ))
-      )}
+      )} */}
     </div>
   );
 };

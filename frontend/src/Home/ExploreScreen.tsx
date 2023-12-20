@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Carousel from './Carousel';
 import BookEntry from './BookEntry';
 import { fetchBooks, Book } from './BookService';
-import addBookListService from '../ApiClient/addBookListService';
+import {handleBookList , getBookList} from '../ApiClient/handleBookList';
 import { useAccount } from './AccountContext';
 import { useBook } from './BookContext';
 
@@ -14,6 +14,8 @@ const ExploreScreen: React.FC = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [searchInput, setSearchInput] = useState<string>('');
   const [originalBooks, setOriginalBooks] = useState<Book[]>([]);
+  const [selectedBooks, setSelectedBooks] = useState<number[]>([]);
+  const [bookList, setBookList] = useState<Book[]>([]); 
   const {account} = useAccount();
   const {setBook} = useBook();
   useEffect(() => {
@@ -38,6 +40,24 @@ const ExploreScreen: React.FC = () => {
   
     fetchBooksData();
   }, []);
+  useEffect(() => {
+    const fetchBookList = async () => {
+      try {
+        const list = await getBookList(account?.accountId ?? 0);
+        setBookList(list);
+        console.log('Accpunt booklist fetched successfully:', list);
+      } catch (error) {
+        console.error('Error fetching books:', error);
+        // Handle error
+      }
+    }; 
+  
+    fetchBookList();
+  }, [account?.accountId]);
+
+  const isBookInList = (book: Book, bookList: Book[]): boolean => {
+    return bookList.some(listBook => listBook.bookId === book.bookId);
+  };
 
   const handleSearch = () => {
     // Filter books based on search input
@@ -49,15 +69,19 @@ const ExploreScreen: React.FC = () => {
     setBooks(filteredBooks);
   };
 
-  const handlePlay = (book:Book) => {
+  const handlePlay =  (book:Book) => {
     setBook(book);
-    navigate('/book');  
+    navigate("/book");
   };
 
-  const handlePlus = (bookId: number) => {
-    // logic here...
-    // addBookListService(account?.accountId??0 , bookId);
-    console.log(`BookId:"+${bookId}`);
+  const handlePlus = async (book: Book) => {
+    if(isBookInList(book, bookList)){
+      handleBookList('removeBook', account?.accountId ?? 0, book.bookId);
+      setBookList(bookList.filter(b => b.bookId !== book.bookId));
+    } else {
+      handleBookList('addBook', account?.accountId ?? 0, book.bookId);
+      setBookList([...bookList, book]);
+    }
   };
 
   return (
@@ -91,20 +115,27 @@ const ExploreScreen: React.FC = () => {
             </div>
         </div>
 
-        <div className="mt-5 ml-16 flex flex-wrap items-left"
-             style={{width: '1400px'}}>
-          {books.map((book) => (
-            <BookEntry
-              bookId={book.bookId}
-              title={book.bookName}
-              genre={book.genre}
-              author={book.author}
-              onPlusClick={() => handlePlus(book.bookId)}
-              onPlayClick={()=>handlePlay(book)}
-            />
-          ))}
-        </div>
+        <div className="mt-5 ml-16 flex flex-wrap items-left" style={{width: '1400px'}}>
+        {books.map((book) => {
+              if (!book.author) {
+                  console.error(`Book with ID ${book.bookId} does not have an author or account is null`);
+                  return null;  // Skip this book
+              }
 
+              return (
+                  <BookEntry  
+                      key={book.bookId}
+                      bookId={book.bookId}
+                      title={book.bookName}
+                      genre={book.genre}
+                      author={book.author}
+                      onPlusClick={() => handlePlus(book)}
+                      onPlayClick={() => handlePlay(book)}
+                      inList={isBookInList(book,bookList)}
+                  />
+              );
+          })}
+        </div>
         </div>
     </div>
   );

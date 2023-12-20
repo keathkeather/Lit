@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 interface BookEntryProps {
   bookId: number;
@@ -7,12 +7,18 @@ interface BookEntryProps {
   author: {
     firstName: string;
     lastName: string;
-  };
+  }
+  
   onPlusClick: () => void;
   onPlayClick: (bookId: number) => void;
+  inList:boolean;
 }
 
-const BookEntry: React.FC<BookEntryProps> = ({ bookId, title, genre, author, onPlusClick, onPlayClick }) => {
+
+
+const BookEntry: React.FC<BookEntryProps> = ({ bookId, title, genre, author, onPlusClick, onPlayClick,inList}) => {
+  // const isBookInList = bookList.some(book => book.bookId === bookId);
+  
   return (
     <div className="mb-5 mr-2">
       <div className="ml-12 font-bold text-sm mb-3">{genre}</div>
@@ -21,7 +27,7 @@ const BookEntry: React.FC<BookEntryProps> = ({ bookId, title, genre, author, onP
           <div className="relative">
             <img src={`litimg/${title}.svg`} alt={title} className="w-72" />
             <button onClick={onPlusClick} className="absolute bottom-5 right-4">
-              <img src="litimg/plusbtn.svg" alt="plusbtn" className="w-15" />
+            <img src={`litimg/${inList ? 'checkbtn2.svg' : 'plusbtn.svg'}`} alt="button" className="w-15" />
             </button>
           </div>
           <div className="ml-5 text-lg font-semibold">{title}</div>
