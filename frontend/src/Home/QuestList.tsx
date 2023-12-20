@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from './Header';
 import { useBook } from './BookContext';
+import { useAccount } from './AccountContext';
 
 interface QuestListProps {}
 
@@ -10,10 +11,12 @@ const QuestList: React.FC<QuestListProps> = () => {
     const { bookId, setBookId } = useBook(); // Access bookId from context
     const [quizzes, setQuizzes] = useState<any[]>([]);
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false); //Track user login status
+    const { account } = useAccount(); // Accessing account details from context
 
     // Log when bookId changes
     useEffect(() => {
       console.log('Extracted bookId:', bookId);
+      console.log('Extracted accountId:', account?.accountId);
     }, [bookId]);
 
     const handleBackIcon = () => {
@@ -23,9 +26,9 @@ const QuestList: React.FC<QuestListProps> = () => {
     const handleAttemptQuiz = (quizId: number) => {
       if (isLoggedIn) {
         const confirmation = window.confirm('Attempt Quiz?');
-        if (confirmation) {
-          navigate(`/quiz`);
-        }
+          if (confirmation) {
+            navigate(`/quiz`);
+          }
       } else {
         const confirmation = window.confirm('You must be logged in to attempt a quiz. Do you want to log in?');
          if (confirmation) {
@@ -106,7 +109,7 @@ const QuestList: React.FC<QuestListProps> = () => {
                 <img src="litimg/Quest.svg" alt="Lit Logo 3" className="w-10 ml-10 mr-4" />
                 <div className="text-[#3C3934] font-bold ml-2">{quiz.quizName}</div>
               </div>
-              <div className="text-[#B7B6BA] mr-10">0/{quiz.perfectScore}</div>
+              <div className="text-[#B7B6BA] mr-10">{account?.quizAnswered?.quizScores[0]?.accountScore ?? '0'}/{quiz.perfectScore}</div>
             </div>
           </div>
         ))}
