@@ -11,7 +11,10 @@ const QuestList: React.FC<QuestListProps> = () => {
     const [quizzes, setQuizzes] = useState<any[]>([]);
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false); //Track user login status
 
-    console.log('Extracted bookId:', bookId);
+    // Log when bookId changes
+    useEffect(() => {
+      console.log('Extracted bookId:', bookId);
+    }, [bookId]);
 
     const handleBackIcon = () => {
       navigate('/book');
@@ -68,8 +71,10 @@ const QuestList: React.FC<QuestListProps> = () => {
       }
     }, [bookId, setBookId]);
 
-    console.log('Quizzes:', quizzes);
-
+    // Log when quizzes change
+    useEffect(() => {
+      console.log('Quizzes:', quizzes);
+    }, [quizzes]);
     return (
       <div className="overflow-y-auto">
         <Header />
