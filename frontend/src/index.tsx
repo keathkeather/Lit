@@ -32,6 +32,7 @@ import AuthorMyList from './Home/AuthorMyList';
 import CreateBookScreen from './Home/CreateBookScreen';
 import BooksScreen from './Admin/BooksScreen';
 import EditBookScreen from './Admin/EditBookScreen';
+import Dashboard from './Admin/Dashboard';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
@@ -55,7 +56,7 @@ ReactDOM.render(
         <Route path="/questlist" element={<QuestList />} />
         <Route path="/explore" element={<ExploreScreen />} />
         <Route path="/help" element={<HelpScreen />} />
-        <Route path="/quiz" element={<QuizScreen />} />
+        <Route path="/quiz/:quizId" element={<QuizScreen />} />
         <Route path="/mylist" element={<MyList />} />
         <Route path="/admin" element={<AdminHomeScreen/>}/>
         <Route path="/subscription" element={<SubscriptionScreen/>}/>
@@ -66,6 +67,7 @@ ReactDOM.render(
         <Route path="/createbook" element={<CreateBookScreen />} />
         <Route path="/books" element={<BooksScreen />} />
         <Route path="/editbook/:bookId" element={<EditBookScreen />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </Router>
     </BookProvider>
