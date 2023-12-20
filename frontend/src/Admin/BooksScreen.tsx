@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Sidebar from './Sidebar';
+import { Book } from '../Home/BookService';
 
 interface BookEntity {
   bookId: number;
@@ -21,13 +22,94 @@ interface BooksScreenProps {}
 const BooksScreen: React.FC<BooksScreenProps> = () => {
     const [books, setBooks] = useState<BookEntity[]>([]);
     const [pendingBooks, setPendingBooks] = useState<BookEntity[]>([]);
+    const [isEdiModalVisible, setEdiModalVisible] = useState(false);
     const [isDelModalVisible, setDelModalVisible] = useState(false);
     const [isAppModalVisible, setAppModalVisible] = useState(false);
     const [isDecModalVisible, setDecModalVisible] = useState(false);
     const [selectedDelBookId, setSelectedDelBookId] = useState<number | null>(null);
     const [selectedAppBookId, setSelectedAppBookId] = useState<number | null>(null);
     const [selectedDecBookId, setSelectedDecBookId] = useState<number | null>(null);
-    const allBSModalVisible = isDelModalVisible || isAppModalVisible || isDecModalVisible;
+    const allBSModalVisible = isDelModalVisible || isAppModalVisible || isDecModalVisible || isEdiModalVisible;
+    const [bookId, setBookId] = useState<number | null>(null);
+
+    const [editedBook, setEditedBook] = useState({
+        bookName: '',
+        genre: '',
+    });
+    
+    const toggleEdiModal = async (selectedBookId: number) => {
+        try {
+          // Fetch book details
+          const response = await fetch(`http://localhost:8080/book/getBook/${selectedBookId}`);
+          const data = await response.json();
+    
+          // Set the bookId
+          setBookId(selectedBookId);
+    
+          // Set the edited book details
+          setEditedBook({
+            bookName: data.bookName || '',
+            genre: data.genre || '',
+            // Add more fields if needed
+          });
+    
+          // Toggle the modal visibility
+          setEdiModalVisible(!isEdiModalVisible);
+        } catch (error) {
+          console.error('Error fetching book details:', error);
+        }
+      };
+
+      const handleEditBook = async () => {
+        try {
+            if (bookId === null) {
+                console.error('No bookId available for editing');
+                return;
+            }
+        
+            // Fetch the existing book details
+            const existingBookResponse = await fetch(`http://localhost:8080/book/getBook/${bookId}`);
+            const existingBookData = await existingBookResponse.json();
+        
+            // Prepare the updated book details
+            const updatedBook = {
+                ...existingBookData, // Copy existing details
+                bookName: editedBook.bookName,
+                genre: editedBook.genre,
+                // Add more fields if needed
+            };
+        
+            // Send a request to update the book details using the stored bookId
+            const response = await fetch(`http://localhost:8080/book/update/${bookId}`, {
+                method: 'PUT',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updatedBook),
+            });
+        
+            if (response.ok) {
+                console.log('Book details successfully updated');
+        
+                // Close the edit modal
+                setEdiModalVisible(false);
+        
+                // Fetch the updated list of books and update the state
+                const updatedBooksResponse = await fetch(`http://localhost:8080/book/allAvailableBooks`);
+                const updatedBooksData = await updatedBooksResponse.json();
+                setBooks(updatedBooksData);
+            } else {
+                console.error('Failed to update book details:', response.statusText);
+            }
+            } catch (error) {
+            if (error instanceof Error) {
+                console.error('Error updating book details:', error.message);
+            } else {
+                console.error('Non-Error object thrown during update:', error);
+            }
+        }
+    };
+      
 
     const toggleDelModal = (bookId: number) => {
         setSelectedDelBookId(bookId);
@@ -222,6 +304,65 @@ const BooksScreen: React.FC<BooksScreenProps> = () => {
 
             <div
             id="bs-modal"
+            className={`bs-modal ${isEdiModalVisible ? '' : 'hidden'}`}
+            >
+            <div className="w-full max-w-md max-h-full" style={{ width: '300px' }}>
+                <div className="relative bg-white border border-white rounded-xl">
+                <div className="flex flex-col items-center mt-4 mb-4 p-4">
+                    <div className="mt-2 font-bold text-xl text-[#427A5B]">Edit Book</div>
+                    <div className="font-semibold text-md text-center p-4">
+                    {/* Input fields for editing book details */}
+                    <div className="mb-4">
+                        <label htmlFor="edit-title" className="block text-sm font-medium text-gray-700">
+                        Title
+                        </label>
+                        <input
+                        type="text"
+                        id="edit-title"
+                        name="edit-title"
+                        value={editedBook.bookName}
+                        onChange={(e) => setEditedBook((prev) => ({ ...prev, bookName: e.target.value }))}
+                        className="mt-1 p-2 w-full border rounded-md"
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label htmlFor="edit-genre" className="block text-sm font-medium text-gray-700">
+                        Genre
+                        </label>
+                        <input
+                        type="text"
+                        id="edit-genre"
+                        name="edit-genre"
+                        value={editedBook.genre}
+                        onChange={(e) => setEditedBook((prev) => ({ ...prev, genre: e.target.value }))}
+                        className="mt-1 p-2 w-full border rounded-md"
+                        />
+                    </div>
+                    {/* Add more input fields based on your book details */}
+                    </div>
+                    <div className="flex flex-row mt-2 mb-2">
+                    <button
+                        type="button"
+                        onClick={() => setEdiModalVisible(false)}
+                        className="mr-5 px-8 py-2 rounded bg-[#E6E6E6] text-black font-semibold cursor-pointer text-sm"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => handleEditBook()}
+                        className="px-8 py-2 rounded bg-[#427A5B] text-white font-semibold cursor-pointer text-sm"
+                    >
+                        Update
+                    </button>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+
+            <div
+            id="bs-modal"
             className={`bs-modal ${isDelModalVisible ? '' : 'hidden'}`}
             >
                 <div className="w-full max-w-md max-h-full"
@@ -327,14 +468,17 @@ const BooksScreen: React.FC<BooksScreenProps> = () => {
                             <td className="px-6 py-4">{book.bookId}</td>
                             <td className="px-6 py-4">{book.bookName}</td>
                             <td className="px-6 py-4">{book.genre}</td>
-                            <td className="px-6 py-4">{`${book.author.firstName} ${book.author.lastName}`}</td>
+                            <td className="px-6 py-4">
+                                {/* Check if the author object exists before accessing its properties */}
+                                {book.author ? `${book.author.firstName} ${book.author.lastName}` : 'N/A'}
+                            </td>
                             <td className="py-2 flex items-center justify-center">
-                            <Link
-                                to={`/editbook/${book.bookId}`}
+                            <button
+                                onClick={() => toggleEdiModal(book.bookId)}
                                 className="ml-5 focus:outline-none text-xs text-[#427A5B] bg-[#DEEDE5] hover:bg-[#427A5B] hover:text-white font-medium rounded-lg px-5 py-2 mb-1 mt-1"
                             >
                                 Edit
-                            </Link>
+                            </button>
                             <span className="mx-2">|</span>
                             <button
                                 onClick={() => toggleDelModal(book.bookId)}
