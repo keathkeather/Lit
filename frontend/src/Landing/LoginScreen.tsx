@@ -61,7 +61,7 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
       if (isUserAutheticatedAsAdmin) {
         setAccount(isUserAutheticatedAsAdmin.account);
         // we can implement this if we agree on it :) but il just comment this out until ill add server side rendering ;
-        sessionStorage.setItem('account', JSON.stringify(isUserAutheticatedAsAdmin.account));
+        sessionStorage.setItem('account', JSON.stringify(isUserAutheticatedAsAdmin.account)); // TODO: Store account details in sessionStorage
         navigate('/admin');
       } else if (isUserAuthenticated) {
         console.log('Login Successful!');

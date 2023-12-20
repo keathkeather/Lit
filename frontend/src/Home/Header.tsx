@@ -33,7 +33,7 @@ const Header: React.FC<HeaderProps> = () => {
   //logout
   const handleLogoutClick = () => {
     sessionStorage.removeItem('userLoggedIn') //end session here
-    sessionStorage.removeItem('account')
+    sessionStorage.removeItem('account') //remove account from session storage
     navigate('/landing'); // then go back to landing page hehe
     console.log('Logged out successfully!');
   };
