@@ -19,9 +19,13 @@ public class BookListEntity {
     @JsonBackReference
     private AccountEntity account;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "book_list_id")
     private List<BookEntity> books;
+
+
+
 
     public BookListEntity() {
         super();
