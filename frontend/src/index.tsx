@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { AccountProvider } from './Home/AccountContext';
 import { BookProvider } from './Home/BookContext';
+import { BookListProvider } from './ApiClient/BookListContext';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -39,6 +40,7 @@ ReactDOM.render(
   <React.StrictMode>
     <AccountProvider>
     <BookProvider>
+    <BookListProvider>
     <Router>
       <Routes>
         <Route path="/" element={<LoadingScreen />} />
@@ -70,6 +72,7 @@ ReactDOM.render(
         <Route path="/score" element={<ScoreScreen/>} />
       </Routes>
     </Router>
+    </BookListProvider>
     </BookProvider>
     </AccountProvider>
   </React.StrictMode>,

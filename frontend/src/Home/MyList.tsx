@@ -44,18 +44,7 @@ const MyList: React.FC = () => {
         
         <div className="flex flex-col items-center justify-center mt-16">
             
-        {/* <div className="relative">
-          <img src="litimg/home.png" alt="Home" className="w-screen h-full" />
-          <div className="absolute top-1/2 left-1/3 transform -translate-x-1/2 -translate-y-1/2">
-            <div className="flex items-center"
-            style={{ width: '620px', marginRight: '100px' }}>
-              <img src="litimg/litsy.png" alt="Litsy" className="w-40 mr-4" />
-              {user && (
-              <div className="text-white text-3xl font-semibold mt-2">Welcome, {user.username}! May you have a wondrous adventure to the World of Filipino Literature</div>
-              )}
-              </div>
-          </div>
-        </div> */}
+        
 
         <div className="mt-6 mb-10 flex items-center">
           <div className="text-black text-2xl font-bold mr-[60rem]">My List</div>

@@ -3,11 +3,14 @@ import Header from './Header';
 import { useNavigate } from 'react-router-dom';
 import { useAccount } from './AccountContext';
 import AuthorBooks from './AuthorBooks';
-
+import { useHandleBookList } from '../ApiClient/handleBookList';
+import {useBookList} from '../ApiClient/BookListContext';
+import BookEntryWithHandlers from '../ApiClient/BookEntryWithHandlers';
 const AuthorMyList: React.FC = () => {
   const {account} = useAccount();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
+  const {bookList} = useBookList();
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -49,7 +52,7 @@ const AuthorMyList: React.FC = () => {
 
         {/* Display the published books of the signed-in author */}
         {account && (
-          <AuthorBooks signedInUser={{ firstName: account.firstName, lastName: account.lastName }} />
+          <AuthorBooks/>
         )}
 
         <div className="mt-6 mb-2 flex items-center">
@@ -83,7 +86,11 @@ const AuthorMyList: React.FC = () => {
           </div>
         </div>
         <div className="text-lgray text-2xl text-center">_________________________________________________________________________________________________________________________________</div>
-
+            <div>
+                {bookList.map((book)=>(
+                  <BookEntryWithHandlers book={book}/>
+                ))}
+            </div>
         </div>
     </div>
   );
