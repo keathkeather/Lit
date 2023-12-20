@@ -38,9 +38,9 @@ public class BookController {
     @CrossOrigin
     @PostMapping(value = "/create", consumes = "application/json;charset=UTF-8")
     public ResponseEntity<BookEntity> createBook(@RequestBody BookEntity book) {
-       try{
-                BookEntity createdBook = bookService.createBook(book);
-                return new ResponseEntity<>(createdBook, HttpStatus.CREATED);
+        try {
+            BookEntity createdBook = bookService.createBook(book);
+            return new ResponseEntity<>(createdBook, HttpStatus.CREATED);
         } catch (UnauthorizedAccountException e) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         } catch (Exception e) {
@@ -61,14 +61,14 @@ public class BookController {
         try {
             BookEntity book = bookService.getBookById(bid);
             return new ResponseEntity<>(book, HttpStatus.OK);
-        }catch(EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } 
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @CrossOrigin
     @GetMapping("/allAvailableBooks")
     public ResponseEntity<List<BookEntity>> getAllAvailableBooks() {
@@ -76,7 +76,7 @@ public class BookController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @CrossOrigin 
+    @CrossOrigin
     @GetMapping("/getBookByAuthor/{accountId}")
     public ResponseEntity<List<BookEntity>> getAllBookByAuthor(@PathVariable int accountId) {
         try {
@@ -86,6 +86,7 @@ public class BookController {
             throw e;
         }
     }
+
     @CrossOrigin
     @GetMapping("/getBookCountByAuthor/{accountId}")
     public ResponseEntity<Integer> getBookCountByAuthor(@PathVariable int accountId) {
@@ -97,7 +98,6 @@ public class BookController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
 
     @CrossOrigin
     @PutMapping("/update/{bookId}")
@@ -164,8 +164,9 @@ public class BookController {
             throw e;
         }
     }
+
     @CrossOrigin
-    @GetMapping("/getQuizCount/{bookId}")
+    @GetMapping("/getAchievementPerBook/{bookId}")
     public ResponseEntity<List<AchievementEntity>> getAchievementPerBook(@PathVariable int bookId) {
         try {
             List<AchievementEntity> achievements = bookService.getAchievements(bookId);
