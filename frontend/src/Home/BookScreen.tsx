@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Header from './Header';
 import { useNavigate } from 'react-router-dom';
 import { useBook } from './BookContext';
@@ -8,7 +8,10 @@ const BookScreen: React.FC<BookScreenProps> = () => {
   const navigate = useNavigate();
   const { book, setBookId } = useBook(); // Obtain setBookId from useBook hook
 
-  console.log(book?.bookId)
+  useEffect(() => {
+    console.log(book?.bookId);
+  }, [book?.bookId]); // Only re-run the effect if book?.bookId changes
+  
   const handleGame = () => {
     navigate('/game');
   };
