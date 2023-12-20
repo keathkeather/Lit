@@ -6,7 +6,7 @@ interface HeaderProps {}
 
 const Header: React.FC<HeaderProps> = () => {
   const navigate = useNavigate();
-  const { account } = useAccount();
+  const [account, setAccount] = useState<any>(null); // State to hold account details
   const [loading, setLoading] = useState(true);
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const [isHModalVisible, setHModalVisible] = useState(false);
@@ -16,15 +16,26 @@ const Header: React.FC<HeaderProps> = () => {
   const allHModalVisible = isHModalVisible || isAModalVisible || isSuModalVisible || isSeModalVisible;
 
   useEffect(() => {
-    if (account) {
+    const storedAccount = sessionStorage.getItem('account');
+    if (storedAccount) {
+      const parsedAccount = JSON.parse(storedAccount);
+      setAccount(parsedAccount);
       setLoading(false);
     } else {
       setLoading(true);
     }
-  }, [account]);
+  }, []);
 
   const handleLogoClick = () => {
     navigate('/');
+  };
+
+  //logout
+  const handleLogoutClick = () => {
+    sessionStorage.removeItem('userLoggedIn') //end session here
+    sessionStorage.removeItem('account')
+    navigate('/landing'); // then go back to landing page hehe
+    console.log('Logged out successfully!');
   };
 
   const handleHelpClick = () => {
@@ -181,7 +192,7 @@ const Header: React.FC<HeaderProps> = () => {
                   </button>
                 </div>
                 <div className="text-sm" style={{ marginTop: '-16px' }}>______________________________</div>
-                <div onClick={handleLogoClick} style={{ cursor: 'pointer', width: '176px' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E5E7EB'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
+                <div onClick={handleLogoutClick} style={{ cursor: 'pointer', width: '176px' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E5E7EB'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
                   <button className="ml-2 mt-3 mb-3 text-sm font-bold flex flex-row items-center">
                     <svg className="w-4 h-4 text-black mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 15">
                       <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 7.5h11m0 0L8 3.786M12 7.5l-4 3.714M12 1h3c.53 0 1.04.196 1.414.544.375.348.586.82.586 1.313v9.286c0 .492-.21.965-.586 1.313A2.081 2.081 0 0 1 15 14h-3"/>
