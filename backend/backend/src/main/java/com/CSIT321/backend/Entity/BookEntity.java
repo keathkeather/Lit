@@ -3,7 +3,7 @@ package com.CSIT321.backend.Entity;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import java.util.List;
@@ -33,7 +33,7 @@ public class BookEntity {
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)   
     private List<AchievementEntity> achievement;
 
-    @JsonManagedReference   
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "book_list_id")
     private BookListEntity bookList;

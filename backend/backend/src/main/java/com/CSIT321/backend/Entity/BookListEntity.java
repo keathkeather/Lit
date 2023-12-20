@@ -3,6 +3,7 @@ package com.CSIT321.backend.Entity;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.List;
 
@@ -19,8 +20,8 @@ public class BookListEntity {
     @JsonBackReference
     private AccountEntity account;
 
-    @JsonBackReference
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonIgnore
+    @OneToMany( orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "book_list_id")
     private List<BookEntity> books;
 
