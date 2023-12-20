@@ -21,6 +21,18 @@ interface UserEntity {
   account: AccountEntity;
 }
 
+interface Book {
+  bookId: number;
+  bookName: string;
+  bookDescription: string;
+  genre: string;
+  author: {
+    firstName: string;
+    lastName: string;
+  };
+  isDeleted: boolean;
+}
+
 interface AdminHomeScreenProps {}
 
 const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
@@ -41,7 +53,9 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
   const [authorsItemsPerPage, setAuthorsItemsPerPage] = useState(3); // You can set the desired value
   const [authorsTableHeight, setAuthorsTableHeight] = useState<number>(32.5); // Set the initial height as needed
 
-
+  const [isViewBooksModalVisible, setViewBooksModalVisible] = useState(false);
+  const [selectedAuthorAccountId, setSelectedAuthorAccountId] = useState<number | null>(null);
+  const [authorBooks, setAuthorBooks] = useState<Book[]>([]);
 
 
   const toggleDelUserModal = (userId: number) => {
@@ -56,7 +70,40 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
 
   setSelectedEditUser(user);
   setEditUserModalVisible(!isEditUserModalVisible);
-};
+  };
+
+  const toggleViewBooksModal = (accountId: number | null = null) => {
+    setSelectedAuthorAccountId(accountId);
+    setViewBooksModalVisible(!isViewBooksModalVisible);
+    if (accountId !== null) {
+      fetchAuthorBooks(accountId);
+    }
+  };
+
+  const fetchAuthorBooks = async (accountId: number) => {
+    try {
+      const response = await fetch(`http://localhost:8080/book/getBookByAuthor/${accountId}`);
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        throw new Error(errorResponse.message || 'Failed to fetch books');
+      }
+
+      const booksData: Book[] = await response.json();
+    
+      // Filter out books with isDeleted set to true
+      const filteredBooks = booksData.filter((book) => !book.isDeleted);
+
+      setAuthorBooks(filteredBooks);
+    } catch (error) {
+      console.error('Error fetching author books:', error);
+    }
+  };
+  
+  const closeViewBooksModal = () => {
+    setSelectedAuthorAccountId(null);
+    setAuthorBooks([]);
+    setViewBooksModalVisible(false);
+  };
 
   const fetchUsers = async () => {
     try {
@@ -292,7 +339,11 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
                   <td className="px-6 py-4">
                     <button
                       className="focus:outline-none text-xs text-[#427A5B] bg-[#DEEDE5] hover:bg-[#427A5B] hover:text-white font-medium rounded-lg px-5 py-2 mb-1 mt-1"
-                      
+                      onClick={() => {
+                        setSelectedAuthorAccountId(author.account.accountId);
+                        fetchAuthorBooks(author.account.accountId); // Fetch books when the button is clicked
+                        toggleViewBooksModal();
+                      }}
                     >
                       View Books
                     </button>
@@ -316,11 +367,13 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
   return (
     <div className="flex">
               {isDelUserModalVisible && <div className="bs-overlay"></div>}
-              {isEditUserModalVisible && <div className="bs-edit-modal-overlay"></div>}   
+              {isEditUserModalVisible && <div className="bs-edit-modal-overlay"></div>}
+              {isViewBooksModalVisible && <div className="bs-viewbooks-modal-overlay"></div>} 
               <style>
                 {`
                 .bs-overlay,
-                .bs-edit-modal-overlay {
+                .bs-edit-modal-overlay,
+                .bs-viewbooks-modal-overlay {
                   position: fixed;
                   top: 0;
                   left: 0;
@@ -331,7 +384,8 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
                 }
 
                 .bs-modal,
-                .bs-edit-modal {
+                .bs-edit-modal,
+                .bs-viewbooks-modal {
                   position: fixed;
                   top: 50%;
                   left: 50%;
@@ -340,11 +394,13 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
                 }
 
                 .bs-modal-open,
-                .bs-edit-modal-open {
+                .bs-edit-modal-open,
+                .bs-viewbooks-modal-open {
                   overflow: hidden;
                 }
                 `}
               </style>
+
       <Sidebar />
     <div className="flex-1 ml-64 p-4">
       <div className="mb-4 border-gray-200 dark:border-gray-700">
@@ -382,6 +438,7 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
       </div>
 
       <div id="default-tab-content">
+
         {/* Authors tab content */}
         {isAuthorsTabVisible && (
           <div id="authors" role="tabpanel" aria-labelledby="authors-tab">
@@ -389,23 +446,58 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
           </div>
         )}
 
-          {isUsersTabVisible && (
-          <div id="users" role="tabpanel" aria-labelledby="users-tab">
-            {/* Render the Users table */}
-            {renderUsersTable(getUsersForCurrentPage())}
+      <div
+        id="viewbooks-modal"
+        className={`bs-modal ${isViewBooksModalVisible ? 'bs-modal-open' : 'hidden'}`}
+      >
+        <div className="w-full max-w-screen max-h-full bg-white rounded-lg" style={{ width: '740px', height: '660px' }}>
+          <div className="bg-[#10235d] rounded-t-lg text-white p-4 mb-4 flex justify-between items-center">
+            <h2 className="ml-2 text-lg font-semibold">Published Books</h2>
+            <button
+              type="button"
+              onClick={closeViewBooksModal}
+              className="focus:outline-none float-right"
+            >
+              <img src="/litimg/close.png" alt="xbtn" className="w-3.5 mr-1.5" />
+            </button>
+          </div>
+          <div className="mt-5">
+            <div className="ml-5 overflow-y-auto" style={{ width: '720px' }}>
+              <ul className="grid grid-cols-4">
+                {authorBooks.map((book) => (
+                  <li key={book.bookId} className="mb-2">
+                    <div className="flex flex-col items-center" style={{ width: '160px' }}>
+                      <div className="relative mb-2">
+                        <img src={`litimg/${book.bookName}.svg`} alt={book.bookName} className="w-40 rounded-md" />
+                      </div>
+                      <div className="text-sm font-medium text-center">{book.bookName}</div>
+                      <div className="text-xs text-lblue mb-2">{`${book.author.firstName} ${book.author.lastName}`}</div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
 
-          <div className="flex justify-center mt-4 p-2.5 rounded-lg">
-            {Array.from({ length: Math.ceil(users.length / itemsPerPage) }, (_, index) => (
-              <button
-                key={index + 1}
-                className={`mx-1 px-3 py-2 text-xs font-bold rounded-full ${
-                  usersCurrentPage === index + 1 ? 'bg-[#10235d] text-white' : 'bg-[#E6E6E6] text-[#4C4C4C] hover:bg-[#10235d] hover:text-white'
-                }`}
-                onClick={() => setUsersCurrentPage(index + 1)}
-              >
-                {index + 1}
-              </button>
-            ))}
+        {isUsersTabVisible && (
+        <div id="users" role="tabpanel" aria-labelledby="users-tab">
+          {/* Render the Users table */}
+          {renderUsersTable(getUsersForCurrentPage())}
+
+        <div className="flex justify-center mt-4 p-2.5 rounded-lg">
+          {Array.from({ length: Math.ceil(users.length / itemsPerPage) }, (_, index) => (
+            <button
+              key={index + 1}
+              className={`mx-1 px-3 py-2 text-xs font-bold rounded-full ${
+                usersCurrentPage === index + 1 ? 'bg-[#10235d] text-white' : 'bg-[#E6E6E6] text-[#4C4C4C] hover:bg-[#10235d] hover:text-white'
+              }`}
+              onClick={() => setUsersCurrentPage(index + 1)}
+            >
+              {index + 1}
+            </button>
+          ))}
           </div>
 
           <div
@@ -429,6 +521,7 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
               </div>
             </div>
           </div>
+
           <div
             id="user-edit-modal"
             className={`bs-modal ${isEditUserModalVisible ? '' : 'hidden'}`}
@@ -480,18 +573,19 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
                       onClick={handleEditUser}
                       className="px-8 py-2 rounded bg-[#427A5B] text-white font-semibold cursor-pointer text-sm"
                     >
-                        Update
-                      </button>
-                    </div>
+                      Update
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        )}
-        </div>
+
       </div>
-    </div>  
+      )}
+      </div>
+    </div>
+  </div>  
   );
 };
 
