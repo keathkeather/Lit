@@ -7,7 +7,12 @@ export interface Book {
       firstName: string;
       lastName: string;
     };
-  }
+    quizzes: Quiz[];
+}
+
+interface Quiz {
+    quizId: number;
+}
   
   export const fetchBooks = async (): Promise<Book[]> => {
     try {

@@ -61,13 +61,14 @@ const LoginScreen: React.FC<LoginScreenProps> = () => {
       if (isUserAutheticatedAsAdmin) {
         setAccount(isUserAutheticatedAsAdmin.account);
         // we can implement this if we agree on it :) but il just comment this out until ill add server side rendering ;
-        // localStorage.setItem('account', JSON.stringify(isUserAutheticatedAsAdmin.account));
+        sessionStorage.setItem('account', JSON.stringify(isUserAutheticatedAsAdmin.account)); // TODO: Store account details in sessionStorage
         navigate('/admin');
       } else if (isUserAuthenticated) {
         console.log('Login Successful!');
         setAccount(isUserAuthenticated.account);
         //way to make when a page reloads it does not turn the user int null  problem is it makes things unsecure so bad practice to do so :(
-        // localStorage.setItem('account', JSON.stringify(isUserAuthenticated.account)); 
+          sessionStorage.setItem('account', JSON.stringify(isUserAuthenticated.account)); // Store account details in sessionStorage
+          sessionStorage.setItem('userLoggedIn', 'true'); // * Store user login status in sessionStorage
         navigate('/userhome');
       } else {
         setLoginError(true); // Set login error to true
