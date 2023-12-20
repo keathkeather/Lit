@@ -1,37 +1,16 @@
 import React, { useState, useEffect } from 'react'; // Make sure to import useState
 import Header from './Header';
 import { useNavigate, useLocation } from 'react-router-dom';
-
-
+import { useAccount } from './AccountContext';
+import BookEntryWithHandlers from '../ApiClient/BookEntryWithHandlers';
+import { useBookList } from '../ApiClient/BookListContext';
 
 const MyList: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
-
   const location = useLocation();
-  const accountId: number | undefined = location.state?.accountId;
-
- 
-
-  const handlePlay = () => {
-    navigate('/book');
-  };
-
-  const handlePlus1 = () => {
-    //logic here...
-  };
-
-  const handlePlus2 = () => {
-    //logic here...
-  };
-
-  const handlePlus3 = () => {
-    //logic here...
-  };
-
-  const handlePlus4 = () => {
-    //logic here...
-  };
+  const { account } = useAccount();
+  const {bookList} = useBookList();
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -76,7 +55,11 @@ const MyList: React.FC = () => {
             )}
           </div>
         </div>
-
+              <div>
+                {bookList.map((book)=>(
+                    <BookEntryWithHandlers book={book}/>
+                  ))}
+              </div>
         </div>
     </div>
   );
