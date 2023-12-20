@@ -6,11 +6,21 @@ interface Account {
   firstName: string;
   lastName: string;
   role : Role;
+  quizAnswered : quizAnswered;
   // Add other properties as needed
 }
 
 interface Role{
   role_id: number;
+}
+
+interface quizAnswered {
+  quizScores: quizScores[];
+}
+
+interface quizScores {
+  quizScoreId: number;
+  accountScore: number;
 }
 
 interface AccountContextProps {

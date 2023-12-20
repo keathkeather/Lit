@@ -12,8 +12,17 @@ interface AccountEntity {
   email: string;
   firstName: string;
   lastName: string;
-
   role : RoleEntity;
+  quizAnswered : quizAnswered;
+}
+
+interface quizAnswered {
+  quizScores: quizScores[];
+}
+
+interface quizScores {
+  quizScoreId: number;
+  accountScore: number;
 }
 
 interface UserEntity {
