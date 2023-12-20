@@ -9,6 +9,8 @@ const QuestList: React.FC<QuestListProps> = () => {
     const navigate = useNavigate();
     const { bookId, setBookId } = useBook(); // Access bookId from context
     const [quizzes, setQuizzes] = useState<any[]>([]);
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false); //Track user login status
+
     console.log('Extracted bookId:', bookId);
 
     const handleBackIcon = () => {
@@ -16,29 +18,55 @@ const QuestList: React.FC<QuestListProps> = () => {
     };
 
     const handleAttemptQuiz = (quizId: number) => {
-      const confirmation = window.confirm('Attempt Quiz?');
-      if (confirmation) {
-        navigate(`/quiz/${quizId}`);
-      } 
+      if (isLoggedIn) {
+        const confirmation = window.confirm('Attempt Quiz?');
+        if (confirmation) {
+          navigate(`/quiz`);
+        }
+      } else {
+        const confirmation = window.confirm('You must be logged in to attempt a quiz. Do you want to log in?');
+         if (confirmation) {
+          // Redirect to the login page or show a message for the user to log in
+          navigate('/login'); // Modify this to your login page route
+        }
+      }
     };
 
+    // * KEATH AKO GIADDAN OG SESSION KAY DI MAN MAG AGAD SI QUESTLIST NI USER. MAG AGAD MAN SHAS BOOK.
     useEffect(() => {
-      console.log('Fetching quizzes for bookId:', bookId);
-      fetch(`http://localhost:8080/book/getQuiz/${bookId}`)
-        .then((response) => response.json())
-        .then((data) => {
-          console.log('Fetched data:', data); // Log the fetched data
-          if (Array.isArray(data)) {
-            setQuizzes(data); // Update state with quizzes data
-          } else {
-            setQuizzes([]); // Set empty array if data format is unexpected
-          }
-        })
-        .catch((error) => {
-          console.error('Error fetching quizzes:', error);
-          setQuizzes([]); // Set empty array in case of error
-        });
-    }, [bookId]);
+      const storedBookId = sessionStorage.getItem('bookId');
+      if (storedBookId) {
+        setBookId(Number(storedBookId));
+      }
+
+      // Check if user is logged in
+      const userLoggedIn = sessionStorage.getItem('userLoggedIn');
+      if (userLoggedIn) {
+        // Convert the string value from sessionStorage to a boolean
+        setIsLoggedIn(userLoggedIn === 'true'); // Convert string to boolean
+      }
+    }, [setBookId]);
+
+    useEffect(() => {
+      if (bookId !== null && bookId !== undefined) {
+        sessionStorage.setItem('bookId', String(bookId)); // Store bookId in sessionStorage
+        // Rest of your code for fetching quizzes based on bookId remains unchanged
+        fetch(`http://localhost:8080/book/getQuiz/${bookId}`)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log('Fetched data:', data); // Log the fetched data
+            if (Array.isArray(data)) {
+              setQuizzes(data); // Update state with quizzes data
+            } else {
+              setQuizzes([]); // Set empty array if data format is unexpected
+            }
+          })
+          .catch((error) => {
+            console.error('Error fetching quizzes:', error);
+            setQuizzes([]); // Set empty array in case of error
+          });
+      }
+    }, [bookId, setBookId]);
 
     console.log('Quizzes:', quizzes);
 

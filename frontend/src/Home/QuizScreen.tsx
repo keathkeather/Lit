@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { useBook } from './BookContext'; 
 
 interface QuizQuestion {
   questionId: number;
@@ -19,11 +20,10 @@ interface Quiz {
 interface QuizScreenProps {}
 
 const QuizScreen: React.FC<QuizScreenProps> = () => {
-  const { quizId } = useParams<{ quizId: string }>();
+  const { bookId } = useBook(); // Access bookId from context
+  const { book, setBook } = useBook(); // Update to include setBookId from BookContext
   const [quiz, setQuiz] = useState<Quiz | null>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
-
-  const [hoveredButton, setHoveredButton] = useState<number | null>(null);
 
   const navigate = useNavigate();
 
@@ -31,22 +31,35 @@ const QuizScreen: React.FC<QuizScreenProps> = () => {
     navigate('/questlist'); // Navigate to the QuestList screen
   };
 
+  const [hoveredButton, setHoveredButton] = useState<number | null>(null);
+  
   useEffect(() => {
-    fetch(`http://localhost:8080/quizzes/${quizId}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setQuiz(data);
-      })
-      .catch((error) => {
-        console.error('Error fetching quiz:', error);
-        setQuiz(null);
-      });
-  }, [quizId]);
+    if (bookId !== null && bookId !== undefined) {
+      fetch(`http://localhost:8080/book/getQuiz/${bookId}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Failed to fetch quiz');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          if (data.length > 0) {
+            setBook(data[0]); // Update the book with fetched quiz data in the Book context
+            setQuiz(data[0]); // Set the fetched quiz in the local state
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching quiz:', error);
+          setBook(null);
+          setQuiz(null);
+        });
+    }
+  }, [bookId, setBook]);
 
   useEffect(() => {
     // Add this useEffect to highlight selected answers when navigating between questions
     if (quiz) {
-      const savedUserAnswers = localStorage.getItem(`userAnswers-${quiz.quizId}`);
+      const savedUserAnswers = sessionStorage.getItem(`userAnswers-${quiz.quizId}`);
       if (savedUserAnswers) {
         setUserAnswers(JSON.parse(savedUserAnswers));
       }

@@ -8,7 +8,11 @@ interface Book {
       firstName: string;
       lastName: string;
     };
-  // Add other properties as needed
+    quizzes: Quiz[];
+}
+
+interface Quiz {
+    quizId: number;
 }
 
 // Inside BookContext
