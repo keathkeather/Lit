@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.CSIT321.backend.Exceptions.UnauthorizedAccountException;
+import com.CSIT321.backend.Entity.AchievementEntity;
 import com.CSIT321.backend.Entity.BookEntity;
 import com.CSIT321.backend.Entity.QuizEntity;
 import com.CSIT321.backend.Entity.DTO.QuizDTO;
@@ -159,6 +160,16 @@ public class BookController {
             }
 
             return new ResponseEntity<>(quizDTOs, HttpStatus.OK);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    @CrossOrigin
+    @GetMapping("/getQuizCount/{bookId}")
+    public ResponseEntity<List<AchievementEntity>> getAchievementPerBook(@PathVariable int bookId) {
+        try {
+            List<AchievementEntity> achievements = bookService.getAchievements(bookId);
+            return new ResponseEntity<>(achievements, HttpStatus.OK);
         } catch (Exception e) {
             throw e;
         }

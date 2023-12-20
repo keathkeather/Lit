@@ -15,6 +15,7 @@ import com.CSIT321.backend.Entity.BookEntity;
 import com.CSIT321.backend.Entity.QuizEntity;
 import com.CSIT321.backend.Exceptions.UnauthorizedAccountException;
 import com.CSIT321.backend.Entity.AccountEntity;
+import com.CSIT321.backend.Entity.AchievementEntity;
 @Service
 public class BookService {
     @Autowired
@@ -125,6 +126,15 @@ public class BookService {
             BookEntity book = bookRepository.findById(bookId)
                     .orElseThrow(() -> new EntityNotFoundException("book " + bookId + " does not exist"));
             return book.getQuiz();
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    public List<AchievementEntity> getAchievements(int bookId) {
+        try {
+            BookEntity book = bookRepository.findById(bookId)
+                    .orElseThrow(() -> new EntityNotFoundException("book " + bookId + " does not exist"));
+            return book.getAchievement();
         } catch (Exception e) {
             throw e;
         }
