@@ -33,6 +33,7 @@ import CreateBookScreen from './Home/CreateBookScreen';
 import BooksScreen from './Admin/BooksScreen';
 import EditBookScreen from './Admin/EditBookScreen';
 import Dashboard from './Admin/Dashboard';
+import ScoreScreen from './Home/ScoreScreen';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
@@ -68,6 +69,7 @@ ReactDOM.render(
         <Route path="/books" element={<BooksScreen />} />
         <Route path="/editbook/:bookId" element={<EditBookScreen />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/score" element={<ScoreScreen/>} />
       </Routes>
     </Router>
     </BookProvider>
