@@ -143,6 +143,7 @@ const QuizScreen: React.FC<QuizScreenProps> = () => {
       .catch((error) => {
         console.error('Error storing quiz score:', error);
       });
+
   };    
 
   const isLastQuestion =
