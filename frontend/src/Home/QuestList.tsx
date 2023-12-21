@@ -12,6 +12,10 @@ const QuestList: React.FC<QuestListProps> = () => {
     const [quizzes, setQuizzes] = useState<any[]>([]);
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false); //Track user login status
     const { account } = useAccount(); // Accessing account details from context
+    //modals
+    const [showQuizModal, setShowQuizModal] = useState<boolean>(false);
+    const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
+    const [selectedQuizId, setSelectedQuizId] = useState<number | null>(null);
 
     // Log when bookId changes
     useEffect(() => {
@@ -25,18 +29,27 @@ const QuestList: React.FC<QuestListProps> = () => {
 
     const handleAttemptQuiz = (quizId: number) => {
       if (isLoggedIn) {
-        const confirmation = window.confirm('Attempt Quiz?');
-          if (confirmation) {
-            navigate(`/quiz`);
-          }
+        setSelectedQuizId(quizId);
+        setShowQuizModal(true);
       } else {
-        const confirmation = window.confirm('You must be logged in to attempt a quiz. Do you want to log in?');
-         if (confirmation) {
-          // Redirect to the login page or show a message for the user to log in
-          navigate('/login'); // Modify this to your login page route
-        }
+        setShowLoginModal(true);
       }
     };
+  
+    const handleConfirmQuiz = () => {
+      setShowQuizModal(false);
+      navigate(`/quiz`);
+    };
+  
+    const handleCancelQuiz = () => {
+      setShowQuizModal(false);
+    };
+  
+    const handleLogin = () => {
+      setShowLoginModal(false);
+      navigate('/login');
+    };
+  
 
     // * KEATH AKO GIADDAN OG SESSION KAY DI MAN MAG AGAD SI QUESTLIST NI USER. MAG AGAD MAN SHAS BOOK.
     useEffect(() => {
@@ -56,7 +69,6 @@ const QuestList: React.FC<QuestListProps> = () => {
     useEffect(() => {
       if (bookId !== null && bookId !== undefined) {
         sessionStorage.setItem('bookId', String(bookId)); // Store bookId in sessionStorage
-        // Rest of your code for fetching quizzes based on bookId remains unchanged
         fetch(`http://localhost:8080/book/getQuiz/${bookId}`)
           .then((response) => response.json())
           .then((data) => {
@@ -115,6 +127,41 @@ const QuestList: React.FC<QuestListProps> = () => {
         ))}
       </div>
         </div>
+        {/* Quiz Attempt Modal */}
+      {showQuizModal && (
+        <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-[#000] bg-opacity-50">
+          <div className="bg-white p-8 rounded-md shadow-lg w-[300px] h-[230px]">
+            <h2 className='text-[24px] pb-2 text-center font-bold'>Attempt Quiz</h2>
+            <p className='text-center pb-2'>You want to attempt quiz <br/>now?</p>
+            <div className="flex justify-center mt-4">
+              <button className="mr-4 px-4 py-2 w-[100px] bg-[#10235d12] text-[#10235d] border border-[#cacaca] transition duration-300 ease-in-out hover:border-[#10235d] hover:font-semibold rounded-md" onClick={handleCancelQuiz}>
+                Cancel
+              </button>
+              <button className="px-4 py-2 w-[100px] bg-[#10235d] hover:bg-bgc2 text-white rounded-md" onClick={handleConfirmQuiz}>
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Login Modal */}
+      {showLoginModal && (
+        <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-[#000] bg-opacity-50">
+          <div className="bg-white p-8 rounded-md shadow-lg w-[300px] h-[250px]">
+            <h1 className='text-[24px] mb-2 text-center font-bold text-[#c72b2b]'>Oops!</h1>
+            <p className='text-center pb-2 font-semibold'>You must be logged in to attempt a quiz. Do you<br/> want to log in?</p>
+            <div className="flex justify-center mt-4">
+              <button className="mr-4 px-4 py-2 w-[100px] bg-[#10235d12] text-[#10235d] border border-[#cacaca] transition duration-300 ease-in-out hover:border-[#10235d] hover:font-semibold rounded-md" onClick={() => setShowLoginModal(false)}>
+                Cancel
+              </button>
+              <button className="px-4 py-2 w-[100px] bg-[#10235d] hover:bg-bgc2 text-white rounded-md" onClick={handleLogin}>
+                Log In
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       </div>
       );
   };
