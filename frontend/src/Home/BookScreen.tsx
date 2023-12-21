@@ -115,7 +115,7 @@ const BookScreen: React.FC<BookScreenProps> = () => {
               </div>
 
               {/* Button */}
-              <div className="ml-[30rem] mr-32 -mt-[12rem]">
+              <div className="absolute top-15 right-32 mt-4 mr-4">
                 <button onClick={handleGame}>
                   <img src="litimg/playbtn.svg" alt="playbtn" className="w-30 lg:w-48 mr-2 lg:mr-3" style={{ width: '300px' }} />
                 </button>
