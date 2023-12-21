@@ -1,30 +1,41 @@
-import React, {} from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from './Header'
 import { useNavigate} from 'react-router-dom';
 import { useAccount } from './AccountContext';
-
+import { fetchBooks,Book} from './BookService';
+import BookEntryWithHandlers from '../ApiClient/BookEntryWithHandlers';
 const UserHomeScreen: React.FC = () => {
   const navigate = useNavigate();
   const {account} = useAccount();
-  const handlePlay = () => {
-    navigate('/book');
-  };
+  const [books, setBooks] = useState<Book[]>([]);
+  const [originalBooks, setOriginalBooks] = useState<Book[]>([]);
 
-  const handlePlus1 = () => {
-    //logic here...
-  };
+  function getRandomElements(arr: any[], n: number) {
+    const shuffled = [...arr];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled.slice(0, n);
+  }
+  useEffect(() => {
+    const fetchBooksData = async () => {
+      try {
+        const booksData = await fetchBooks();
+        setOriginalBooks(booksData);
+        setBooks(booksData);
+        console.log('Books fetched successfully:', booksData);
+      } catch (error) {
+        console.error('Error fetching books:', error);
+      }
+    }; 
+  
+    fetchBooksData();
+  }, []);
 
-  const handlePlus2 = () => {
-    //logic here...
-  };
+  const randomBooks = getRandomElements(books, 4);
 
-  const handlePlus3 = () => {
-    //logic here...
-  };
 
-  const handlePlus4 = () => {
-    //logic here...
-  };
 
   return (
     <div className="overflow-y-auto">
@@ -52,58 +63,15 @@ const UserHomeScreen: React.FC = () => {
 
         <div>
           <div className="flex flex-row items-center">
-            <div className="flex flex-col mr-8 ml-8">
-              <div className="relative">
-                <img src="litimg/Ibong Adarna.svg" alt="Ibong Adarna" className="w-72" />
-                <button onClick={handlePlus1} className="absolute bottom-5 right-4">
-                  <img src="litimg/plusbtn.svg" alt="plusbtn" className="w-15" />
-                </button>
-              </div>
-              <div className="ml-5 text-lg font-semibold">Ibong Adarna</div>
-              <div className="ml-5 mb-3 font-medium text-sm text-lblue">Jose de la Cruz</div>
-              <button onClick={handlePlay} className="mx-auto">
-                <img src="litimg/playbtn.svg" alt="playbtn" className="w-60" />
-              </button>
-            </div>
-            <div className="flex flex-col mr-8">
-              <div className="relative">
-                <img src="litimg/Florante at Laura.svg" alt="Florante at Laura" className="w-72" />
-                <button onClick={handlePlus2} className="absolute bottom-5 right-4">
-                  <img src="litimg/plusbtn.svg" alt="plusbtn" className="w-15" />
-                </button>
-              </div>
-              <div className="ml-5 text-lg font-semibold">Florante at Laura</div>
-              <div className="ml-5 mb-3 font-medium text-sm text-lblue">Francisco Balagtas</div>
-              <button onClick={handlePlay} className="mx-auto">
-                <img src="litimg/playbtn.svg" alt="playbtn" className="w-60" />
-              </button>
-            </div>
-            <div className="flex flex-col mr-8">
-              <div className="relative">
-                <img src="litimg/Alamat ng Pinya.svg" alt="Alamat ng Pinya" className="w-72" />
-                <button onClick={handlePlus3} className="absolute bottom-5 right-4">
-                  <img src="litimg/plusbtn.svg" alt="plusbtn" className="w-15" />
-                </button>
-              </div>
-              <div className="ml-5 text-lg font-semibold">Alamat ng Pinya</div>
-              <div className="ml-5 mb-3 font-medium text-sm text-lblue">Boots S. Agbayani Pa...</div>
-              <button onClick={handlePlay} className="mx-auto">
-                <img src="litimg/playbtn.svg" alt="playbtn" className="w-60" />
-              </button>
-            </div>
-            <div className="flex flex-col mr-8">
-              <div className="relative">
-                <img src="litimg/El Filibusterismo.svg" alt="El Filibusterismo" className="w-72" />
-                <button onClick={handlePlus4} className="absolute bottom-5 right-4">
-                  <img src="litimg/plusbtn.svg" alt="plusbtn" className="w-15" />
-                </button>
-              </div>
-              <div className="ml-5 text-lg font-semibold">El Filibusterismo</div>
-              <div className="ml-5 mb-3 font-medium text-sm text-lblue">Leon Ma. Geurrero</div>
-              <button onClick={handlePlay} className="mx-auto">
-                <img src="litimg/playbtn.svg" alt="playbtn" className="w-60" />
-              </button>
-            </div>
+          <div className="mt-5 ml-16 flex flex-wrap items-left" style={{width: '1400px'}}>
+            {randomBooks.map((book) => (
+              <BookEntryWithHandlers
+                key={book.bookId}
+                book={book}
+              />
+            ))}
+              
+        </div>
           </div>
         </div>
 
