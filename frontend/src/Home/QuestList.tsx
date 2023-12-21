@@ -28,6 +28,7 @@ const QuestList: React.FC<QuestListProps> = () => {
     };
 
     const handleAttemptQuiz = (quizId: number) => {
+      console.log('Attempting quiz:', quizId);
       if (isLoggedIn) {
         setSelectedQuizId(quizId);
         setShowQuizModal(true);
@@ -38,8 +39,12 @@ const QuestList: React.FC<QuestListProps> = () => {
   
     const handleConfirmQuiz = () => {
       setShowQuizModal(false);
-      navigate(`/quiz`);
-    };
+    if (selectedQuizId !== null) {
+      navigate(`/quiz/${selectedQuizId}`); // Navigate to the selected quiz ID
+    } else {
+      console.error("No quiz ID selected");
+    }
+  };
   
     const handleCancelQuiz = () => {
       setShowQuizModal(false);

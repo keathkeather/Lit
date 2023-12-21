@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useBook } from "./BookContext";
 import { useAccount } from "./AccountContext";
+import { useParams } from "react-router-dom";
 
 interface QuizQuestion {
   questionId: number;
@@ -25,6 +26,7 @@ const QuizScreen: React.FC<QuizScreenProps> = () => {
   const [quiz, setQuiz] = useState<Quiz | null>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
   const { account, setAccount } = useAccount(); // State to hold account details
+  const {quizId} = useParams();
 
   const navigate = useNavigate();
 
@@ -44,7 +46,7 @@ const QuizScreen: React.FC<QuizScreenProps> = () => {
           return response.json();
         })
         .then((data) => {
-          if (data.length > 0) {
+          if (Array.isArray(data) && data.length > 0) {
             setBook(data[0]); // Update the book with fetched quiz data in the Book context
             setQuiz(data[0]); // Set the fetched quiz in the local state
           }
@@ -57,6 +59,7 @@ const QuizScreen: React.FC<QuizScreenProps> = () => {
     }
   }, [bookId, setBook]);
 
+  console.log("Quiz:", quiz);
   useEffect(() => {
     // Add this useEffect to highlight selected answers when navigating between questions
     if (quiz) {
@@ -198,7 +201,7 @@ const QuizScreen: React.FC<QuizScreenProps> = () => {
     
               <div className="flex-1 mr-8 mt-4">
                 <div className="flex">
-                  <img src="litimg/litsy.png" alt="Lit Logo 3" className="w-50.5 h-40 ml-10 mr-6 mb-4" />
+                  <img src="/litimg/litsy.png" alt="Lit Logo 3" className="w-50.5 h-40 ml-10 mr-6 mb-4" />
                   <p className="mt-10 mb-8 font-semibold text-2xl">
                     {quiz.questions[currentQuestionIndex].questionText}
                   </p>
