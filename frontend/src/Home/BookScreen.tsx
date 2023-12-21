@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import { useNavigate } from 'react-router-dom';
 import { useBook } from './BookContext';
-
+import { useAccount } from './AccountContext';
 interface Quiz {
   quizId: number;
   quizName: string;
+  perfectScore: number;
 }
 
 interface Achievement {
@@ -20,7 +21,8 @@ const BookScreen: React.FC<BookScreenProps> = () => {
   const { book, setBookId } = useBook(); // Obtain setBookId from useBook hook
   const [quests, setQuests] = useState<Quiz[]>([]);
   const [achievements, setAchievements] = useState<Achievement[]>([]);
-
+  const {account} = useAccount();
+  const accountScore = account?.quizAnswered?.quizScores[0]?.accountScore;
   useEffect(() => {
     console.log(book?.bookId);
     // Fetch quests for the current book when bookId changes
@@ -170,7 +172,7 @@ const BookScreen: React.FC<BookScreenProps> = () => {
                           <div className="bg-lgray h-4 rounded-full" style={{ width: '410px'}}>
                             <div className="bg-lightg h-full rounded-full" style={{ width: '0%' }}></div>
                           </div>
-                          <div className="text-lgray text-lg fond-bold mb-1 ml-4">0/10</div>
+                          <div className="text-lgray text-lg fond-bold mb-1 ml-4">{accountScore}/{quiz.perfectScore}</div>
                         </div>
                       </div>
                     </div>
