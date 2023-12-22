@@ -60,6 +60,19 @@ public class UserController{
             throw e;
         }
     }
+
+    @CrossOrigin
+    @GetMapping("/getAllAuthors")
+    public ResponseEntity<List<UserEntity>> getAllAuthors(){
+        try{
+            List<UserEntity> authors = userService.getAllAuthors();
+            return new ResponseEntity<>(authors,HttpStatus.OK);
+        }catch(Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
     @CrossOrigin
     @PutMapping("/updateUser/{user_id}")
     public ResponseEntity<Object> updateUser(@PathVariable int user_id,@RequestBody UserDTO newUserDTO){

@@ -4,6 +4,7 @@ import com.CSIT321.backend.Entity.AccountEntity;
 import com.CSIT321.backend.Entity.RolesEntity;
 import com.CSIT321.backend.Entity.UserEntity;
 import com.CSIT321.backend.Entity.DTO.UserDTO;
+import com.CSIT321.backend.Repository.AccountRepository;
 import com.CSIT321.backend.Repository.RolesRepository;
 import com.CSIT321.backend.Repository.UserRepository;
 
@@ -12,13 +13,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
 
     @Autowired
     UserRepository userRepository;
-
+    
+    @Autowired
+    AccountService accountService;
     @Autowired
     RolesRepository rolesRepository;
     public UserEntity insertUser(UserDTO userDTO) {
@@ -54,7 +58,22 @@ public class UserService {
     public UserEntity getUserById(int uid){
         return userRepository.findById(uid).orElseThrow(() -> new NoSuchElementException("User " + uid + " does not exist"));
     }
+    //* this is my bruteforce way to implement getAllAuthors through accounts */
+    //Todo : find a better way to implement this
+    public List<UserEntity> getAllAuthors() {
+        try {
+            List<UserEntity> allUsers = userRepository.findAll();
+            List<AccountEntity> authorAccounts = accountService.getAllAuthors();
 
+            List<UserEntity> authors = allUsers.stream()
+                .filter(user -> authorAccounts.contains(user.getAccount()))
+                .collect(Collectors.toList());
+
+            return authors;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
     public UserEntity updateUserRoleToAuthor(int uid) {
         try {
             UserEntity user = userRepository.findById(uid).orElseThrow(() -> new NoSuchElementException("User " + uid + " does not exist"));
