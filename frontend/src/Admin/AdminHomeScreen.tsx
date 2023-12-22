@@ -279,63 +279,68 @@ const fetchUsers = async () => {
 
   //Displaying User table in User panel or tab
   const renderUsersTable = (usersToDisplay: UserEntity[]) => (
-    <div className="relative overflow-x-auto mt-5 shadow-md sm:rounded-lg">
-      <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-      <thead className="text-xs uppercase dark:bg-gray-700 dark:text-gray-400 bg-[#10235d12] text-center">
-                <tr>
-                  <th scope="col" className="px-6 py-3">
-                    Username
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Email
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Role
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Action
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="text-center">
-                {getUsersForCurrentPage().map((user, index) => (
-                  <tr
-                    key={user.account.accountId}
-                    className={`${
-                      index % 2 === 0
-                        ? 'bg-[#ffffff] dark:bg-gray-800'
-                        : 'bg-[#10235d08] dark:bg-gray-900'
-                    } ${
-                      index !== users.length - 1 ? 'border-b-[#000] dark:border-b-[#000]' : ''
-                    }`}
-                  >
-                    <th
-                      scope="row"
-                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-black"
-                    >
-                      {user.username}
-                    </th>
-                    <td className="px-6 py-4">{user.account.email}</td>
-                    <td className="px-6 py-4"> {user.account.role.role_name} </td>
-                    <td className="px-6 py-4">
-                      <button
-                        onClick={() => toggleEditUserModal(user)}
-                        className="focus:outline-none text-xs text-[#427A5B] bg-[#DEEDE5] hover:bg-[#427A5B] hover:text-white font-medium rounded-lg px-5 py-2 mb-1 mt-1"
-                      >
-                        Edit
-                      </button>
-                      <span className="mx-2">|</span>
-                      <button
-                        onClick={() => toggleDelUserModal(user.account.accountId)}
-                        className="focus:outline-none text-xs text-[#c72b2b] bg-[#c72b2b28] hover:bg-[#c72b2b] hover:text-white font-medium rounded-lg px-5 py-1.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-      </table>
+    <div className="p-5 pb-0 pt-4">
+          <h2 className="text-2xl font-bold mb-4 text-gray">Authors</h2>
+          <hr className="border-[#eee]"></hr>
+          <br/>
+    <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+              <thead className="text-xs uppercase dark:bg-gray-700 dark:text-gray-400 bg-[#10235d12] text-center">
+                        <tr>
+                          <th scope="col" className="px-6 py-3">
+                            Username
+                          </th>
+                          <th scope="col" className="px-6 py-3">
+                            Email
+                          </th>
+                          <th scope="col" className="px-6 py-3">
+                            Role
+                          </th>
+                          <th scope="col" className="px-6 py-3">
+                            Action
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="text-center">
+                        {getUsersForCurrentPage().map((user, index) => (
+                          <tr
+                            key={user.account.accountId}
+                            className={`${
+                              index % 2 === 0
+                                ? 'bg-[#ffffff] dark:bg-gray-800'
+                                : 'bg-[#10235d08] dark:bg-gray-900'
+                            } ${
+                              index !== users.length - 1 ? 'border-b-[#000] dark:border-b-[#000]' : ''
+                            }`}
+                          >
+                            <th
+                              scope="row"
+                              className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-black"
+                            >
+                              {user.username}
+                            </th>
+                            <td className="px-6 py-2">{user.account.email}</td>
+                            <td className="px-6 py-2"> {user.account.role.role_name} </td>
+                            <td className="px-6 py-2">
+                              <button
+                                onClick={() => toggleEditUserModal(user)}
+                                className="focus:outline-none text-xs text-[#427A5B] bg-[#DEEDE5] hover:bg-[#427A5B] hover:text-white font-medium rounded-lg px-5 py-2 mb-1 mt-1"
+                              >
+                                Edit
+                              </button>
+                              <span className="mx-2">|</span>
+                              <button
+                                onClick={() => toggleDelUserModal(user.account.accountId)}
+                                className="focus:outline-none text-xs text-[#c72b2b] bg-[#c72b2b28] hover:bg-[#c72b2b] hover:text-white font-medium rounded-lg px-5 py-1.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                              >
+                                Delete
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                </tbody>
+            </table>
+      </div>
     </div>
   );
 
@@ -411,7 +416,7 @@ const fetchUsers = async () => {
         </div>
          
         {/*Waiting for Approval */}
-        <div className="-ml-6 p-5 pb-0 pt-4">
+        <div className="pb-0 pt-4">
           <h2 className="text-2xl font-bold mb-4 text-gray">Waiting For Approval</h2>
           <hr className="border-[#eee]"></hr>
           <br/>
@@ -452,10 +457,26 @@ const fetchUsers = async () => {
                   >
                     {author.account.accountId}
                   </th>
-                  <td className="px-6 py-4">{author.username}</td>
-                  {/* Add additional columns as needed */}
-                  <td className="px-6 py-4">{/* Application content */}</td>
-                  <td className="px-6 py-4">{/* Approval content */}</td>
+                  <td className="px-6 py-2">{author.username}</td>
+                  
+                  <td className="px-6 py-2">
+                  <button
+                    className="focus:outline-none text-xs underline font-medium rounded-lg px-5 py-2 mb-1 mt-1"
+                  >
+                    View Application
+                  </button>
+                  </td>
+                  <td className="px-6 py-2">
+                    <button className="focus:outline-none text-xs text-[#427A5B] bg-[#DEEDE5] hover:bg-[#427A5B] hover:text-white font-medium rounded-lg px-5 py-2 mb-1 mt-1"
+                    >
+                      Approve
+                    </button>
+                        <span className="mx-2">|</span>
+                    <button className="focus:outline-none text-xs text-[#c72b2b] bg-[#c72b2b28] hover:bg-[#c72b2b] hover:text-white font-medium rounded-lg px-5 py-1.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                    >
+                      Decline
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -588,7 +609,7 @@ const fetchUsers = async () => {
           {/* Render the Users table */}
           {renderUsersTable(getUsersForCurrentPage())}
 
-        <div className="flex justify-center mt-4 p-2.5 rounded-lg">
+        <div className="flex justify-center mt-2 p-2.5 rounded-lg">
           {Array.from({ length: Math.ceil(users.length / itemsPerPage) }, (_, index) => (
             <button
               key={index + 1}
