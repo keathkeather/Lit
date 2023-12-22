@@ -22,7 +22,7 @@ const BookScreen: React.FC<BookScreenProps> = () => {
   const [quests, setQuests] = useState<Quiz[]>([]);
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const {account} = useAccount();
-  const accountScore = account?.quizAnswered?.quizScores[0]?.accountScore;
+  const accountScore = account?.quizAnswered?.quizScores[0]?.accountScore ?? '0';
   useEffect(() => {
     console.log(book?.bookId);
     // Fetch quests for the current book when bookId changes

@@ -25,8 +25,8 @@ const MyList: React.FC = () => {
             
         
 
-        <div className="mt-6 mb-10 flex items-center">
-          <div className="text-black text-2xl font-bold mr-[60rem]">My List</div>
+        <div className="mt-10 flex items-center">
+          <div className="text-black text-3xl font-bold mr-[69rem]">My List</div>
           <div className="relative inline-block text-left">
             <div>
               <button
@@ -55,7 +55,8 @@ const MyList: React.FC = () => {
             )}
           </div>
         </div>
-              <div>
+        <div className="text-lgray text-2xl text-center">_________________________________________________________________________________________________________________________________</div>
+              <div className="mt-5 ml-16 flex flex-wrap items-left" style={{width: '1400px'}}>
                 {bookList.map((book)=>(
                     <BookEntryWithHandlers book={book}/>
                   ))}

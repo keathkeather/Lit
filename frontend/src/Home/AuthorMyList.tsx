@@ -86,7 +86,7 @@ const AuthorMyList: React.FC = () => {
           </div>
         </div>
         <div className="text-lgray text-2xl text-center">_________________________________________________________________________________________________________________________________</div>
-            <div>
+            <div className="mt-5 ml-16 flex flex-wrap items-left" style={{width: '1400px'}}>
                 {bookList.map((book)=>(
                   <BookEntryWithHandlers book={book}/>
                 ))}
