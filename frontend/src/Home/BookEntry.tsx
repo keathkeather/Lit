@@ -27,7 +27,7 @@ const BookEntry: React.FC<BookEntryProps> = ({ bookId, title, genre, author, onP
           <div className="relative">
             <img src={`litimg/${title}.svg`} alt={title} className="w-72" />
             <button onClick={onPlusClick} className="absolute bottom-5 right-4">
-            <img src={`litimg/${inList ? 'checkbtn2.svg' : 'plusbtn.svg'}`} alt="button" className="w-15" />
+            <img src={`litimg/${inList ? 'finalCheckWhite.svg' : 'plusbtn.svg'}`} alt="button" className="w-15" />
             </button>
           </div>
           <div className="ml-5 text-lg font-semibold">{title}</div>
