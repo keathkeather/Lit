@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Sidebar from './Sidebar';
+import { useHandleAuthorApproval, Request } from '../ApiClient/handleAuthorApproval';
 
 interface RoleEntity {
   role_id: number;
@@ -59,7 +60,20 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
   const [publishedBooks, setPublishedBooks] = useState<Record<number, number>>({});
   const [authorUsers, setAuthorUsers] = useState<UserEntity[]>([]);
 
+  const {handleRequest, getRequest} = useHandleAuthorApproval(); // TODO handling author request
+  const [request, setRequest] = useState<Request | null>(null);
+  const [allRequest, setAllRequest] = useState<Request[]>([]);
+  const[allRequestFetched, setAllRequestFetched] = useState<boolean>(false);
 
+  // *Approve author request
+  const handleApprove = async (accountId : number) => {
+    handleRequest('approveRequest', accountId);
+  }
+
+  const handleDecline = async (accountId : number) => {
+    handleRequest('denyRequest', accountId);
+  }
+  
   // Delete modal for user
   const toggleDelUserModal = (userId: number) => {
     setSelectedDelUserId(userId);
@@ -162,6 +176,25 @@ const fetchUsers = async () => {
   }
 };
 
+//* fetch pending authors
+ const fetchAuthorPending = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/authorRequest/getAll`);
+      const data: Request[] = await response.json();
+
+      if (data.length === 0) {
+        setAllRequestFetched(true);
+        return;
+      }
+
+      const filteredRequest = data.filter((request) => request.requestStatus === 'pending');
+      setAllRequest(filteredRequest);
+      
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+ };
+
 
   // Go to Author Panel (or tab)
   const handleFilter = (role: string | null) => {
@@ -171,7 +204,15 @@ const fetchUsers = async () => {
     setAuthorsTabVisible(role === 'Author');
     
   };  
+
+  // *for autor request
+  useEffect(() => {
+    if (!allRequestFetched) {
+      fetchAuthorPending();
+    }
+  }, [allRequestFetched]);
     
+
   useEffect(() => {
     if (!allUsersFetched) {
       fetchUsers();
@@ -347,7 +388,6 @@ const fetchUsers = async () => {
   // Displaying Author Table in author panel
   const renderAuthorsTable = () => {
     const authorUsers = users.filter((user) => user.account.role.role_name === 'Author');
-  
     return (
       <div className="p-5 pb-0 pt-4">
           <h2 className="text-2xl font-bold mb-4 text-gray">Authors</h2>
@@ -440,9 +480,9 @@ const fetchUsers = async () => {
               </tr>
             </thead>
             <tbody className="text-center">
-              {authorUsers.map((author, index) => (
+              {allRequest.map((mapRequest, index) => (
                 <tr
-                  key={`additional-${author.account.accountId}`}
+                  key={`additional-${mapRequest.account.accountId}`}
                   className={`${
                     index % 2 === 0
                       ? 'bg-[#ffffff] dark:bg-gray-800'
@@ -455,9 +495,9 @@ const fetchUsers = async () => {
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-black"
                   >
-                    {author.account.accountId}
+                    {mapRequest.account.accountId}
                   </th>
-                  <td className="px-6 py-2">{author.username}</td>
+                  <td className="px-6 py-2">{mapRequest.account.accountId}</td>
                   
                   <td className="px-6 py-2">
                   <button
@@ -467,12 +507,14 @@ const fetchUsers = async () => {
                   </button>
                   </td>
                   <td className="px-6 py-2">
-                    <button className="focus:outline-none text-xs text-[#427A5B] bg-[#DEEDE5] hover:bg-[#427A5B] hover:text-white font-medium rounded-lg px-5 py-2 mb-1 mt-1"
+                    <button onClick={() => handleApprove(mapRequest.account.accountId)}
+                    className="focus:outline-none text-xs text-[#427A5B] bg-[#DEEDE5] hover:bg-[#427A5B] hover:text-white font-medium rounded-lg px-5 py-2 mb-1 mt-1"
                     >
                       Approve
                     </button>
                         <span className="mx-2">|</span>
-                    <button className="focus:outline-none text-xs text-[#c72b2b] bg-[#c72b2b28] hover:bg-[#c72b2b] hover:text-white font-medium rounded-lg px-5 py-1.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                    <button onClick={() => handleDecline(mapRequest.account.accountId)}
+                    className="focus:outline-none text-xs text-[#c72b2b] bg-[#c72b2b28] hover:bg-[#c72b2b] hover:text-white font-medium rounded-lg px-5 py-1.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
                     >
                       Decline
                     </button>

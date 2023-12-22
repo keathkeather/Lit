@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Sidebar from './Sidebar';
+import { fetchBooks, Book} from '../Home/BookService';
+
 
 interface UserEntity {
     username: string;
@@ -15,13 +17,6 @@ interface UserEntity {
     };
   }
 
-  interface BookEntity {
-    bookId: number;
-    name: string;
-    author: string;
-    description: string;
-  }
-
 
 interface DashboardProps {}
 
@@ -31,9 +26,10 @@ const Dashboard: React.FC<DashboardProps> = () => {
     // Pagination settings
     const usersItemsPerPage = 5;
     const [usersCurrentPage, setUsersCurrentPage] = useState(1);
-    const [books, setBooks] = useState<BookEntity[]>([]);
+    const [books, setBooks] = useState<Book[]>([]);
     const [totalBooks, setTotalBooks] = useState<number>(0);
     const [pendingBooksCount, setPendingBooksCount] = useState<number>(0);
+    const [originalBooks, setOriginalBooks] = useState<Book[]>([]);
 
     const totalUsers = users.length;
     
@@ -63,7 +59,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
     };
 
     // Fetch books data
-  useEffect(() => {
+ /* useEffect(() => {
     const fetchBooks = async () => {
       try {
         const [response, pendingCountResponse] = await Promise.all([fetch('http://localhost:8080/book/allAvailableBooks'),
@@ -85,12 +81,26 @@ const Dashboard: React.FC<DashboardProps> = () => {
     };
 
     fetchBooks();
+  }, []); */
+  useEffect(() => {
+    const fetchBooksData = async () => {
+      try {
+        const booksData = await fetchBooks();
+        setOriginalBooks(booksData);
+        setBooks(booksData);
+        console.log('Books fetched successfully:', booksData);
+      } catch (error) {
+        console.error('Error fetching books:', error);
+      }
+    }; 
+  
+    fetchBooksData();
   }, []);
 
   return (
     <div className="">
       <Sidebar />
-      <div className="mt-16 ml-80 mr-16 text-3xl border border-lgray font-bold text-color-gray">
+      <div className="mt-16 ml-80 mr-16 text-3xl  font-bold text-color-gray">
         Dashboard
       </div>
       <div className="ml-80 mr-16 mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -136,12 +146,12 @@ const Dashboard: React.FC<DashboardProps> = () => {
         </div>
 
       </div>
-        <div className="mt-10 ml-80 mr-16 text-2xl border border-lgray text-color-gray">
+        <div className="mt-10 ml-80 mr-16 text-2xl text-color-gray">
             All Users
         </div>
 
       {/* Render the Users table with pagination */}
-      <div className="ml-80 mr-[27.5rem] mt-4">
+      <div className="ml-80 mr-16 mt-4">
         {/* Render the Users table */}
         <div className="relative overflow-x-auto mt-5 shadow-md sm:rounded-lg">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
