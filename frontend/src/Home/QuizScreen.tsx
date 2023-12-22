@@ -27,6 +27,7 @@ const QuizScreen: React.FC<QuizScreenProps> = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
   const { account, setAccount } = useAccount(); // State to hold account details
   const {quizId} = useParams();
+  const [userAnswers, setUserAnswers] = useState<string[]>([]);
 
   const navigate = useNavigate();
 
@@ -37,27 +38,37 @@ const QuizScreen: React.FC<QuizScreenProps> = () => {
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
 
   useEffect(() => {
-    if (bookId !== null && bookId !== undefined) {
-      fetch(`http://localhost:8080/book/getQuiz/${bookId}`)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Failed to fetch quiz");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          if (Array.isArray(data) && data.length > 0) {
-            setBook(data[0]); // Update the book with fetched quiz data in the Book context
-            setQuiz(data[0]); // Set the fetched quiz in the local state
-          }
-        })
-        .catch((error) => {
-          console.error("Error fetching quiz:", error);
-          setBook(null);
-          setQuiz(null);
-        });
-    }
-  }, [bookId, setBook]);
+  console.log("Current quizId:", quizId);
+
+  if (quizId) {
+    setQuiz(null); // Reset quiz state before fetching new data
+    setUserAnswers([]); // Reset user answers
+
+    // Fetch the quiz data based on quizId
+    fetch(`http://localhost:8080/quizzes/${quizId}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch quiz");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Fetched quiz data:", data);
+
+        // Assuming the received data structure matches the Quiz interface
+        if (data) {
+          setQuiz(data);
+          setUserAnswers(Array(data?.questions.length || 0).fill(""));
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching quiz:", error);
+        setQuiz(null);
+        setUserAnswers([]);
+      });
+  }
+}, [quizId]);
+
 
   console.log("Quiz:", quiz);
   useEffect(() => {
@@ -72,9 +83,6 @@ const QuizScreen: React.FC<QuizScreenProps> = () => {
     }
   }, [quiz]);
 
-  const [userAnswers, setUserAnswers] = useState<string[]>(
-    Array(quiz?.questions.length || 0).fill("")
-  ); // Track user answers
   const [score, setScore] = useState<number>(0); // Track user's score
 
   const handleNextQuestion = () => {
@@ -140,8 +148,10 @@ const QuizScreen: React.FC<QuizScreenProps> = () => {
         return response.json();
       })
       .then(() => {
-        // After storing the score successfully, navigate back to QuestList screen
-        navigate('/score');
+        // After storing the score successfully, navigate back to score screen
+        console.log("Calculated totalScore:", totalScore);
+        console.log("Perfect score:", quiz?.perfectScore);
+        navigate(`/score/${totalScore}/${quiz?.perfectScore}`);
       })
       .catch((error) => {
         console.error('Error storing quiz score:', error);

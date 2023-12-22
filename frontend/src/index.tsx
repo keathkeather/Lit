@@ -69,7 +69,7 @@ ReactDOM.render(
         <Route path="/createbook" element={<CreateBookScreen />} />
         <Route path="/books" element={<BooksScreen />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/score" element={<ScoreScreen/>} />
+        <Route path="/score/:score/:perfectScore" element={<ScoreScreen/>} />
       </Routes>
     </Router>
     </BookListProvider>

@@ -7,89 +7,110 @@ import { useAccount } from './AccountContext';
 interface QuestListProps {}
 
 const QuestList: React.FC<QuestListProps> = () => {
-    const navigate = useNavigate();
-    const { bookId, setBookId } = useBook(); // Access bookId from context
-    const [quizzes, setQuizzes] = useState<any[]>([]);
-    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false); //Track user login status
-    const { account } = useAccount(); // Accessing account details from context
-    //modals
-    const [showQuizModal, setShowQuizModal] = useState<boolean>(false);
-    const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
-    const [selectedQuizId, setSelectedQuizId] = useState<number | null>(null);
+  const navigate = useNavigate();
+  const { bookId, setBookId } = useBook(); // Access bookId from context
+  const [quizzes, setQuizzes] = useState<any[]>([]);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false); // Track user login status
+  const { account } = useAccount(); // Accessing account details from context
+  // modals
+  const [showQuizModal, setShowQuizModal] = useState<boolean>(false);
+  const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
+  const [selectedQuizId, setSelectedQuizId] = useState<number | null>(null);
 
-    // Log when bookId changes
-    useEffect(() => {
-      console.log('Extracted bookId:', bookId);
-      console.log('Extracted accountId:', account?.accountId);
-    }, [bookId]);
+  // Log when bookId changes
+  useEffect(() => {
+    console.log('Extracted bookId:', bookId);
+    console.log('Extracted accountId:', account?.accountId);
+  }, [bookId, account]);
 
-    const handleBackIcon = () => {
-      navigate('/book');
-    };
+  const handleBackIcon = () => {
+    navigate('/book');
+  };
 
-    const handleAttemptQuiz = (quizId: number) => {
-      console.log('Attempting quiz:', quizId);
-      if (isLoggedIn) {
-        setSelectedQuizId(quizId);
-        setShowQuizModal(true);
-      } else {
-        setShowLoginModal(true);
-      }
-    };
-  
-    const handleConfirmQuiz = () => {
-      setShowQuizModal(false);
+  const handleAttemptQuiz = (quizId: number) => {
+    console.log('Attempting quiz:', quizId);
+    if (isLoggedIn) {
+      setSelectedQuizId(quizId);
+      setShowQuizModal(true);
+    } else {
+      setShowLoginModal(true);
+    }
+  };
+
+  const handleConfirmQuiz = () => {
+    setShowQuizModal(false);
     if (selectedQuizId !== null) {
       navigate(`/quiz/${selectedQuizId}`); // Navigate to the selected quiz ID
     } else {
-      console.error("No quiz ID selected");
+      console.error('No quiz ID selected');
     }
   };
-  
-    const handleCancelQuiz = () => {
-      setShowQuizModal(false);
-    };
-  
-    const handleLogin = () => {
-      setShowLoginModal(false);
-      navigate('/login');
-    };
-  
 
-    // * KEATH AKO GIADDAN OG SESSION KAY DI MAN MAG AGAD SI QUESTLIST NI USER. MAG AGAD MAN SHAS BOOK.
-    useEffect(() => {
-      const storedBookId = sessionStorage.getItem('bookId');
-      if (storedBookId) {
-        setBookId(Number(storedBookId));
-      }
+  const handleCancelQuiz = () => {
+    setShowQuizModal(false);
+  };
 
-      // Check if user is logged in
-      const userLoggedIn = sessionStorage.getItem('userLoggedIn');
-      if (userLoggedIn) {
-        // Convert the string value from sessionStorage to a boolean
-        setIsLoggedIn(userLoggedIn === 'true'); // Convert string to boolean
-      }
-    }, [setBookId]);
+  const handleLogin = () => {
+    setShowLoginModal(false);
+    navigate('/login');
+  };
 
-    useEffect(() => {
-      if (bookId !== null && bookId !== undefined) {
-        sessionStorage.setItem('bookId', String(bookId)); // Store bookId in sessionStorage
-        fetch(`http://localhost:8080/book/getQuiz/${bookId}`)
-          .then((response) => response.json())
-          .then((data) => {
-            console.log('Fetched data:', data); // Log the fetched data
-            if (Array.isArray(data)) {
-              setQuizzes(data); // Update state with quizzes data
-            } else {
-              setQuizzes([]); // Set empty array if data format is unexpected
+  useEffect(() => {
+    const storedBookId = sessionStorage.getItem('bookId');
+    if (storedBookId) {
+      setBookId(Number(storedBookId));
+    }
+
+    const userLoggedIn = sessionStorage.getItem('userLoggedIn');
+    if (userLoggedIn) {
+      setIsLoggedIn(userLoggedIn === 'true');
+    }
+  }, [setBookId]);
+
+  useEffect(() => {
+    if (bookId !== null && bookId !== undefined) {
+      sessionStorage.setItem('bookId', String(bookId));
+      fetch(`http://localhost:8080/book/getQuiz/${bookId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Fetched data:', data);
+          if (Array.isArray(data)) {
+            setQuizzes(data); // Update state with quizzes data
+
+            // Fetch user's scores for each quiz and update quizzes state
+            if (account) {
+              data.forEach((quiz: any) => {
+                fetch(`http://localhost:8080/account/${account?.accountId}`)
+                  .then((response) => response.json())
+                  .then((userData) => {
+                    const quizScores = userData.quizAnswered?.quizScores || [];
+                    const userQuizScore = quizScores.find((s: any) => s.quiz.quizId === quiz.quizId);
+
+                    // Update quizzes state with user's score for each specific quiz
+                    if (userQuizScore) {
+                      setQuizzes((prevQuizzes) =>
+                        prevQuizzes.map((prevQuiz) =>
+                          prevQuiz.quizId === quiz.quizId ? { ...prevQuiz, userScore: userQuizScore.accountScore } : prevQuiz
+                        )
+                      );
+                    }
+                  })
+                  .catch((error) => {
+                    console.error('Error fetching user score:', error);
+                  });
+              });
             }
-          })
-          .catch((error) => {
-            console.error('Error fetching quizzes:', error);
-            setQuizzes([]); // Set empty array in case of error
-          });
-      }
-    }, [bookId, setBookId]);
+          } else {
+            setQuizzes([]); // Set empty array if data format is unexpected
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching quizzes:', error);
+          setQuizzes([]); // Set empty array in case of error
+        });
+    }
+  }, [bookId, setBookId, account]);
+
 
     // Log when quizzes change
     useEffect(() => {
@@ -126,7 +147,7 @@ const QuestList: React.FC<QuestListProps> = () => {
                 <img src="litimg/Quest.svg" alt="Lit Logo 3" className="w-10 ml-10 mr-4" />
                 <div className="text-[#3C3934] font-bold ml-2">{quiz.quizName}</div>
               </div>
-              <div className="text-[#B7B6BA] mr-10">{account?.quizAnswered?.quizScores[0]?.accountScore ?? '0'}/{quiz.perfectScore}</div>
+              <div className="text-[#B7B6BA] mr-10">{quiz.userScore ?? '0'}/{quiz.perfectScore}</div>
             </div>
           </div>
         ))}
