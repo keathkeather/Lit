@@ -49,20 +49,24 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
   const [editedEmail, setEditedEmail] = useState<string>('');
   const [isUsersTabVisible, setUsersTabVisible] = useState(true);
   const [isAuthorsTabVisible, setAuthorsTabVisible] = useState(false);
-  const [usersItemsPerPage, setUsersItemsPerPage] = useState(3);
+  const [usersItemsPerPage, setUsersItemsPerPage] = useState(7);
   const [authorsItemsPerPage, setAuthorsItemsPerPage] = useState(3); // You can set the desired value
   const [authorsTableHeight, setAuthorsTableHeight] = useState<number>(32.5); // Set the initial height as needed
 
   const [isViewBooksModalVisible, setViewBooksModalVisible] = useState(false);
   const [selectedAuthorAccountId, setSelectedAuthorAccountId] = useState<number | null>(null);
   const [authorBooks, setAuthorBooks] = useState<Book[]>([]);
+  const [publishedBooks, setPublishedBooks] = useState<Record<number, number>>({});
+  const [authorUsers, setAuthorUsers] = useState<UserEntity[]>([]);
 
 
+  // Delete modal for user
   const toggleDelUserModal = (userId: number) => {
     setSelectedDelUserId(userId);
     setDelUserModalVisible(!isDelUserModalVisible);
   };
 
+  // Modal for editing user
   const toggleEditUserModal = (user: UserEntity) => {
   // Initialize the state variables with the current user details
   setEditedUsername(user.username || '');
@@ -72,6 +76,7 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
   setEditUserModalVisible(!isEditUserModalVisible);
   };
 
+  // viewing books Modal
   const toggleViewBooksModal = (accountId: number | null = null) => {
     setSelectedAuthorAccountId(accountId);
     setViewBooksModalVisible(!isViewBooksModalVisible);
@@ -80,6 +85,7 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
     }
   };
 
+  // getting all books published by an author
   const fetchAuthorBooks = async (accountId: number) => {
     try {
       const response = await fetch(`http://localhost:8080/book/getBookByAuthor/${accountId}`);
@@ -98,29 +104,66 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
       console.error('Error fetching author books:', error);
     }
   };
+
+  const fetchPublishedBooks = async () => {
+    try {
+      const bookCounts: Record<number, number> = {};
+      const authorIds = authorUsers.map((author) => author.account.accountId);
+
+      for (const authorId of authorIds) {
+        const response = await fetch(`http://localhost:8080/book/getBookCountByAuthor/${authorId}`);
+        if (!response.ok) {
+          const errorResponse = await response.json();
+          throw new Error(errorResponse.message || 'Failed to fetch books');
+        }
+
+        const data = await response.json();
+        const count = data; // Assuming the response is a single integer
+        bookCounts[authorId] = count;
+      }
+
+      setPublishedBooks(bookCounts);
+    } catch (error) {
+      console.error('Error fetching published books count:', error);
+    }
+  };
+
+  // Fetch published books count effect
+  useEffect(() => {
+    // Call fetchPublishedBooks here
+    fetchPublishedBooks();
+  }, [authorUsers]);
   
+  // Close View Book Modal
   const closeViewBooksModal = () => {
     setSelectedAuthorAccountId(null);
     setAuthorBooks([]);
     setViewBooksModalVisible(false);
   };
 
-  const fetchUsers = async () => {
-    try {
-      const response = await fetch(`http://localhost:8080/user/getAllAvailableUsers`);
-      const data: UserEntity[] = await response.json();
+  // Getting all user
+const fetchUsers = async () => {
+  try {
+    const response = await fetch(`http://localhost:8080/user/getAllAvailableUsers`);
+    const data: UserEntity[] = await response.json();
 
-      if (data.length === 0) {
-        setAllUsersFetched(true);
-        return;
-      }
-
-      setUsers((prevUsers) => [...prevUsers, ...data]);
-    } catch (error) {
-      console.error('Error fetching users:', error);
+    if (data.length === 0) {
+      setAllUsersFetched(true);
+      return;
     }
-  };
 
+    setUsers((prevUsers) => [...prevUsers, ...data]);
+
+    // Filter and set author users separately
+    const authorUsers = data.filter((user) => user.account.role.role_name === 'Author');
+    setAuthorUsers(authorUsers);
+  } catch (error) {
+    console.error('Error fetching users:', error);
+  }
+};
+
+
+  // Go to Author Panel (or tab)
   const handleFilter = (role: string | null) => {
     setFilter(role);
     // Set the visibility of tabs based on the selected role
@@ -128,7 +171,14 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
     setAuthorsTabVisible(role === 'Author');
     
   };  
+    
+  useEffect(() => {
+    if (!allUsersFetched) {
+      fetchUsers();
+    }
+  }, [allUsersFetched]);
 
+  //deleted user. Used putmapping as we dont want to permanently delete.
   const handleDeleteUser = async () => {
     console.log('Deleting user with userId:', selectedDelUserId);
     if (selectedDelUserId === null) {
@@ -162,6 +212,7 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
   }
   };
   
+  //Editting user through api
   const handleEditUser = async () => {
     try {
       if (!selectedEditUser) {
@@ -217,16 +268,16 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
     ? users.filter((user) => user.account.role.role_name === filter)
     : users;
 
+    //Dont include admin in display
     const filteredAndExcludedUsers =
       filter !== 'Admin' ? filteredUsers.filter((user) => user.account.role.role_name !== 'Admin') : filteredUsers;
-
-
 
     console.log('Filtered Users:', filteredAndExcludedUsers);
 
     return filteredAndExcludedUsers.slice(startIndex, endIndex);
   };
 
+  //Displaying User table in User panel or tab
   const renderUsersTable = (usersToDisplay: UserEntity[]) => (
     <div className="relative overflow-x-auto mt-5 shadow-md sm:rounded-lg">
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -288,17 +339,84 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
     </div>
   );
 
+  // Displaying Author Table in author panel
   const renderAuthorsTable = () => {
     const authorUsers = users.filter((user) => user.account.role.role_name === 'Author');
   
     return (
-      <div
-        id="authors"
-        role="tabpanel"
-        aria-labelledby="authors-tab"
-        style={{ height: `${authorsTableHeight}rem` }}
-      >
-        <div className="relative overflow-x-auto mt-5 shadow-md sm:rounded-lg">
+      <div className="p-5 pb-0 pt-4">
+          <h2 className="text-2xl font-bold mb-4 text-gray">Authors</h2>
+          <hr className="border-[#eee]"></hr>
+          <br/>
+        <div
+          id="authors"
+          role="tabpanel"
+          aria-labelledby="authors-tab"
+        >
+          <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+              <thead className="text-xs uppercase dark:bg-gray-700 dark:text-gray-400 bg-[#10235d12] text-center">
+                <tr>
+                  <th scope="col" className="px-6 py-3">
+                    User ID
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Username
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Published Books
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="text-center">
+                {authorUsers.map((author, index) => (
+                  <tr
+                    key={author.account.accountId}
+                    className={`${
+                      index % 2 === 0
+                        ? 'bg-[#ffffff] dark:bg-gray-800'
+                        : 'bg-[#10235d08] dark:bg-gray-900'
+                    } ${
+                      index !== authorUsers.length - 1 ? 'border-b-[#000] dark:border-b-[#000]' : ''
+                    }`}
+                  >
+                    <th
+                      scope="row"
+                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-black"
+                    >
+                      {author.account.accountId}
+                    </th>
+                    <td className="px-6 py-2">{author.username}</td>
+                    <td className="px-6 py-2">{publishedBooks[author.account.accountId]}</td>
+                    <td className="px-6 py-2">
+                      <button
+                        className="focus:outline-none text-xs text-[#427A5B] bg-[#DEEDE5] hover:bg-[#427A5B] hover:text-white font-medium rounded-lg px-5 py-2 mb-1 mt-1"
+                        onClick={() => {
+                          setSelectedAuthorAccountId(author.account.accountId);
+                          fetchAuthorBooks(author.account.accountId); // Fetch books when the button is clicked
+                          toggleViewBooksModal();
+                        }}
+                      >
+                        View Books
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+         
+        {/*Waiting for Approval */}
+        <div className="-ml-6 p-5 pb-0 pt-4">
+          <h2 className="text-2xl font-bold mb-4 text-gray">Waiting For Approval</h2>
+          <hr className="border-[#eee]"></hr>
+          <br/>
+
+          <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead className="text-xs uppercase dark:bg-gray-700 dark:text-gray-400 bg-[#10235d12] text-center">
               <tr>
@@ -309,17 +427,17 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
                   Username
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Published Books
+                  Application
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Action
+                  Approval
                 </th>
               </tr>
             </thead>
             <tbody className="text-center">
               {authorUsers.map((author, index) => (
                 <tr
-                  key={author.account.accountId}
+                  key={`additional-${author.account.accountId}`}
                   className={`${
                     index % 2 === 0
                       ? 'bg-[#ffffff] dark:bg-gray-800'
@@ -335,34 +453,18 @@ const AdminHomeScreen: React.FC<AdminHomeScreenProps> = () => {
                     {author.account.accountId}
                   </th>
                   <td className="px-6 py-4">{author.username}</td>
-                  <td className="px-6 py-4">{/* Display the number of published books */}</td>
-                  <td className="px-6 py-4">
-                    <button
-                      className="focus:outline-none text-xs text-[#427A5B] bg-[#DEEDE5] hover:bg-[#427A5B] hover:text-white font-medium rounded-lg px-5 py-2 mb-1 mt-1"
-                      onClick={() => {
-                        setSelectedAuthorAccountId(author.account.accountId);
-                        fetchAuthorBooks(author.account.accountId); // Fetch books when the button is clicked
-                        toggleViewBooksModal();
-                      }}
-                    >
-                      View Books
-                    </button>
-                  </td>
+                  {/* Add additional columns as needed */}
+                  <td className="px-6 py-4">{/* Application content */}</td>
+                  <td className="px-6 py-4">{/* Approval content */}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       </div>
-    );
-  };
-  
-
-  useEffect(() => {
-    if (!allUsersFetched) {
-      fetchUsers();
-    }
-  }, [allUsersFetched]);
+    </div>
+  );
+};
 
   return (
     <div className="flex">
