@@ -57,7 +57,7 @@ const UserHomeScreen: React.FC = () => {
           </div>
         </div>
 
-        <div className="mt-10 mb-10">
+        <div className="mt-5 mb-7">
           <div className="text-black text-xl font-bold absolute left-36">Recommendations</div>
         </div>
 
