@@ -469,7 +469,7 @@ const fetchUsers = async () => {
                   User ID
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Username
+                  First Name
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Application
@@ -497,7 +497,7 @@ const fetchUsers = async () => {
                   >
                     {mapRequest.account.accountId}
                   </th>
-                  <td className="px-6 py-2">{mapRequest.account.accountId}</td>
+                  <td className="px-6 py-2">{mapRequest.account.firstName}</td>
                   
                   <td className="px-6 py-2">
                   <button

@@ -545,7 +545,9 @@ const BooksScreen: React.FC<BooksScreenProps> = () => {
                             <td className="px-6 py-4">{pendingBook.bookRequestId}</td>
                             <td className="px-6 py-4">{pendingBook.bookName}</td>
                             <td className="px-6 py-4">{pendingBook.genre}</td>
-                            <td className="px-6 py-4">{`${pendingBook.author.firstName} ${pendingBook.author.lastName}`}</td>
+                            <td className="px-6 py-4">
+                                {/* Check if the author object exists before accessing its properties */}
+                                {pendingBook.author ? `${pendingBook.author.firstName} ${pendingBook.author.lastName}` : 'N/A'}</td>
                             <td className="py-2 flex items-center justify-center">
                             <button
                                 onClick={() => toggleAppModal(pendingBook.bookRequestId)}
