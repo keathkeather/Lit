@@ -173,7 +173,7 @@ const BookScreen: React.FC<BookScreenProps> = () => {
                         <img
                           src="/litimg/questicon.svg" // Update the path accordingly
                           alt="Quest Icon"
-                          className="w-14 h-14 mr-4 ml-8" // Adjust the width and height as needed
+                          className="w-14 h-14 mr-4 ml-6" // Adjust the width and height as needed
                         />
                         <div className="flex flex-col">
                           <span className="text-xl font-bold mb-2 mt-4">{quiz.quizName}</span>
