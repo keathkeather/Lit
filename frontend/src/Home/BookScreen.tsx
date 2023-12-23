@@ -23,6 +23,7 @@ const BookScreen: React.FC<BookScreenProps> = () => {
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const {account} = useAccount();
   const accountScore = account?.quizAnswered?.quizScores[0]?.accountScore ?? '0';
+
   useEffect(() => {
     console.log(book?.bookId);
     // Fetch quests for the current book when bookId changes
@@ -152,32 +153,52 @@ const BookScreen: React.FC<BookScreenProps> = () => {
                 </div>
               </div>
               <ul className="list">
-                {quests.map((quiz, index) => (
-                  <li
-                    key={index}
-                    className="list-item flex flex-col"
-                    style={{
-                      marginBottom: '8px',
-                    }}
-                  >
-                    <div className="flex flex-row items-center mt-4">
-                      <img
-                        src="/litimg/questicon.svg" // Update the path accordingly
-                        alt="Quest Icon"
-                        className="w-12 h-12 mr-4 ml-8 mt-2" // Adjust the width and height as needed
-                      />
-                      <div className="flex flex-col">
-                        <span className="text-xl font-bold mb-2 mt-2">{quiz.quizName}</span>
-                        <div className="flex flex-row items-center">
-                          <div className="bg-lgray h-4 rounded-full" style={{ width: '410px'}}>
-                            <div className="bg-lightg h-full rounded-full" style={{ width: '0%' }}></div>
+                {quests.map((quiz, index) => {
+                  // Explicitly convert accountScore and perfectScore to numbers
+                  const numericAccountScore = Number(accountScore || '0');
+                  const numericPerfectScore = Number(quiz.perfectScore);
+
+                  // Calculate the ratio of accountScore to perfectScore
+                  const progressRatio = (numericAccountScore / numericPerfectScore) * 100;
+
+                  return (
+                    <li
+                      key={index}
+                      className="list-item flex flex-col"
+                      style={{
+                        marginBottom: '8px',
+                      }}
+                    >
+                      <div className="flex flex-row items-center mt-4">
+                        <img
+                          src="/litimg/questicon.svg" // Update the path accordingly
+                          alt="Quest Icon"
+                          className="w-14 h-14 mr-4 ml-8" // Adjust the width and height as needed
+                        />
+                        <div className="flex flex-col">
+                          <span className="text-xl font-bold mb-2 mt-4">{quiz.quizName}</span>
+                          <div className="flex flex-row items-center">
+                            {/* Progress Bar */}
+                            <div className="bg-gray bg-opacity-50 rounded-full h-4 mb-4 dark:bg-gray dark:bg-opacity-50 mr-5" style={{ width: '410px' }}>
+                              {/* Progress Indicator */}
+                              <div
+                                className="bg-dblue h-4 text-xs font-medium text-white text-center p-0.5 leading-none rounded-full dark:bg-dblue"
+                                style={{ width: `${Math.min(100, Math.max(0, progressRatio))}%` }}
+                              >
+                                {Math.round(Math.min(100, Math.max(0, progressRatio)))}%
+                              </div>
+                            </div>
+
+                            {/* Score Display */}
+                            <div className="text-gray text-opacity-50 text-lg font-bold mb-5">
+                              {numericAccountScore}/{numericPerfectScore}
+                            </div>
                           </div>
-                          <div className="text-lgray text-lg fond-bold mb-1 ml-4">{accountScore}/{quiz.perfectScore}</div>
                         </div>
                       </div>
-                    </div>
-                  </li>
-                ))}
+                    </li>
+                  );
+                })}
               </ul>
             </div>
 
