@@ -24,7 +24,7 @@ public class QuizServices {
     @Autowired
     BookRepository bookRepository;
     public QuizEntity createQuiz(QuizEntity quiz) {
-        int bookId = quiz.getBookId();
+        int bookId = quiz.getBook().getBookId();
         BookEntity existingBook = bookRepository.findById(bookId).orElseThrow(() -> new NoSuchElementException("Book " + bookId + " does not exist"));
         quiz.setBook(existingBook);
         return quizRepository.save(quiz);
@@ -33,7 +33,7 @@ public class QuizServices {
     public List<QuizEntity> getAllQuizzes() {
         return quizRepository.findAll();
     }
-
+    
     public QuizEntity getQuizById(int quizId) {
         return quizRepository.findById(quizId).orElseThrow(() -> new NoSuchElementException("quiz " + quizId + " does not exist"));
     }

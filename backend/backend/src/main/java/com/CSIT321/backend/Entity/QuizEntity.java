@@ -20,8 +20,6 @@ public class QuizEntity {
 
     @Column(name = "perfectScore")
     private int perfectScore;
-    @Transient
-    private int bookId; 
     @ManyToOne
     private BookEntity book;
 
@@ -73,10 +71,5 @@ public class QuizEntity {
     public void setBook(BookEntity book) {
         this.book = book;
     }
-    public void setBookId(int bookId) {
-        this.bookId = bookId;
-    }
-    public int getBookId(){
-        return this.bookId;
-    }
+   
 }

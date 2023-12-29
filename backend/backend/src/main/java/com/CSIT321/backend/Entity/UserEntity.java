@@ -9,10 +9,23 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.CSIT321.backend.Entity.DTO.UserDTO;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.Builder;
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
 @Table(name ="User")
 public class UserEntity {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int user_id;
@@ -25,55 +38,12 @@ public class UserEntity {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonManagedReference
     private AccountEntity account;
-    @Column(name ="isDeleted")
-    private boolean isDeleted;
-    
-    public UserEntity(){
-        super();
-        this.isDeleted = false;
-    }
-    public UserEntity(String username, String password, AccountEntity account){
-        super();
-        this.username = username;
-        this.password = password;
-        this.account = account;
-        this.isDeleted = false;
-        
-    }
-    public int getUser_id() {
-        return user_id;
-    }
+    @Builder.Default
+    private boolean isDeleted=false;
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+  
+    public void fromDTO(UserDTO userDto){
+        this.username = userDto.getUsername();
+        this.password = userDto.getPassword();
     }
-    public AccountEntity getAccount(){
-        return this.account;
-    }
-    public void setAccount(AccountEntity account){
-        this.account = account;
-    }
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-    public void setDeleted(boolean isDeleted) {
-        this.isDeleted = isDeleted;
-    }
-
-
 }
