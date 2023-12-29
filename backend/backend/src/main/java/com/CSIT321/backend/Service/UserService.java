@@ -4,7 +4,6 @@ import com.CSIT321.backend.Entity.AccountEntity;
 import com.CSIT321.backend.Entity.RolesEntity;
 import com.CSIT321.backend.Entity.UserEntity;
 import com.CSIT321.backend.Entity.DTO.UserDTO;
-import com.CSIT321.backend.Repository.AccountRepository;
 import com.CSIT321.backend.Repository.RolesRepository;
 import com.CSIT321.backend.Repository.UserRepository;
 
@@ -25,26 +24,15 @@ public class UserService {
     AccountService accountService;
     @Autowired
     RolesRepository rolesRepository;
-    public UserEntity insertUser(UserDTO userDTO) {
-
-        UserEntity user = new UserEntity();
-        user.setUsername(userDTO.getUsername());
-        user.setPassword(userDTO.getPassword());
-
-        RolesEntity defaultRole = rolesRepository.findById(1).orElseThrow();
-        AccountEntity account = new AccountEntity();
-        account.setUser(user);
-        account.setEmail(userDTO.getAccount().getEmail());
-        account.setFirstName(userDTO.getAccount().getFirstName());
-        account.setLastName(userDTO.getAccount().getLastName());
-        account.setGender(userDTO.getAccount().getGender());
-        account.setRole(defaultRole);
-        user.setAccount(account);
-        
-        userRepository.save(user);
-         
-    
-        return user;
+    public UserEntity createUser(UserEntity user) {
+        try{
+            UserEntity createdUser = userRepository.save(user);
+            AccountEntity account = accountService.createAccount(createdUser, createdUser.getAccount());
+            createdUser.setAccount(account);
+            return  userRepository.save(createdUser);   
+        }catch(Exception e){
+            throw e;
+        } 
     }
     
     public List<UserEntity> getAllUserEntities() {
@@ -78,7 +66,8 @@ public class UserService {
         try {
             UserEntity user = userRepository.findById(uid).orElseThrow(() -> new NoSuchElementException("User " + uid + " does not exist"));
 
-            RolesEntity authorRole = rolesRepository.findById(2).orElseThrow(() -> new RuntimeException("Author role not found"));
+            RolesEntity authorRole = rolesRepository.findById(2)
+                .orElseThrow(() -> new RuntimeException("Author role not found"));
 
             user.getAccount().setRole(authorRole);
             return userRepository.save(user);
@@ -99,6 +88,8 @@ public class UserService {
         }
     }
 
+    // ! there is an error when updating if a the passed is null it will update the values to null
+    // ! also when list is being updated it will delete the other values 
     public UserEntity updateUser(int uid, UserDTO newUserDTO) {
         try {
             UserEntity user = userRepository.findById(uid).orElseThrow(() -> new NoSuchElementException("User " + uid + " does not exist"));

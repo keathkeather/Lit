@@ -25,9 +25,15 @@ public class UserController{
     
     @CrossOrigin
     @PostMapping("/createUser")
-    public ResponseEntity<UserEntity> createUser(@RequestBody UserDTO userDTO) {
-        UserEntity createdUser = userService.insertUser(userDTO);
-        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+    public ResponseEntity<UserEntity> createUser(@RequestBody UserEntity user) {
+        try{
+             UserEntity createdUser = userService.createUser(user);
+             return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+       
     }
     @CrossOrigin
     @GetMapping("/getAllUsers")
