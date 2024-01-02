@@ -2,10 +2,12 @@ package com.CSIT321.backend.Entity;
 
 import javax.persistence.*;
 
+import lombok.Data;
 
 import java.util.List;
 
 @Entity
+@Data
 @Table(name = "quiz")
 public class QuizEntity {
     @Id
@@ -34,42 +36,12 @@ public class QuizEntity {
         this.book = book;
     }
 
-
-    public int getQuizId() {
-        return this.quizId;
-    }
-
-    public String getQuizName() {
-        return this.quizName;
-    }
-
-    public List<QuestionEntity> getQuestions() {
-        return this.questions;
-    }
-
-    public int getPerfectScore() {
-        return this.perfectScore;
-    }
-
-    public void setPerfectScore(int perfectScore) {
-        this.perfectScore = perfectScore;
-    }
-
-    public void setQuizName(String quizName) {
-        this.quizName = quizName;
-    }
-
     public void setQuestions(List<QuestionEntity> questions) {
         this.questions = questions;
         for (QuestionEntity question : questions) {
             question.setQuiz(this);
         }
     }
-    public BookEntity getBook(){
-        return this.book;
-    }
-    public void setBook(BookEntity book) {
-        this.book = book;
-    }
+ 
    
 }

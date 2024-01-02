@@ -9,9 +9,16 @@ import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.JoinColumn;
 
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class QuizScoreEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,42 +35,5 @@ public class QuizScoreEntity {
 
     private int accountScore;
 
-    public QuizScoreEntity() {
-        super();
-    }
-
-    public QuizScoreEntity(QuizAnsweredEntity quizAnswered, QuizEntity quiz, int accountScore) {
-        this.quizAnswered = quizAnswered;
-        this.quiz = quiz;
-        this.accountScore = accountScore;
-    }
-
-    public int getQuizScoreId() {
-        return quizScoreId;
-    }
-
-    public QuizAnsweredEntity getQuizAnswered() {
-        return quizAnswered;
-    }
-
-    public void setQuizAnswered(QuizAnsweredEntity quizAnswered) {
-        this.quizAnswered = quizAnswered;
-    }
-
-    public QuizEntity getQuiz() {
-        return quiz;
-    }
-
-    public void setQuiz(QuizEntity quiz) {
-        this.quiz = quiz;
-    }
-
-    public int getAccountScore() {
-        return accountScore;
-    }
-
-    public void setAccountScore(int accountScore) {
-        this.accountScore = accountScore;
-    }
 
 }

@@ -5,7 +5,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "roles")
 public class RolesEntity{
     @Id
@@ -17,32 +24,4 @@ public class RolesEntity{
 
     @Column(name = "role_description")
     private String role_description;
-
-
-    public RolesEntity(){
-        super();
-    }
-    public RolesEntity(String role_name, String role_description){
-        super();
-        this.role_name = role_name;
-        this.role_description = role_description;
-    }
-    public int getRole_id() {
-        return role_id;
-    }
-    public String getRole_name() {
-        return this.role_name;
-    }
-    public String getRole_description() {
-        return this.role_description;
-    }
-    public void setRole_name(String role_name){
-        this.role_name = role_name;
-    }
-    public void setRole_id(int role_id){
-        this.role_id = role_id;
-    }
-    public void setRole_description(String role_description){
-        this.role_description = role_description;
-    }
 }

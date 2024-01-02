@@ -20,7 +20,7 @@ public class AchievementService {
     BookRepository bookRepository;
 
     public AchievementEntity createAchievement(AchievementEntity achievement){
-        int bookId = achievement.getBookId();
+        int bookId = achievement.getBook().getBookId();
         BookEntity existingBook = bookRepository.findById(bookId).orElseThrow(() -> new EntityNotFoundException("Book " + bookId + " does not exist"));
         achievement.setBook(existingBook);
         return achievementRepository.save(achievement);
@@ -31,7 +31,7 @@ public class AchievementService {
     public AchievementEntity updateAchievement(int achievementId, AchievementEntity newAchievement) {
         try {
             AchievementEntity achievement = achievementRepository.findById(achievementId).orElseThrow(() -> new EntityNotFoundException("Achievement " + achievementId + " does not exist"));
-            achievement.setAchievementDescription(newAchievement.getachievementDescription());
+            achievement.setAchievementDescription(newAchievement.getAchievementDescription());
             achievement.setAchievementName(newAchievement.getAchievementName());
             achievement.setAchievementValue(newAchievement.getAchievementValue());
             achievement.setBook(newAchievement.getBook());
@@ -44,7 +44,7 @@ public class AchievementService {
     public AchievementEntity deleteAchievement(int achievementId){
         try{
             AchievementEntity achievement = achievementRepository.findById(achievementId).orElseThrow(() -> new EntityNotFoundException("Achievement " + achievementId + " does not exist"));
-            achievement.delete();
+            achievement.setIsDeleted(true);
             return achievementRepository.save(achievement);
 
         }catch (DataAccessException ex){
@@ -54,7 +54,7 @@ public class AchievementService {
     public AchievementEntity recoverAchievement(int achievementId){
         try{
             AchievementEntity achievement = achievementRepository.findById(achievementId).orElseThrow(() -> new EntityNotFoundException("Achievement " + achievementId + " does not exist"));
-            achievement.recover();
+            achievement.setIsDeleted(false);
             return achievementRepository.save(achievement);
 
         }catch (DataAccessException ex){

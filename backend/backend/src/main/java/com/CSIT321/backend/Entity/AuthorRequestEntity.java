@@ -9,7 +9,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Table(name = "author_req")
 public class AuthorRequestEntity {
     @Id
@@ -25,54 +34,8 @@ public class AuthorRequestEntity {
 
     private String portfolioLink;
 
-    private String requestStatus;
+    @Builder.Default
+    private String requestStatus="pending";
 
-    public AuthorRequestEntity() {
-        super();
-        this.requestStatus = "pending";
-    }
 
-    public AuthorRequestEntity(AccountEntity account, String request, String portfolioLink) {
-        this.account = account;
-        this.request = request;
-        this.portfolioLink = portfolioLink;
-        this.requestStatus = "pending"; 
-    }
-    
-
-    public int getAuthorReqId() {
-        return authorReqId;
-    }
-
-    public AccountEntity getAccount() {
-        return account;
-    }
-
-    public void setAccount(AccountEntity account) {
-        this.account = account;
-    }
-
-    public String getRequest() {
-        return request;
-    }
-
-    public void setRequest(String request) {
-        this.request = request;
-    }
-
-    public String getPortfolioLink() {
-        return portfolioLink;
-    }
-
-    public void setPortfolioLink(String portfolioLink) {
-        this.portfolioLink = portfolioLink;
-    }
-
-    public String getRequestStatus() {
-        return requestStatus;
-    }
-
-    public void setRequestStatus(String requestStatus) {
-        this.requestStatus = requestStatus;
-    }
 }

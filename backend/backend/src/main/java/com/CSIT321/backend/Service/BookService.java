@@ -93,7 +93,7 @@ public class BookService {
         try {
             BookEntity book = bookRepository.findById(bookId)
                     .orElseThrow(() -> new EntityNotFoundException("book " + bookId + " does not exist"));
-            book.delete();
+            book.setDeleted(true);
             return bookRepository.save(book);
         } catch (Exception e) {
             throw e;
@@ -104,7 +104,7 @@ public class BookService {
         try {
             BookEntity book = bookRepository.findById(bookId)
                     .orElseThrow(() -> new EntityNotFoundException("book " + bookId + " does not exist"));
-            book.recover();
+            book.setDeleted(false);
             return bookRepository.save(book);
         } catch (Exception e) {
             throw e;

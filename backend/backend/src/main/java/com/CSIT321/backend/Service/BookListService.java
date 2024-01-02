@@ -21,29 +21,23 @@ public class BookListService {
     BookRepository bookRepository;
     @Autowired
     AccountRepository accountRepository;
-    //* this function creates an instance of a bookList */
-    // @param bookList (BookListEntity) - the bookList to be created
+    
     public BookListEntity createList(BookListEntity bookList) {
         return bookListRepository.save(bookList);
     }
-    //* this function returns a list of all the booklist of all accounts */
     public List<BookListEntity> getAllAccountLists() {
         return bookListRepository.findAll();
     }
-    //* this function returns a list of all the books in a booklist of an account */
-    // @param accountId (int) - the id of the account
     public List<BookEntity> getAllBooksInList(int accountId) {
         AccountEntity account = accountRepository.findById(accountId).orElseThrow(() -> new NoResultException("Account " + accountId + " does not exist"));
         BookListEntity bookList = bookListRepository.findByAccount(account).orElseThrow(() -> new NoResultException("BookList with accountId " + accountId + " does not exist"));
-        return bookList.getBooks();
+        return bookList.getBook();
     }
-    //* this function adds a book to a booklist of an account */
-    // @param accountId (int) - the id of the account and bookId (int) - the id of the book
     public BookListEntity addBookToList(int accountId, int  bookId) {
         AccountEntity account = accountRepository.findById(accountId).orElseThrow(() -> new NoResultException("Account " + accountId + " does not exist"));
         BookListEntity bookList = bookListRepository.findByAccount(account).orElseThrow(() -> new NoResultException("BookList with accountId " + accountId + " does not exist"));
     
-        List<BookEntity> books = bookList.getBooks();
+        List<BookEntity> books = bookList.getBook();
         BookEntity book  = bookRepository.findById(bookId).orElseThrow(() -> new NoResultException("Book " + bookId + " does not exist"));
        
         //* check if book already exists in the list */ 
@@ -52,7 +46,7 @@ public class BookListService {
         }
     
         books.add(book);
-        bookList.setBooks(books);
+        bookList.setBook(books);
     
         return bookListRepository.save(bookList);
     }
@@ -61,9 +55,9 @@ public class BookListService {
         AccountEntity account = accountRepository.findById(accountId).orElseThrow(() -> new NoResultException("Account " + accountId + " does not exist"));
         BookListEntity bookList = bookListRepository.findByAccount(account).orElseThrow(() -> new NoResultException("BookList with accountId " + accountId + " does not exist"));
 
-        List<BookEntity> books = bookList.getBooks();
+        List<BookEntity> books = bookList.getBook();
         books.removeIf(book -> book.getBookId()==(bookId));
-        bookList.setBooks(books);
+        bookList.setBook(books);
 
         return bookListRepository.save(bookList);
     }

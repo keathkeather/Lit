@@ -15,20 +15,27 @@ public class SubscriptionService {
     SubscriptionRepository subscriptionRepository;
 
     public SubscriptionEntity createSubscription(SubscriptionEntity subscription) {
-        return subscriptionRepository.save(subscription);
+        try{
+            return subscriptionRepository.save(subscription);
+        }catch(Exception e){
+            throw e;
+        }
     }
 
     public List<SubscriptionEntity> getAllSubsciptions() {
-        return subscriptionRepository.findAll();
+        return subscriptionRepository.findAll(); //*This could be better if DTO is being implemented */
     }
 
     public SubscriptionEntity updateSubscription(int subscriptionId, SubscriptionEntity newSubscription) {
         try {
+            //* this coulde be made in to a function for readability */
             SubscriptionEntity subscription = subscriptionRepository.findById(subscriptionId).get();
             subscription.setSubscriptionName(newSubscription.getSubscriptionName());
             subscription.setSubscriptionDescription(newSubscription.getSubscriptionDescription());
             subscription.setCost(newSubscription.getCost());
-            subscription.setIsDeleted(newSubscription.getIsDeleted());
+            subscription.setDeleted(newSubscription.isDeleted());
+
+
             return subscriptionRepository.save(subscription);
         } catch (NoResultException ex) {
             throw new NoResultException("Subscription " + subscriptionId + " does not exist");
@@ -38,7 +45,7 @@ public class SubscriptionService {
     public SubscriptionEntity restoreSubscription(int subscriptionId) {
         try {
             SubscriptionEntity subscription = subscriptionRepository.findById(subscriptionId).orElseThrow();
-            subscription.setIsDeleted(false);
+            subscription.setDeleted(false);
             return subscriptionRepository.save(subscription);
         } catch (NoResultException e) {
             throw new NoResultException("Subscription " + subscriptionId + " does not exist");
@@ -48,7 +55,7 @@ public class SubscriptionService {
     public SubscriptionEntity deleteSubscription(int subscriptionId) {
         try {
             SubscriptionEntity subscription = subscriptionRepository.findById(subscriptionId).orElseThrow();
-            subscription.setIsDeleted(true);
+            subscription.setDeleted(true);
             return subscriptionRepository.save(subscription);
         } catch (NoResultException e) {
             throw new NoResultException("Subscription " + subscriptionId + " does not exist");

@@ -16,10 +16,14 @@ public class ReportService {
     ReportRepository reportRepository;
 
     public ReportEntity createReport(ReportEntity report){
-        return reportRepository.save(report);
+        try{
+            return reportRepository.save(report);
+        }catch(Exception e){
+            throw e;
+        }
     }
     public List<ReportEntity> getAllReports(){
-        return reportRepository.findAll();
+        return reportRepository.findAll(); //*This could be better if DTO is being implemented */
     }
     
     public List<ReportEntity> getAllAvailableReports(){
@@ -32,7 +36,7 @@ public class ReportService {
     public ReportEntity deleteReport(int reportId){
         try{
             ReportEntity deletedReport = reportRepository.findById(reportId).orElseThrow(() -> new EntityNotFoundException("Report " + reportId + " does not exist"));
-            deletedReport.delete();
+            deletedReport.setDeleted(true);
             return reportRepository.save(deletedReport);
         }catch(Exception e){
             throw e;
@@ -41,7 +45,7 @@ public class ReportService {
     public ReportEntity restoreReport(int reportId){
         try{
             ReportEntity retoredReport = reportRepository.findById(reportId).orElseThrow(() -> new EntityNotFoundException("Report " + reportId + " does not exist"));
-            retoredReport.restore();
+            retoredReport.setDeleted(false);
             return reportRepository.save(retoredReport);
         }catch(Exception e){
             throw e;
