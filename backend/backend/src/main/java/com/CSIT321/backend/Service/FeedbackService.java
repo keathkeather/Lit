@@ -33,7 +33,7 @@ public class FeedbackService {
     public FeedbackEntity deleteFeedback(int feedbackId){
         try{
             FeedbackEntity deletedFeedback = feedbackRepository.findById(feedbackId).orElseThrow(() -> new EntityNotFoundException("Feedback " + feedbackId + " does not exist"));
-            deletedFeedback.delete();
+            deletedFeedback.setDeleted(true);
             return feedbackRepository.save(deletedFeedback);
         }catch(Exception e){
             throw e;
@@ -42,7 +42,7 @@ public class FeedbackService {
     public FeedbackEntity restoreFeedback(int feedbackId){
         try{
             FeedbackEntity restoredFeedback = feedbackRepository.findById(feedbackId).orElseThrow(() -> new EntityNotFoundException("Feedback " + feedbackId + " does not exist"));
-            restoredFeedback.restore();
+            restoredFeedback.setDeleted(false);
             return feedbackRepository.save(restoredFeedback);
         }catch(Exception e){
             throw e;

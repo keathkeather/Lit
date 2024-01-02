@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.CSIT321.backend.Entity.DTO.UserDTO;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
@@ -42,8 +41,5 @@ public class UserEntity {
     private boolean isDeleted=false;
 
   
-    public void fromDTO(UserDTO userDto){
-        this.username = userDto.getUsername();
-        this.password = userDto.getPassword();
-    }
+
 }

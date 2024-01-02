@@ -28,9 +28,9 @@ public class AccountAchievementService {
         try{
             AccountEntity account = accountRepository.findById(accountId).orElseThrow(() -> new NoResultException("Account " + accountId + " does not exist"));
     
-            // Retrieve or create an AccountAchievementEntity for the account
+            // * Retrieve or create an AccountAchievementEntity for the account
             AccountAchievementEntity accountAchievement = accountAchievementRepository.findByAccount(account)
-                    .orElse(new AccountAchievementEntity(account));
+                    .orElse(AccountAchievementEntity.builder().account(account).build());
     
             List<AchievementEntity> achievements = accountAchievement.getAchievements();
             AchievementEntity achieved = achievementRepository.findById(achievementId).orElseThrow(() -> new NoResultException("Achievement " + achievementId + " does not exist"));
@@ -48,15 +48,20 @@ public class AccountAchievementService {
         AccountEntity account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new NoResultException("Account " + accountId + " does not exist"));
         
-        AccountAchievementEntity accountAchievement = accountAchievementRepository.findByAccount(account)
-                .orElseThrow(() -> new NoResultException("Account " + accountId + " does not exist"));
+        AccountAchievementEntity accountAchievement = findAccountAchievement(account);
     
         List<AchievementEntity> achievements = accountAchievement.getAchievements();
-        achievements.removeIf(achievement -> achievement.getAchivementId() == achievementId);
+        achievements.removeIf(achievement -> achievement.getAchievementId() == achievementId);
         accountAchievement.setAchievements(achievements);
     
         return accountAchievementRepository.save(accountAchievement);
     }
     
 
+
+    private AccountAchievementEntity findAccountAchievement(AccountEntity account){
+        return accountAchievementRepository.findByAccount(account)
+            .orElseThrow(() -> new NoResultException("Account " + account.getAccountId() + " does not exist"));
+
+    }
 }

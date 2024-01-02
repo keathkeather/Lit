@@ -12,10 +12,19 @@ import javax.persistence.OneToOne;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class QuizAnsweredEntity {
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,41 +36,12 @@ public class QuizAnsweredEntity {
     private AccountEntity account;
 
 
+    @Builder.Default
     @OneToMany(mappedBy = "quizAnswered", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<QuizScoreEntity> quizScores;
+    private List<QuizScoreEntity> quizScores = new ArrayList<>();
 
-    public QuizAnsweredEntity() {
-        super();
-        this.quizScores = new ArrayList<>();
-    }
-
-    public QuizAnsweredEntity(AccountEntity account) {
-        this.account = account;
-        this.quizScores = new ArrayList<>();
-    }
-    public QuizAnsweredEntity(AccountEntity account , List<QuizScoreEntity> quizScores) {
-        this.account = account;
-        this.quizScores = new ArrayList<>(quizScores);
-    }
-
-    public int getQuizAnsweredId() {
-        return quizAnsweredId;
-    }
-
-    public AccountEntity getAccount() {
-        return account;
-    }
-
-    public List<QuizScoreEntity> getQuizScores() {
-        return quizScores;
-    }
-    public void setQuizScores(List<QuizScoreEntity> quizScores){
-        this.quizScores = quizScores;
-    }
-    public void setAccount(AccountEntity account) {
-        this.account = account;
-    }
+  
 
     public void addQuizScore(QuizScoreEntity quizScore) {
         if (quizScore != null) {

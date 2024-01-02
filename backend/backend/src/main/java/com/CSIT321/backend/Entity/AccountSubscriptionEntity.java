@@ -7,7 +7,10 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import lombok.Data;
+
 @Entity
+@Data
 @Table(name = "account_subscription")
 public class AccountSubscriptionEntity {
     @Id
@@ -33,9 +36,7 @@ public class AccountSubscriptionEntity {
     @Column(name = "is_Subscribed")
     private boolean isSubscribed;
 
-    public AccountSubscriptionEntity(){
-        super();
-    }
+
     public AccountSubscriptionEntity(AccountEntity account,SubscriptionEntity subscription){
         this.account = account;
         this.subscription = subscription;

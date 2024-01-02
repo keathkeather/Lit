@@ -9,7 +9,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Entity
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name="report")
 public class ReportEntity {
     @Id
@@ -23,38 +32,7 @@ public class ReportEntity {
     @Column(columnDefinition = "TEXT")
     private String report;
 
-    private boolean isDeleted;
-    public ReportEntity(){
-        super();
-        this.isDeleted = false;
-    }
-    public ReportEntity( AccountEntity account,String report){
-        this.account = account;
-        this.report = report;
-        this.isDeleted = false;
-    }
-    public int getReportId(){
-        return this.reportId;
-    }
-    public AccountEntity getAccount(){
-        return this.account;
-    }
-    public String getReport(){
-        return this.report;
-    }
-    public void setAccount(AccountEntity account){
-        this.account = account;
-    }
-    public void setReport(String report){
-        this.report = report;
-    }
-    public void delete(){
-        this.isDeleted = true;
-    }
-    public void restore(){
-        this.isDeleted = false;
-    }
-    public boolean getIsDeleted(){
-        return this.isDeleted;
-    }
+    @Builder.Default
+    private boolean isDeleted = false;
+    
 }
